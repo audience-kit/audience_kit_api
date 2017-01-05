@@ -29,6 +29,21 @@ class TokenController < ApplicationController
     @user.save
 
     # produce new JWT token
-    render json: @me
+    payload = {
+        id: @user.id,
+        fb_id: @me['id'].to_i,
+        iat: DateTime.now.to_time.to_i,
+        nbf: (DateTime.now - 5.minutes).to_time.to_i,
+        # exp: for now calculate exp and return not-authorized if refresh required (exp should never be respected but is a hint)
+        iss: request.host_with_port,
+        aud: request.host_with_port,
+        jti: SecureRandom.base64
+    }
+
+    token = JWT.encode payload, Rails.application.secrets[:secret_key_base], 'HS256'
+
+    logger.info "Token: #{token}"
+
+    render json: { token: token }
   end
 end
