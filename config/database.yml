@@ -82,5 +82,4 @@ test:
 production:
   <<: *default
   database: hotmess
-  username: hotmess
   password: <%= ENV['HOTMESS-API_DATABASE_PASSWORD'] %>

@@ -9,8 +9,8 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.string    :email_address
       t.integer   :facebook_id, limit: 8
       t.string    :facebook_token
-      t.datetime  :facebook_token_iss
-      t.string    :facebook_profile_url
+      t.datetime  :facebook_token_issued_at
+      t.string    :profile_image_url
 
 
     end
