@@ -2,16 +2,19 @@ class ApplicationController < ActionController::API
   before_action :authenticate
 
   def authenticate
-    authenticate_or_request_with_http_token do |token, options|
-      decoded_token = JWT.decode token, Rails.application.secrets[:secret_key_base], true, algorithm: 'HS256'
+    token = /Bearer (.+)/.match(request.authorization)
 
-      if decoded_token
-        @user = User.find(decoded_token[:id])
+    if token
+      decoded_token = JWT.decode token[1], Rails.application.secrets[:secret_key_base], true, algorithm: 'HS256'
+
+      if decoded_token && decoded_token[0]
+        logger.info decoded_token
+        @user = User.find_by_id(decoded_token[0]['id'])
 
         return if @user
       end
-
-      render status: :unauthorized
     end
+
+    render status: :unauthorized
   end
 end

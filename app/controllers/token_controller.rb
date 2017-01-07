@@ -1,5 +1,5 @@
 class TokenController < ApplicationController
-  skip_before_action :validate_authentication
+  skip_before_action :authenticate
 
   def create
     # accept token from facebook
