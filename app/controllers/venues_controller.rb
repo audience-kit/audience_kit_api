@@ -1,10 +1,9 @@
 class VenuesController < ApplicationController
-
   def index
-    render json: []
+    render json: Venue.all
   end
 
   def show
-    render json: {}
+    render json: Venue.find(params[:id])
   end
 end
