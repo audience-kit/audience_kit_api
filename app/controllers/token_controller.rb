@@ -29,7 +29,7 @@ class TokenController < ApplicationController
 
     @user.save
 
-    @device = Device.find_or_create_by vendor_identifier: params['device']['identifier'], device_type: params['device']['identifier']
+    @device = Device.find_or_create_by vendor_identifier: params['device']['identifier'], device_type: params['device']['type']
     @device.save
 
     @session = Session.new device: @device, user: @user, session_token: SecureRandom.base64, token_id: SecureRandom.uuid
