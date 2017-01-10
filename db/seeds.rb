@@ -5,3 +5,27 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+config = YAML.load_file("#{Rails.root.to_s}/db/seeds.yml").with_indifferent_access
+
+config[:locales].each do |locale_info|
+  locale = Locale.find_or_initialize_by(label: locale_info[:label])
+  locale.name = locale_info[:name]
+
+  locale.save
+
+  venues = locale_info[:venues]
+
+  if venues
+    locale_info[:venues].map {|v| v.with_indifferent_access}.each do |venue_info|
+      begin
+        venue = locale.venues.find_or_initialize_by(facebook_id: venue_info[:facebook_id])
+
+        venue.name = venue_info[:name]
+
+        venue.save
+      rescue => ex
+        puts ex
+      end
+    end
+  end
+end

@@ -1,0 +1,34 @@
+---
+locales:
+  - label: test
+    name: Test
+  - label: seattle
+    name: Seattle
+    venues:
+      - name: Purr
+        facebook_id: 183716211669747
+      - name: RPlace
+        facebook_id: 58260309278
+      - name: Neighbors
+        facebook_id: 505306519485467
+      - name: CC Attles
+        facebook_id: 111565388880689
+      - name: Eagle
+        facebook_id: 116321545059189
+      - name: The Cuff
+        facebook_id: 113908521985880
+      - name: Pony
+        facebook_id: 196120291315
+      - name: Madison Pub
+        facebook_id: 276407207694
+      - name: Crescent Lounge
+        facebook_id: 123506914343456
+  - label: spokane
+    name: Spokane
+    venues:
+      - name: Stray
+        facebook_id: 230964110609623
+      - name: Nyne
+        facebook_id: 208226991785
+  - label: nyc
+    name: New York
