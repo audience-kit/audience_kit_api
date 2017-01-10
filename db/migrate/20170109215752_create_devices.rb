@@ -1,4 +1,4 @@
-class Device < ActiveRecord::Migration[5.0]
+class CreateDevices < ActiveRecord::Migration[5.0]
   def change
     create_table :devices, id: :uuid do |t|
       t.timestamps

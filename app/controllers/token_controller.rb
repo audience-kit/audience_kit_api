@@ -3,7 +3,8 @@ class TokenController < ApplicationController
 
   def create
     # accept token from facebook
-    params.require(:facebook_token)
+    params.require :facebook_token
+    params.require :device
 
     # Validate and exchange for long token
     app_id          = Rails.application.secrets[:facebook_app_id]
@@ -28,6 +29,12 @@ class TokenController < ApplicationController
 
     @user.save
 
+    @device = Device.find_or_create_by vendor_identifier: params['device']['identifier'], device_type: params['device']['identifier']
+    @device.save
+
+    @session = Session.new device: @device, user: @user, session_token: SecureRandom.base64, token_id: SecureRandom.uuid
+    @session.save
+
     # produce new JWT token
     payload = {
         id: @user.id,
@@ -37,7 +44,7 @@ class TokenController < ApplicationController
         # exp: for now calculate exp and return not-authorized if refresh required (exp should never be respected but is a hint)
         iss: request.host_with_port,
         aud: request.host_with_port,
-        jti: SecureRandom.base64
+        jti: @session.token_id
     }
 
     token = JWT.encode payload, Rails.application.secrets[:secret_key_base], 'HS256'
