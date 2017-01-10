@@ -10,11 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161227070610) do
+ActiveRecord::Schema.define(version: 20170109220126) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_table "devices", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.string   "device_type"
+    t.string   "vendor_identifier"
+  end
+
+  create_table "sessions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid     "token_id"
+    t.uuid     "device_id"
+    t.uuid     "user_id"
+    t.string   "session_token"
+    t.index ["device_id"], name: "index_sessions_on_device_id", using: :btree
+    t.index ["token_id"], name: "index_sessions_on_token_id", using: :btree
+    t.index ["user_id"], name: "index_sessions_on_user_id", using: :btree
+  end
 
   create_table "users", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.datetime "created_at",               null: false
@@ -27,4 +46,6 @@ ActiveRecord::Schema.define(version: 20161227070610) do
     t.string   "profile_image_url"
   end
 
+  add_foreign_key "sessions", "devices"
+  add_foreign_key "sessions", "users"
 end

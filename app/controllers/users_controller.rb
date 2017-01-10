@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   def me
-    render json: { id: @user.id }
+      # TODO: This exposes things not meant for the user to ever see
+     render json: @user
   end
 end
