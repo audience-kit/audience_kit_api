@@ -11,7 +11,7 @@ class Venue
     end
 
     def load_venues
-      items = YAML.load_file("#{Rails.root.to_s}/config/venues.yml")
+      items = YAML.load_file("#{Rails.root.to_s}/config/seeds.yml")
 
       items = items.map { |item| Venue.new item }
 

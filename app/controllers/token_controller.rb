@@ -9,7 +9,7 @@ class TokenController < ApplicationController
     # Validate and exchange for long token
     extended_token  = Facebook.oauth.exchange_access_token params[:facebook_token]
 
-    render status: :unauthorized and return unless extended_token
+    render status: :unauthorized, json: {} and return unless extended_token
 
     @graph = Koala::Facebook::API.new extended_token
 
