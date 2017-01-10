@@ -28,5 +28,7 @@ module HotMessAPI
     config.api_only = true
 
     config.active_record.primary_key = :uuid
+
+    config.autoload_paths += %W( lib )
   end
 end

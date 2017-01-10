@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170109220126) do
+ActiveRecord::Schema.define(version: 20170110065408) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,12 +24,12 @@ ActiveRecord::Schema.define(version: 20170109220126) do
   end
 
   create_table "sessions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
     t.uuid     "token_id"
     t.uuid     "device_id"
     t.uuid     "user_id"
-    t.string   "session_token"
+    t.string   "session_token", limit: 64
     t.index ["device_id"], name: "index_sessions_on_device_id", using: :btree
     t.index ["token_id"], name: "index_sessions_on_token_id", using: :btree
     t.index ["user_id"], name: "index_sessions_on_user_id", using: :btree
@@ -44,6 +44,10 @@ ActiveRecord::Schema.define(version: 20170109220126) do
     t.string   "facebook_token"
     t.datetime "facebook_token_issued_at"
     t.string   "profile_image_url"
+    t.string   "gender"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "culture"
   end
 
   add_foreign_key "sessions", "devices"
