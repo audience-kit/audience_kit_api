@@ -19,8 +19,7 @@ class TokenController < ApplicationController
     # Create or Update user by application scoped FacebookID
     @user = User.find_or_initialize_by facebook_id: @me['id'].to_i
 
-    @user.name                      = @me['name']
-    @user.email_address             = @me['email_address']
+    @user.update_from @me
     @user.facebook_token            = extended_token
     @user.facebook_token_issued_at  = DateTime.now
 
