@@ -1,8 +1,9 @@
 class CreateVenues < ActiveRecord::Migration[5.0]
   def change
-    create_table :locales, id: uuid do |t|
+    create_table :locales, id: :uuid do |t|
       t.timestamps
 
+      t.string :label
       t.string :name
     end
 

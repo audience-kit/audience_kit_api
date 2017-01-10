@@ -1,46 +1,34 @@
 ---
 locales:
-  - id: 1
+  - label: test
     name: Test
-  - id: 2
+  - label: seattle
     name: Seattle
-  - id: 3
+    venues:
+      - name: Purr
+        facebook_id: 183716211669747
+      - name: RPlace
+        facebook_id: 58260309278
+      - name: Neighbors
+        facebook_id: 505306519485467
+      - name: CC Attles
+        facebook_id: 111565388880689
+      - name: Eagle
+        facebook_id: 116321545059189
+      - name: The Cuff
+        facebook_id: 113908521985880
+      - name: Pony
+        facebook_id: 196120291315
+      - name: Madison Pub
+        facebook_id: 276407207694
+      - name: Crescent Lounge
+        facebook_id: 123506914343456
+  - label: spokane
     name: Spokane
-  - id: 4
+    venues:
+      - name: Stray
+        facebook_id: 230964110609623
+      - name: Nyne
+        facebook_id: 208226991785
+  - label: nyc
     name: New York
-venues:
-  - id: 1
-    name: Purr
-    locale_id: 2
-  - id: 2
-    name: RPlace
-    locale_id: 2
-  - id: 3
-    name: Neighbors
-    locale_id: 2
-  - id: 4
-    name: CC Attles
-    locale_id: 2
-  - id: 5
-    name: Eagle
-    locale_id: 2
-  - id: 6
-    name: The Cuff
-    locale_id: 2
-  - id: 7
-    name: Pony
-    locale_id: 2
-  - id: 8
-    name: Madison Pub
-    locale_id: 2
-  - id: 9
-    name: Crescent Lounge
-    locale_id: 2
-  - id: 10
-    name: Stray
-    locale_id: 3
-    facebook_id: 230964110609623
-  - id: 11
-    name: Nyne
-    locale_id: 3
-    facebook_id: 208226991785
