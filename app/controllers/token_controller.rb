@@ -7,10 +7,7 @@ class TokenController < ApplicationController
     params.require :device
 
     # Validate and exchange for long token
-    app_id          = Rails.application.secrets[:facebook_app_id]
-    app_secret      = Rails.application.secrets[:facebook_secret]
-    oauth_handler   = Koala::Facebook::OAuth.new app_id, app_secret
-    extended_token  = oauth_handler.exchange_access_token params[:facebook_token]
+    extended_token  = Facebook.oauth.exchange_access_token params[:facebook_token]
 
     render status: :unauthorized and return unless extended_token
 
@@ -50,6 +47,8 @@ class TokenController < ApplicationController
     token = JWT.encode payload, Rails.application.secrets[:secret_key_base], 'HS256'
 
     logger.info "Token: #{token}"
+
+    UpdateUserJob.perform_later @user
 
     render json: { token: token }
   end
