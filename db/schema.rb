@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170110175241) do
+ActiveRecord::Schema.define(version: 20170111002641) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,16 @@ ActiveRecord::Schema.define(version: 20170110175241) do
     t.datetime "updated_at",        null: false
     t.string   "device_type"
     t.string   "vendor_identifier"
+  end
+
+  create_table "events", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "name"
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.uuid     "venue_id"
+    t.index ["venue_id"], name: "index_events_on_venue_id", using: :btree
   end
 
   create_table "locales", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -58,14 +68,25 @@ ActiveRecord::Schema.define(version: 20170110175241) do
   end
 
   create_table "venues", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
     t.string   "name"
     t.bigint   "facebook_id"
     t.uuid     "locale_id"
+    t.datetime "facebook_updated_at"
+    t.string   "label"
+    t.boolean  "is_hidden",           default: false
+    t.string   "country"
+    t.string   "state"
+    t.string   "zip"
+    t.string   "street"
+    t.string   "phone"
+    t.string   "google_place_id"
+    t.datetime "google_updated_at"
     t.index ["locale_id"], name: "index_venues_on_locale_id", using: :btree
   end
 
+  add_foreign_key "events", "venues"
   add_foreign_key "sessions", "devices"
   add_foreign_key "sessions", "users"
   add_foreign_key "venues", "locales"
