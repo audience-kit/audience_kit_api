@@ -2,7 +2,7 @@ class UpdateUserJob < ApplicationJob
   queue_as :default
 
   def perform(user)
-    graph = Koala::Facebook::API.new Facebook.oauth.get_app_access_token
+    graph = Koala::Facebook::API.new Concerns::Facebook.oauth.get_app_access_token
 
     begin
       user.update_from graph.get_object user.facebook_id
