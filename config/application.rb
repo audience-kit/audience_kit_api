@@ -30,5 +30,7 @@ module HotMessAPI
     config.active_record.primary_key = :uuid
 
     config.autoload_paths += %W( lib )
+
+    config.active_job.queue_adapter = :resque
   end
 end
