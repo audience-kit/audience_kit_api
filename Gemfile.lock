@@ -82,6 +82,7 @@ GEM
       mongo (~> 2.3)
     multi_json (1.12.1)
     multipart-post (2.0.0)
+    newrelic_rpm (3.17.2.327)
     nio4r (1.2.1)
     nokogiri (1.7.0.1)
       mini_portile2 (~> 2.1.0)
@@ -168,6 +169,7 @@ DEPENDENCIES
   koala
   listen (~> 3.0.5)
   mongoid
+  newrelic_rpm
   pg
   puma
   rack-cors
@@ -177,6 +179,9 @@ DEPENDENCIES
   spring
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data
+
+RUBY VERSION
+   ruby 2.3.3p222
 
 BUNDLED WITH
    1.13.7
