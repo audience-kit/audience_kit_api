@@ -14,3 +14,14 @@
 #       methods: [:get, :post, :put, :patch, :delete, :options, :head]
 #   end
 # end
+Rails.application.config.middleware.insert_before 0, Rack::Cors do
+  allow do
+    origins 'hotmess.social',
+            'admin.hotmess.social',
+            'next.hotmess.social',
+            'next-admin.hotmess.social',
+            /\Ahttp:\/\/localhost(:\d+)?\z/
+
+    resource '*', headers: :any, methods: [ :get, :post, :put, :patch, :delete, :options, :head ]
+  end
+end

@@ -7,4 +7,6 @@ Rails.application.routes.draw do
   resources :events
 
   resources :venues
+
+  root to: 'status#index'
 end
