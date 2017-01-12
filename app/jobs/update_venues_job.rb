@@ -9,6 +9,22 @@ class UpdateVenuesJob < ApplicationJob
         object_graph = graph.get_object venue.facebook_id
 
         venue.facebook_graph = object_graph
+
+        events = graph.get_connection venue.facebook_id, :events
+
+        events.each do |event_graph|
+          event = Event.find_by(facebook_id: event_graph['id'])
+
+          unless event
+            event = Event.new facebook_id: event_graph['id']
+
+            venue.events << event
+          end
+
+          event.facebook_graph = event_graph
+          event.save
+        end
+
         venue.save
       rescue => ex
         puts ex

@@ -11,4 +11,12 @@ class User < ApplicationRecord
 
     self.facebook_graph = graph
   end
+
+  def self.from_facebook_graph(graph)
+    @user = User.find_or_initialize_by facebook_id: graph['id'].to_i
+
+    @user.update_from graph
+
+    @user
+  end
 end

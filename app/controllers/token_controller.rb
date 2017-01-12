@@ -17,40 +17,22 @@ class TokenController < ApplicationController
     @me = @graph.get_object 'me'
 
     # Create or Update user by application scoped FacebookID
-    @user = User.find_or_initialize_by facebook_id: @me['id'].to_i
+    @user = User.from_facebook_graph @me
 
-    @user.update_from @me
     @user.facebook_token            = extended_token
     @user.facebook_token_issued_at  = DateTime.now
 
     @user.save
 
-    @device = Device.find_or_create_by vendor_identifier: params['device']['identifier'], device_type: params['device']['type']
-    @device.save
+    @device = Device.from_identifier params['device']['identifier'], type: params['device']['type']
 
     @session = Session.new device: @device,
                              user: @user,
-                    session_token: SecureRandom.base64,
-                         token_id: SecureRandom.uuid,
                         origin_ip: request.remote_ip
 
     @session.save
 
-    # produce new JWT token
-    payload = {
-        id: @user.id,
-        fb_id: @me['id'].to_i,
-        iat: DateTime.now.to_time.to_i,
-        nbf: (DateTime.now - 5.minutes).to_time.to_i,
-        # exp: for now calculate exp and return not-authorized if refresh required (exp should never be respected but is a hint)
-        iss: request.host_with_port,
-        aud: request.host_with_port,
-        jti: @session.token_id
-    }
-
-    token = JWT.encode payload, Rails.application.secrets[:secret_key_base], 'HS256'
-
-    logger.info "Token: #{token}"
+    token = @session.to_jwt
 
     UpdateUserJob.perform_later @user
 
