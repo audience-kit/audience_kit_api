@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170111002641) do
+ActiveRecord::Schema.define(version: 20170112003157) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,6 +65,8 @@ ActiveRecord::Schema.define(version: 20170111002641) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "culture"
+    t.index ["email_address"], name: "index_users_on_email_address", using: :btree
+    t.index ["facebook_id"], name: "index_users_on_facebook_id", using: :btree
   end
 
   create_table "venues", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -83,6 +85,8 @@ ActiveRecord::Schema.define(version: 20170111002641) do
     t.string   "phone"
     t.string   "google_place_id"
     t.datetime "google_updated_at"
+    t.index ["facebook_id"], name: "index_venues_on_facebook_id", using: :btree
+    t.index ["google_place_id"], name: "index_venues_on_google_place_id", using: :btree
     t.index ["locale_id"], name: "index_venues_on_locale_id", using: :btree
   end
 
