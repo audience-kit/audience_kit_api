@@ -8,3 +8,10 @@ Rails.application.load_tasks
 require 'resque/tasks'
 
 task 'resque:setup' => :environment
+
+namespace :update do
+  desc 'Update all Venue objects'
+  task :venues => :environment do
+    UpdateVenuesJob.perform_now
+  end
+end

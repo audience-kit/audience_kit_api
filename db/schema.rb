@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170112003157) do
+ActiveRecord::Schema.define(version: 20170112033625) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,15 +21,18 @@ ActiveRecord::Schema.define(version: 20170112003157) do
     t.datetime "updated_at",        null: false
     t.string   "device_type"
     t.string   "vendor_identifier"
+    t.macaddr  "bluetooth_address"
+    t.macaddr  "wifi_address"
   end
 
   create_table "events", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
     t.string   "name"
     t.datetime "start_at"
     t.datetime "end_at"
     t.uuid     "venue_id"
+    t.jsonb    "facebook_graph"
     t.index ["venue_id"], name: "index_events_on_venue_id", using: :btree
   end
 
@@ -47,6 +50,7 @@ ActiveRecord::Schema.define(version: 20170112003157) do
     t.uuid     "device_id"
     t.uuid     "user_id"
     t.string   "session_token", limit: 64
+    t.inet     "origin_ip"
     t.index ["device_id"], name: "index_sessions_on_device_id", using: :btree
     t.index ["token_id"], name: "index_sessions_on_token_id", using: :btree
     t.index ["user_id"], name: "index_sessions_on_user_id", using: :btree
@@ -65,6 +69,7 @@ ActiveRecord::Schema.define(version: 20170112003157) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "culture"
+    t.jsonb    "facebook_graph"
     t.index ["email_address"], name: "index_users_on_email_address", using: :btree
     t.index ["facebook_id"], name: "index_users_on_facebook_id", using: :btree
   end
@@ -85,6 +90,7 @@ ActiveRecord::Schema.define(version: 20170112003157) do
     t.string   "phone"
     t.string   "google_place_id"
     t.datetime "google_updated_at"
+    t.jsonb    "facebook_graph"
     t.index ["facebook_id"], name: "index_venues_on_facebook_id", using: :btree
     t.index ["google_place_id"], name: "index_venues_on_google_place_id", using: :btree
     t.index ["locale_id"], name: "index_venues_on_locale_id", using: :btree

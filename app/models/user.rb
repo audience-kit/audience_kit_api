@@ -8,5 +8,7 @@ class User < ApplicationRecord
     self.first_name    = graph['first_name']
     self.last_name     = graph['last_name']
     self.gender        = graph['gender']
+
+    self.facebook_graph = graph
   end
 end
