@@ -17,10 +17,10 @@ class UpdateVenuesJob < ApplicationJob
 
           unless event
             event = Event.new facebook_id: event_graph['id']
-
             venue.events << event
           end
 
+          event.name = event_graph['name']
           event.facebook_graph = event_graph
           event.save
         end
