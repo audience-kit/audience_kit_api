@@ -5,7 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-config = YAML.load_file("#{Rails.root.to_s}/db/seeds.yml").with_indifferent_access
+config = YAML.load_file("#{Rails.root.to_s}/config/seeds.yml").with_indifferent_access
 
 config[:locales].each do |locale_info|
   locale = Locale.find_or_initialize_by(label: locale_info[:label])
