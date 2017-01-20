@@ -32,3 +32,44 @@ locales:
         facebook_id: 208226991785
   - label: nyc
     name: New York
+    venues:
+      - name: Industry
+        facebook_id: 129095523800790
+      - name: The Ritz
+        facebook_id: 114451068615283
+      - name: The Eagle (NYC)
+        facebook_id: 128608363801
+      - name: Boxers
+        facebook_id: 377763576116
+      - name: Atlas Social Club
+        facebook_id: 498962873531494
+      - name: Therapy
+        facebook_id: 160485380671853
+      - name: Posh
+        facebook_id: 101408476608233
+      - name: Flaming Saddles
+        facebook_id: 202780666453004
+      - name: Rise Bar
+        facebook_id: 150826568602220
+      - name: Townhouse of New York
+        facebook_id: 111601412213573
+      - name: Hardware
+        facebook_id: 309080542468946
+      - name: Baraccuda
+        facebook_id: 144234300350
+      - name: Stonewall
+        facebook_id: 108304452852860
+      - name: Pieces
+        facebook_id: 120872870793
+      - name: Rockbar
+        facebook_id: 147920711697
+      - name: Nowhere
+        facebook_id: 359021430802562
+      - name: The Cock
+        facebook_id: 204660862919346
+  - label: denver
+    name: Denver
+  - label: boston
+    name: Boston
+  - label: dc
+    name: Washingtion DC

@@ -20,11 +20,12 @@ gem 'jwt'
 gem 'rack-cors'
 # Koala for Facebook interaction
 gem 'koala'
-# Use mongoid for non-structured data
-gem 'mongoid'
-
+# Ensure reliability / fix it when not
 gem 'newrelic_rpm'
+# ActiveJob backend
 gem 'resque'
+
+gem 'activerecord-postgis-adapter'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

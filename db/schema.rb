@@ -10,11 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170112223738) do
+ActiveRecord::Schema.define(version: 20170118032138) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+  enable_extension "postgis"
 
   create_table "devices", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.datetime "created_at",        null: false
@@ -38,25 +39,11 @@ ActiveRecord::Schema.define(version: 20170112223738) do
     t.index ["venue_id"], name: "index_events_on_venue_id", using: :btree
   end
 
-  create_table "locales", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string   "label"
-    t.string   "name"
-  end
+# Could not dump table "locales" because of following StandardError
+#   Unknown type 'geography' for column 'location'
 
-  create_table "sessions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-    t.uuid     "token_id"
-    t.uuid     "device_id"
-    t.uuid     "user_id"
-    t.string   "session_token", limit: 64
-    t.inet     "origin_ip"
-    t.index ["device_id"], name: "index_sessions_on_device_id", using: :btree
-    t.index ["token_id"], name: "index_sessions_on_token_id", using: :btree
-    t.index ["user_id"], name: "index_sessions_on_user_id", using: :btree
-  end
+# Could not dump table "sessions" because of following StandardError
+#   Unknown type 'geography' for column 'geo_ip_location'
 
   create_table "users", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.datetime "created_at",               null: false
@@ -76,27 +63,8 @@ ActiveRecord::Schema.define(version: 20170112223738) do
     t.index ["facebook_id"], name: "index_users_on_facebook_id", using: :btree
   end
 
-  create_table "venues", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
-    t.string   "name"
-    t.bigint   "facebook_id"
-    t.uuid     "locale_id"
-    t.datetime "facebook_updated_at"
-    t.string   "label"
-    t.boolean  "is_hidden",           default: false
-    t.string   "country"
-    t.string   "state"
-    t.string   "zip"
-    t.string   "street"
-    t.string   "phone"
-    t.string   "google_place_id"
-    t.datetime "google_updated_at"
-    t.jsonb    "facebook_graph"
-    t.index ["facebook_id"], name: "index_venues_on_facebook_id", using: :btree
-    t.index ["google_place_id"], name: "index_venues_on_google_place_id", using: :btree
-    t.index ["locale_id"], name: "index_venues_on_locale_id", using: :btree
-  end
+# Could not dump table "venues" because of following StandardError
+#   Unknown type 'geography' for column 'location'
 
   add_foreign_key "events", "venues"
   add_foreign_key "sessions", "devices"
