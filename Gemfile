@@ -26,6 +26,7 @@ gem 'newrelic_rpm'
 gem 'resque'
 
 gem 'activerecord-postgis-adapter'
+gem 'google_places'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

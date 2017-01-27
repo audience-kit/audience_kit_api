@@ -4,72 +4,105 @@ locales:
     name: Test
   - label: seattle
     name: Seattle
+    google_place_id: ChIJVTPokywQkFQRmtVEaUZlJRA
     venues:
       - name: Purr
         facebook_id: 183716211669747
+        google_place_id: ChIJZ7Txss1qkFQRVoA8fYl4Rx0
       - name: RPlace
         facebook_id: 58260309278
+        google_place_id: ChIJ-aXMYctqkFQRR5sJuXK6b_I
       - name: Neighbors
         facebook_id: 505306519485467
+        google_place_id: ChIJk_aBY8xqkFQRSZgw2100Z0o
       - name: CC Attles
         facebook_id: 111565388880689
+        google_place_id: ChIJk-Ws_tFqkFQRc2h8MPRvv5I
       - name: Eagle
         facebook_id: 116321545059189
+        google_place_id: ChIJOcPt38pqkFQRWmTOs3bUrgk
       - name: The Cuff
         facebook_id: 113908521985880
+        google_place_id: ChIJuQVbk81qkFQRkm6N_RnwHQY
       - name: Pony
         facebook_id: 196120291315
+        google_place_id: ChIJRUOyfc5qkFQRDZLLFj1Q264
       - name: Madison Pub
         facebook_id: 276407207694
+        google_place_id: ChIJB_-ecc5qkFQRS1xH4lgadrg
       - name: Crescent Lounge
         facebook_id: 123506914343456
+        google_place_id: ChIJh-aSYTMVkFQRBC6htmNquI0
   - label: spokane
     name: Spokane
+    google_place_id: ChIJ5ee7MFwYnlQRsdmEC9bJ_N0
     venues:
       - name: Stray
         facebook_id: 230964110609623
+        google_place_id: ChIJoZ-XpGEYnlQRFn67pKW7sUs
       - name: Nyne
         facebook_id: 208226991785
+        google_place_id: ChIJjSkjDooYnlQRFGPhbtxVauk
   - label: nyc
     name: New York
+    google_place_id: ChIJOwg_06VPwokRYv534QaPC8g
     venues:
       - name: Industry
         facebook_id: 129095523800790
+        google_place_id: ChIJs5moEldYwokRUeku57R4FfA
       - name: The Ritz
         facebook_id: 114451068615283
+        google_place_id: ChIJXRLW4VNYwokR86GtMXsa4KM
       - name: The Eagle (NYC)
         facebook_id: 128608363801
+        google_place_id: ChIJmaM5RbZZwokRwpJUp-ClLKw
       - name: Boxers
         facebook_id: 377763576116
       - name: Atlas Social Club
         facebook_id: 498962873531494
+        google_place_id: ChIJSYrBMldYwokRuer87cJcwiw
       - name: Therapy
         facebook_id: 160485380671853
+        google_place_id: ChIJ69_1EldYwokRRA5fa21Vu_8
       - name: Posh
         facebook_id: 101408476608233
+        google_place_id: ChIJazo0y1BYwokRtxo_g27YBA0
       - name: Flaming Saddles
         facebook_id: 202780666453004
+        google_place_id: ChIJ41LLW1dYwokR7Q5UGoWYbiE
       - name: Rise Bar
         facebook_id: 150826568602220
+        google_place_id: ChIJqRRpsFlYwokRS2bmqrh0tzc
       - name: Townhouse of New York
         facebook_id: 111601412213573
+        google_place_id: ChIJq2491OVYwokRJCKqoN3hZIY
       - name: Hardware
         facebook_id: 309080542468946
+        google_place_id: ChIJaRE_uFFYwokRSgI8YRDfnDk
       - name: Baraccuda
         facebook_id: 144234300350
+        google_place_id: ChIJg912rrtZwokRplCG3u0bCuo
       - name: Stonewall
         facebook_id: 108304452852860
+        google_place_id: ChIJTQoVbZRZwokRx0ocj9EU2sA
       - name: Pieces
         facebook_id: 120872870793
+        google_place_id: ChIJ_YhXopZZwokRAlsPWL2btI0
       - name: Rockbar
         facebook_id: 147920711697
+        google_place_id: ChIJlwfqXuxZwokRTlizRW_4cwc
       - name: Nowhere
         facebook_id: 359021430802562
+        google_place_id: ChIJZ1fMFZ5ZwokRkYrV85CZorY
       - name: The Cock
         facebook_id: 204660862919346
+        google_place_id: ChIJQ8iS8YRZwokRBsrnhO_DFUQ
   - label: denver
     name: Denver
+    google_place_id: ChIJzxcfI6qAa4cR1jaKJ_j0jhE
   - label: boston
     name: Boston
+    google_place_id: ChIJGzE9DS1l44kRoOhiASS_fHg
   - label: dc
     name: Washingtion DC
+    google_place_id: ChIJW-T2Wt7Gt4kRKl2I1CJFUsI

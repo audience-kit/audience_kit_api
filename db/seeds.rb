@@ -10,7 +10,7 @@ config = YAML.load_file("#{Rails.root.to_s}/config/seeds.yml").with_indifferent_
 config[:locales].each do |locale_info|
   locale = Locale.find_or_initialize_by(label: locale_info[:label])
   locale.name = locale_info[:name]
-
+  locale.google_place_id = locale_info[:google_place_id]
   locale.save
 
   venues = locale_info[:venues]
@@ -21,6 +21,7 @@ config[:locales].each do |locale_info|
         venue = locale.venues.find_or_initialize_by(facebook_id: venue_info[:facebook_id])
 
         venue.name = venue_info[:name]
+        venue.google_place_id = venue_info[:google_place_id]
 
         venue.save
       rescue => ex

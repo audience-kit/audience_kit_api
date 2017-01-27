@@ -14,4 +14,9 @@ namespace :update do
   task :venues => :environment do
     UpdateVenuesJob.perform_now
   end
+
+  desc 'Update google place data'
+  task :google => :environment do
+    UpdateGooglePlaceJob.perform_now
+  end
 end
