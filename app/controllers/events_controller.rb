@@ -13,7 +13,7 @@ class EventsController < ApplicationController
       end
     end
 
-    @events = @events.where('start_at > ?', DateTime.now).order(start_at: :desc)
+    @events = @events.where('start_at > ?', DateTime.now).order(start_at: :asc)
   end
 
   def show
