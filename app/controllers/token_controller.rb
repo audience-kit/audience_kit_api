@@ -32,7 +32,7 @@ class TokenController < ApplicationController
 
     @session.save
 
-    token = @session.to_jwt
+    token = @session.to_jwt request
 
     UpdateUserJob.perform_later @user
 

@@ -9,6 +9,7 @@ class EventsController < ApplicationController
       @events = Event.all
     end
 
+    @events = @events.where('start_at > ?', DateTime.now).order(start_at: :desc)
   end
 
   def show

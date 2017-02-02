@@ -1,3 +1,6 @@
 json.events do
-  json.array! @events, :id, :name
+  json.array! @events do |event|
+    json.id event.id
+    json.name event.name
+  end
 end
