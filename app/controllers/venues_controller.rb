@@ -7,7 +7,7 @@ class VenuesController < ApplicationController
     if params[:latitude] and params[:longitude]
       point = RGeo::Geographic.spherical_factory.point(params[:longitude], params[:latitude])
 
-      @venues = @venues.order("st_distance(location, '#{point.as_text}')")
+      @venues = @venues.select("*, st_distance(location, '#{point.as_text}') as distance").order('distance')
     end
   end
 
