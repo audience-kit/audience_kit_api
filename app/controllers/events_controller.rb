@@ -6,7 +6,11 @@ class EventsController < ApplicationController
     if params[:venue_id]
       @events = Venue.find(params[:venue_id]).events
     else
-      @events = Event.all
+      if params[:locale_id]
+        @events = Event.joins(:venue).where(venues: { locale_id: params[:locale_id]})
+      else
+        @events = Event.includes(:venue)
+      end
     end
 
     @events = @events.where('start_at > ?', DateTime.now).order(start_at: :desc)
