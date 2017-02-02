@@ -19,4 +19,14 @@ namespace :update do
   task :google => :environment do
     UpdateGooglePlaceJob.perform_now
   end
+
+  desc 'Update events'
+  task :events => :environment do
+    Event.all.each do |event|
+      event.start_at  = event.facebook_graph['start_time']
+      event.end_at    = event.facebook_graph['end_time']
+
+      event.save
+    end
+  end
 end
