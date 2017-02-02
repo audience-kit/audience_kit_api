@@ -106,3 +106,45 @@ locales:
   - label: dc
     name: Washingtion DC
     google_place_id: ChIJW-T2Wt7Gt4kRKl2I1CJFUsI
+  - label: sf
+    name: San Francisco
+    google_place_id: ChIJIQBpAG2ahYAR_6128GcTUEo
+  - label: portland
+    name: Portland
+    google_place_id: ChIJJ3SpfQsLlVQRkYXR9ua5Nhw
+  - label: austin
+    name: Austin
+    google_place_id: ChIJLwPMoJm1RIYRetVp1EtGm10
+  - label: neworleans
+    name: New Orleans
+    google_place_id: ChIJZYIRslSkIIYRtNMiXuhbBts
+  - label: slc
+    name: Salt Lake
+    google_place_id: ChIJ7THRiJQ9UocRyjFNSKC3U1s
+  - label: hartford
+    name: Hartford
+    google_place_id: ChIJpVER8hFT5okRmVl96ahKjsw
+  - label: la
+    name: Los Angeles
+    google_place_id: ChIJE9on3F3HwoAR9AhGJW_fL-I
+  - label: louisville
+    name: Louisville
+    google_place_id: ChIJEdVbsxoLaYgRMv1xICi009Q
+  - label: providence
+    name: Providence
+    google_place_id: ChIJXXN-Q-BE5IkRJ7azSE1832k
+  - label: virginiabeach
+    name: Virginia Beach
+    google_place_id: ChIJpycV_OjBuokRcwEuo4AQFgQ
+  - label: columbus
+    name: Columbus
+    google_place_id: ChIJcd6QucGJOIgRM7Wxz_hmMuQ
+  - label: jacksonville
+    name: Jacksonville
+    google_place_id: ChIJ66_O8Ra35YgR4sf8ljh9zcQ
+  - label: chicago
+    name: Chicago
+    google_place_id: ChIJ7cv00DwsDogRAMDACa2m4K8
+  - label: sandiego
+    name: San Diego
+    google_place_id: ChIJSx6SrQ9T2YARed8V_f0hOg0

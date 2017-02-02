@@ -6,9 +6,14 @@ class UpdateGooglePlaceJob < ApplicationJob
     (Venue.all + Locale.all).each do |place|
       next unless place.google_place_id
 
+      puts "Updating => #{place.name}"
+
       spot = client.spot place.google_place_id
 
-      place.google_location = spot.to_json
+      place.google_location = spot
+      place.location = "POINT(#{spot['lng']} #{spot['lat']})"
+      place.google_updated_at = DateTime.now
+
       place.save
     end
   end
