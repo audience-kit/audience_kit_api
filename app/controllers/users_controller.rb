@@ -13,8 +13,10 @@ class UsersController < ApplicationController
 
     @point = RGeo::Geographic.spherical_factory.point @longitude, @latitude
 
-    @user.user_locations << UserLocation.new(location: @point)
+    user_location = UserLocation.new
+    user_location.location = @Point
 
+    @user.user_locations << user_location
 
     @user.save
   end
