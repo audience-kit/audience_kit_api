@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   has_many :sessions
+  has_many :user_locations
 
   def update_from(graph)
     self.name          = graph['name']
