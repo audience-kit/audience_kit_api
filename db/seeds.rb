@@ -11,6 +11,7 @@ config[:locales].each do |locale_info|
   locale = Locale.find_or_initialize_by(label: locale_info[:label])
   locale.name = locale_info[:name]
   locale.google_place_id = locale_info[:google_place_id]
+  locale.beacon_major = locale_info[:beacon_major]
   locale.save
 
   venues = locale_info[:venues]
@@ -18,10 +19,14 @@ config[:locales].each do |locale_info|
   if venues
     locale_info[:venues].map {|v| v.with_indifferent_access}.each do |venue_info|
       begin
-        venue = locale.venues.find_or_initialize_by(facebook_id: venue_info[:facebook_id])
+        venue = locale.venues.find_or_initialize_by(google_place_id: venue_info[:google_place_id])
 
         venue.name = venue_info[:name]
-        venue.google_place_id = venue_info[:google_place_id]
+        venue.facebook_id = venue_info[:facebook_id]
+
+        if venue_info[:beacon_minors]
+          venue.beacon_id = venue_info[:beacon_minors].first
+        end
 
         venue.save
       rescue => ex

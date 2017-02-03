@@ -2,13 +2,17 @@
 locales:
   - label: test
     name: Test
+    beacon_major: 1
   - label: seattle
     name: Seattle
     google_place_id: ChIJVTPokywQkFQRmtVEaUZlJRA
+    beacon_major: 2
     venues:
       - name: Purr
         facebook_id: 183716211669747
         google_place_id: ChIJZ7Txss1qkFQRVoA8fYl4Rx0
+        beacon_minors:
+          - 1
       - name: RPlace
         facebook_id: 58260309278
         google_place_id: ChIJ-aXMYctqkFQRR5sJuXK6b_I
@@ -36,28 +40,49 @@ locales:
   - label: spokane
     name: Spokane
     google_place_id: ChIJ5ee7MFwYnlQRsdmEC9bJ_N0
+    beacon_major: 3
     venues:
       - name: Stray
         facebook_id: 230964110609623
         google_place_id: ChIJoZ-XpGEYnlQRFn67pKW7sUs
+        beacon_minors:
+          - 2
+          - 3
       - name: Nyne
         facebook_id: 208226991785
         google_place_id: ChIJjSkjDooYnlQRFGPhbtxVauk
+        beacon_minors:
+          - 1
   - label: nyc
     name: New York
     google_place_id: ChIJOwg_06VPwokRYv534QaPC8g
+    beacon_major: 4
     venues:
       - name: Industry
         facebook_id: 129095523800790
         google_place_id: ChIJs5moEldYwokRUeku57R4FfA
+        beacon_minors:
+          - 2
       - name: The Ritz
         facebook_id: 114451068615283
         google_place_id: ChIJXRLW4VNYwokR86GtMXsa4KM
+        beacon_minors:
+          - 3
       - name: The Eagle (NYC)
         facebook_id: 128608363801
         google_place_id: ChIJmaM5RbZZwokRwpJUp-ClLKw
-      - name: Boxers
+        beacon_minors:
+          - 6
+      - name: Boxers HK
         facebook_id: 377763576116
+        google_place_id: ChIJ78MqK1dYwokRX8ecRYNZQDo
+      - name: Boxers Chelsea
+        facebook_id: 242947875741618
+        google_place_id: ChIJ33p4aaNZwokRaqz6qL-Z_Rc
+      - name: 9th Ave Saloon
+        google_place_id: ChIJmeUU3FNYwokRb5-sS-RTfYU
+        beacon_minors:
+          - 4
       - name: Atlas Social Club
         facebook_id: 498962873531494
         google_place_id: ChIJSYrBMldYwokRuer87cJcwiw
@@ -70,6 +95,8 @@ locales:
       - name: Flaming Saddles
         facebook_id: 202780666453004
         google_place_id: ChIJ41LLW1dYwokR7Q5UGoWYbiE
+        beacon_minors:
+          - 5
       - name: Rise Bar
         facebook_id: 150826568602220
         google_place_id: ChIJqRRpsFlYwokRS2bmqrh0tzc
@@ -88,6 +115,8 @@ locales:
       - name: Pieces
         facebook_id: 120872870793
         google_place_id: ChIJ_YhXopZZwokRAlsPWL2btI0
+        beacon_minors:
+          - 1
       - name: Rockbar
         facebook_id: 147920711697
         google_place_id: ChIJlwfqXuxZwokRTlizRW_4cwc
@@ -100,51 +129,68 @@ locales:
   - label: denver
     name: Denver
     google_place_id: ChIJzxcfI6qAa4cR1jaKJ_j0jhE
+    beacon_major: 5
   - label: boston
     name: Boston
     google_place_id: ChIJGzE9DS1l44kRoOhiASS_fHg
+    beacon_major: 6
   - label: dc
     name: Washingtion DC
     google_place_id: ChIJW-T2Wt7Gt4kRKl2I1CJFUsI
+    beacon_major: 7
   - label: sf
     name: San Francisco
     google_place_id: ChIJIQBpAG2ahYAR_6128GcTUEo
+    beacon_major: 8
   - label: portland
     name: Portland
     google_place_id: ChIJJ3SpfQsLlVQRkYXR9ua5Nhw
+    beacon_major: 9
   - label: austin
     name: Austin
     google_place_id: ChIJLwPMoJm1RIYRetVp1EtGm10
+    beacon_major: 10
   - label: neworleans
     name: New Orleans
     google_place_id: ChIJZYIRslSkIIYRtNMiXuhbBts
+    beacon_major: 11
   - label: slc
     name: Salt Lake
     google_place_id: ChIJ7THRiJQ9UocRyjFNSKC3U1s
+    beacon_major: 12
   - label: hartford
     name: Hartford
     google_place_id: ChIJpVER8hFT5okRmVl96ahKjsw
+    beacon_major: 13
   - label: la
     name: Los Angeles
     google_place_id: ChIJE9on3F3HwoAR9AhGJW_fL-I
+    beacon_major: 14
   - label: louisville
     name: Louisville
     google_place_id: ChIJEdVbsxoLaYgRMv1xICi009Q
+    beacon_major: 15
   - label: providence
     name: Providence
     google_place_id: ChIJXXN-Q-BE5IkRJ7azSE1832k
+    beacon_major: 16
   - label: virginiabeach
     name: Virginia Beach
     google_place_id: ChIJpycV_OjBuokRcwEuo4AQFgQ
+    beacon_major: 17
   - label: columbus
     name: Columbus
     google_place_id: ChIJcd6QucGJOIgRM7Wxz_hmMuQ
+    beacon_major: 18
   - label: jacksonville
     name: Jacksonville
     google_place_id: ChIJ66_O8Ra35YgR4sf8ljh9zcQ
+    beacon_major: 19
   - label: chicago
     name: Chicago
     google_place_id: ChIJ7cv00DwsDogRAMDACa2m4K8
+    beacon_major: 20
   - label: sandiego
     name: San Diego
     google_place_id: ChIJSx6SrQ9T2YARed8V_f0hOg0
+    bacon_major: 21

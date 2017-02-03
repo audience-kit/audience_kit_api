@@ -11,8 +11,6 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.string    :facebook_token
       t.datetime  :facebook_token_issued_at
       t.string    :profile_image_url
-
-
     end
   end
 end
