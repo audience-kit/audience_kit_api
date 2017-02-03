@@ -34,7 +34,7 @@ class LoadSchema < ActiveRecord::Migration[5.0]
       t.datetime  "updated_at",                                              null: false
       t.string    "label"
       t.string    "name"
-      t.point     "location",          limit: {:srid=>4326, geographic: true}
+      t.point     "location",          limit: {srid: 4326, geographic: true}
       t.string    "google_place_id"
       t.datetime  "google_updated_at"
       t.jsonb     "google_location"
@@ -49,7 +49,7 @@ class LoadSchema < ActiveRecord::Migration[5.0]
       t.uuid      "device_id"
       t.uuid      "user_id"
       t.inet      "origin_ip"
-      t.point     "geo_ip_location", limit: {:srid=>4326, geographic: true}
+      t.point     "geo_ip_location", limit: {srid: 4326, geographic: true}
       t.index ["device_id"], name: "index_sessions_on_device_id", using: :btree
       t.index ["token_id"], name: "index_sessions_on_token_id", using: :btree
       t.index ["user_id"], name: "index_sessions_on_user_id", using: :btree
@@ -59,7 +59,7 @@ class LoadSchema < ActiveRecord::Migration[5.0]
       t.datetime "created_at",   null: false
       t.datetime "updated_at",   null: false
       t.uuid     "user_id",      null: false
-      t.point    "location",    limit: {:srid=>4326, geographic: true}
+      t.point    "location",     limit: {srid: 4326, geographic: true}
       t.integer  "beacon_minor"
       t.uuid     "locale_id"
       t.uuid     "venue_id"
@@ -103,7 +103,7 @@ class LoadSchema < ActiveRecord::Migration[5.0]
       t.string    "google_place_id"
       t.datetime  "google_updated_at"
       t.jsonb     "facebook_graph"
-      t.point     "location",            limit: {:srid=>4326, geographic: true}
+      t.point     "location",            limit: {srid: 4326, geographic: true}
       t.jsonb     "google_location"
       t.bigint    "beacon_id"
       t.index ["facebook_id"], name: "index_venues_on_facebook_id", using: :btree
