@@ -11,7 +11,7 @@ class UsersController < ApplicationController
     @latitude = params[:coordinates][:latitude]
     @longitude = params[:coordinates][:longitude]
 
-    @point = RGeo::Geographic.spherical_factory.point @longitude, @latitude
+    @point = RGeo::Geographic.simple_mercator.point @longitude, @latitude
 
     user_location = UserLocation.new
     user_location.location = @point

@@ -11,7 +11,7 @@ class UpdateGooglePlaceJob < ApplicationJob
       spot = client.spot place.google_place_id
 
       place.google_location = spot
-      place.location = "POINT(#{spot['lng']} #{spot['lat']})"
+      place.location = RGeo::Geographic.simple_mercator.point spot['lng'], spot['lat']
       place.google_updated_at = DateTime.now
 
       place.save
