@@ -8,12 +8,16 @@ class ApplicationController < ActionController::API
       decoded_token = JWT.decode token[1], Rails.application.secrets[:secret_key_base], true, algorithm: 'HS256'
 
       if decoded_token && decoded_token[0]
-        @user = User.find_by_id(decoded_token[0]['id'])
+        @user_id = decoded_token[0]['id']
 
-        return if @user
+        return if @user_id
       end
     end
 
     render status: :unauthorized, json: {}
+  end
+
+  def user
+    @user ||= User.find_by_id(@user_id)
   end
 end

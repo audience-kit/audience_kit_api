@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
   def me
-    UpdateUserJob.perform_later @user
+    UpdateUserJob.perform_later self.user
 
-    @user
+    self.user
   end
 
   def location
@@ -16,8 +16,8 @@ class UsersController < ApplicationController
     user_location = UserLocation.new
     user_location.location = @point
 
-    @user.user_locations << user_location
+    self.user.user_locations << user_location
 
-    @user.save
+    self.user.save
   end
 end
