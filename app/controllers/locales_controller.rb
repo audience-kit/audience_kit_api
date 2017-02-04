@@ -12,7 +12,7 @@ class LocalesController < ApplicationController
     @latitude = params.require :latitude
     @longitude = params.require :longitude
 
-    @point = RGeo::Geographic.spherical_factory.point @longitude, @latitude
+    @point = RGeo::Geographic.simple_mercator_factory.point @longitude, @latitude
 
     @locale = Locale.closest @point
 
