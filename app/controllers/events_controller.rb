@@ -10,7 +10,7 @@ class EventsController < ApplicationController
       @events = @events.where(venues: { locale_id: params[:locale_id]}) if params[:locale_id]
     end
 
-    @events = @events.where('start_at > ?', DateTime.now).order(start_at: :asc)
+    @events = @events.where('start_at > ? OR end_at > ?', DateTime.now, DateTime.now).order(start_at: :asc)
   end
 
   def show

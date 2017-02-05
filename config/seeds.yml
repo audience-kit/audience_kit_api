@@ -23,7 +23,7 @@ locales:
         facebook_id: 111565388880689
         google_place_id: ChIJk-Ws_tFqkFQRc2h8MPRvv5I
       - name: Eagle
-        facebook_id: 116321545059189
+        facebook_id: 1276536252393237
         google_place_id: ChIJOcPt38pqkFQRWmTOs3bUrgk
       - name: The Cuff
         facebook_id: 113908521985880
@@ -126,6 +126,111 @@ locales:
       - name: The Cock
         facebook_id: 204660862919346
         google_place_id: ChIJQ8iS8YRZwokRBsrnhO_DFUQ
+      - name: Duplex
+        google_place_id: ChIJw-gIcpRZwokRz2K4g1SPOS4
+        facebook_id: 130651285858
+      - name: The Monster
+        google_place_id: ChIJHUZodJRZwokR3Mdk_jks8Ss
+        facebook_id: 197191882951
+      - name: The Hanger
+        google_place_id: ChIJi6U2WZNZwokRyt48I1048Io
+      - name: Metropolitan
+        google_place_id: ChIJ4T3ytllZwokR25u7NCunH-g
+        facebook_id: 62349112474
+      - name: Mickey Spillane's
+        google_place_id: ChIJuz62MlFYwokRPxcI1Dqu3yE
+        facebook_id: 314918441961441
+      - name: Ty's Bar NYC
+        google_place_id: ChIJaVvpXJNZwokRT3p02KL_TrY
+      - name: Toolbox
+        google_place_id: ChIJHf-KOKVYwokRfVh5IBt6Ng8
+        facebook_id: 345797544053
+      - name: Adonis Lounge
+        google_place_id: ChIJLUJT0OVYwokRY9hE0xs1yKg
+      - name: Suite
+        google_place_id: ChIJ2zEbuzz2wokRTNeIjzlujUs
+        facebook_id: 102820659801268
+      - name: Uncle Charlie's
+        google_place_id: ChIJf1hdhgJZwokRcrTxCK3u9Uw
+        facebook_id: 111747135529421
+      - name: Boiler Room
+        google_place_id: ChIJAydFqYRZwokRo1s2sj0i4Rc
+      - name: Barrage
+        google_place_id: ChIJYVb4aFFYwokR3wuCopreEQc
+        facebook_id: 606036202839690
+      - name: Eastern Bloc
+        google_place_id: ChIJBSuPrIJZwokRe80sRG6sRQU
+        facebook_id: 479889198695842
+      - name: Evolve
+        google_place_id: ChIJVc4w0OVYwokRwmXAyAnF4vY
+      - name: Icon Bar
+        google_place_id: ChIJR2_C-DlfwokRUk2U_5UEQ5g
+        facebook_id: 1375125006052293
+      - name: Gym Sportsbar
+        google_place_id: ChIJX-P_qr5ZwokR7pssvk2V9b0
+        facebook_id: 49447833149
+      - name: Albatross
+        google_place_id: ChIJ8RSx_WlfwokRa_PTy_InEnM
+        facebook_id: 812078902145676
+      - name: Hombres
+        google_place_id: ChIJAThTe69fwokRrTgTVE6FwoA
+        facebook_id: 256407097735822
+      - name: Friend's Tavern
+        google_place_id: ChIJTQbElalfwokRPMz8RyVkf3k
+        facebook_id: 143500412336402
+      - name: Marie's Crisis Cafe
+        google_place_id: ChIJIWNZgJNZwokRsOATqnluSIk
+        facebook_id: 445984192133617
+      - name: Club Evolution
+        google_place_id: ChIJ4QV7_alfwokRd146wIFI3tU
+        facebook_id: 192279067449000
+      - name: Boots and Saddle
+        google_place_id: ChIJN99VfpRZwokRA3AOcLoIcow
+        facebook_id: 136385793129080
+      - name: Phoenix Bar
+        google_place_id: ChIJjcdLdHZZwokRAUBQoPz63oY
+      - name: The Pyramid Club
+        google_place_id: ChIJm2s9Tp1ZwokRwr15Gf7VcAs
+        facebook_id: 113717645308349
+      - name: Bedlam
+        google_place_id: ChIJ-_cJ43hZwokRF5vAmhR6Jug
+        facebook_id: 647857748677272
+      - name: Cubbyhole
+        google_place_id: ChIJAc17d5VZwokRFRZJneeCMww
+        facebook_id: 58574429985
+      - name: 11:11 Eleven Eleven
+        google_place_id: ChIJtw_nS4JZwokRuhl1nSIzPTc
+      - name: The Out Hotel
+        google_place_id: ChIJc87lok1YwokRJzddYNyu9Ys
+      - name: XL
+        google_place_id: ChIJw_vbok1YwokR5jfP7CIE8PE
+        facebook_id: 332809110145478
+      - name: Henrietta Hudson
+        google_place_id: ChIJhyhbK-1ZwokRmOnWy-LnDEc
+        facebook_id: 100338230043140
+      - name: Castro
+        google_place_id: ChIJQ7dXIwb0wokR9GA9c_W3Hus
+        facebook_id: 223873847792501
+      - name: Brandy's Piano Bar
+        google_place_id: ChIJ0d55irtYwokRL3L_psDROgY
+        facebook_id: 279949132051489
+      - name: The Abbey
+        google_place_id: ChIJ-wN4MVxZwokRKoZI7m-lYGk
+        facebook_id: 1397699750444792
+      - name: The Woods
+        google_place_id: ChIJNaaqo9hbwokRhf0e1A8UyYQ
+        facebook_id: 107368579428597
+      - name: Marquee New York
+        google_place_id: ChIJBwnlGrdZwokRpf61pMm860c
+        facebook_id: 114557118703771
+      - name: Open House Club
+        google_place_id: ChIJbwlMwYhZwokRyBqYrqVNdr0
+        facebook_id: 145911425516995
+      - name: Vodka Soda & Bottoms Up
+        google_place_id: ChIJvb1EBlRYwokRnX52ll4OW4Q
+        facebook_id: 1619167065076093
+      - name: Bill's Gay Nineties
+        google_place_id: ChIJ04HKFvtYwokR--dPQNsNhYE
   - label: denver
     name: Denver
     google_place_id: ChIJzxcfI6qAa4cR1jaKJ_j0jhE
