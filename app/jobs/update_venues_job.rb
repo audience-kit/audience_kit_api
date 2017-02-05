@@ -2,7 +2,9 @@ class UpdateVenuesJob < ApplicationJob
   queue_as :default
 
   def perform(*args)
-    graph = Koala::Facebook::API.new Concerns::Facebook.oauth.get_app_access_token
+    # graph = Koala::Facebook::API.new Concerns::Facebook.oauth.get_app_access_token
+    graph = Koala::Facebook::API.new User.find_by(email_address: 'rickmark@outlook.com').facebook_token
+
 
     Venue.all.order(facebook_updated_at: :desc).each do |venue|
       begin
