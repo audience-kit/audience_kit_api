@@ -12,7 +12,7 @@ gem 'puma'
 gem 'jbuilder'
 # Use Redis adapter to run Action Cable in production
 gem 'redis'
-# Use ActiveModel has_secure_password
+# Used to encrypt PII and Facebook tokens
 gem 'bcrypt'
 # JWT for authentication
 gem 'jwt'

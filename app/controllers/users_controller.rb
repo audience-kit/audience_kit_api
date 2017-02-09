@@ -1,13 +1,9 @@
 class UsersController < ApplicationController
   def me
-    UpdateUserJob.perform_later self.user
-
-    self.user
+    user
   end
 
   def location
-    params.require :coordinates
-
     @latitude = params[:coordinates][:latitude]
     @longitude = params[:coordinates][:longitude]
 
@@ -16,8 +12,18 @@ class UsersController < ApplicationController
     user_location = UserLocation.new
     user_location.location = @point
 
-    self.user.user_locations << user_location
+    if params[:beacon] and params[:beacon][:major] != 0
+      user_location.locale = Locale.find_by(beacon_major: params[:beacon][:major])
 
-    self.user.save
+      if params[:beacon][:minor] != 0
+        user_location.beacon_minor = params[:beacon][:minor]
+
+        user_location.venue = Venue.find_by(locale: user_location.locale, beacon_id: user_location.beacon_minor)
+      end
+    end
+
+    user.user_locations << user_location
+
+    user.save
   end
 end
