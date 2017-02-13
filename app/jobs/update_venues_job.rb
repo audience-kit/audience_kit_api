@@ -18,7 +18,8 @@ class UpdateVenuesJob < ApplicationJob
         venue.name = object_graph['name']
         venue.update_data
 
-        events = graph.get_connection venue.facebook_id, :events
+        events = []
+        events = graph.get_connection venue.facebook_id, :events unless venue.hidden
 
         events.each do |event_graph|
           begin

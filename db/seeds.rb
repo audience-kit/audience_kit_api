@@ -20,7 +20,7 @@ config[:locales].each do |locale_info|
 
       venue.name = venue_info[:name]
       venue.facebook_id = venue_info[:facebook_id]
-      venue.hidden = false
+      venue.hidden = venue_info[:hidden]
 
       if venue_info[:beacon_minors]
         venue.beacon_id = venue_info[:beacon_minors].first
