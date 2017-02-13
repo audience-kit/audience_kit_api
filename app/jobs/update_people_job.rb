@@ -18,7 +18,8 @@ class UpdatePeopleJob < ApplicationJob
             event_model = Event.find_or_create_by facebook_id: event['id']
 
             event_model.facebook_graph = graph.get_object event['id']
-            event_model.save
+
+            event_model.update_details_from_facebook
           rescue => ex
             puts "Error updating person #{person.facebook_id}'s event #{ex}"
           end
