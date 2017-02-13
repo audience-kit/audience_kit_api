@@ -1,5 +1,5 @@
 class PeopleController < ApplicationController
   def index
-    @people = Person.all
+    @people = Locale.find(params[:locale_id]).people
   end
 end

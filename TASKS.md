@@ -1,7 +1,7 @@
 - Guard view for locations services disabled
 - Launching view
 - Locale load before dismiss login
-- Cache locale to last
+-- Cache locale to last
 -- TLS certificate for marketing site
 - Settings view must show Facebook user
   - Had this right in old application
@@ -14,6 +14,8 @@
   - Drag Performers
   - DJs
   - Implement in app
+- Restrict people to locale
+- People list link to facebook page
 - Happening now view
 - Happening now guard view
 - Event view
