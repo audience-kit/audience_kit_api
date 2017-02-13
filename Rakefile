@@ -22,11 +22,11 @@ namespace :update do
 
   desc 'Update events'
   task :events => :environment do
-    Event.all.each do |event|
-      event.start_at  = event.facebook_graph['start_time']
-      event.end_at    = event.facebook_graph['end_time']
+    Event.all.each &:update_details_from_facebook
+  end
 
-      event.save
-    end
+  desc 'Update people'
+  task :people => :environment do
+    UpdatePeopleJob.perform_now
   end
 end

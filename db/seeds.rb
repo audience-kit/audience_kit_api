@@ -14,24 +14,31 @@ config[:locales].each do |locale_info|
   locale.beacon_major = locale_info[:beacon_major]
   locale.save
 
-  venues = locale_info[:venues]
+  (locale_info[:venues] || []).map {|v| v.with_indifferent_access}.each do |venue_info|
+    begin
+      venue = locale.venues.find_or_initialize_by(google_place_id: venue_info[:google_place_id])
 
-  if venues
-    locale_info[:venues].map {|v| v.with_indifferent_access}.each do |venue_info|
-      begin
-        venue = locale.venues.find_or_initialize_by(google_place_id: venue_info[:google_place_id])
+      venue.name = venue_info[:name]
+      venue.facebook_id = venue_info[:facebook_id]
 
-        venue.name = venue_info[:name]
-        venue.facebook_id = venue_info[:facebook_id]
-
-        if venue_info[:beacon_minors]
-          venue.beacon_id = venue_info[:beacon_minors].first
-        end
-
-        venue.save
-      rescue => ex
-        puts ex
+      if venue_info[:beacon_minors]
+        venue.beacon_id = venue_info[:beacon_minors].first
       end
+
+      venue.save
+    rescue => ex
+      puts ex
     end
   end
+
+  (locale_info[:people] || []).each do |person_id|
+    begin
+      person = locale.people.find_or_create_by(facebook_id: person_id)
+
+      puts "Upsert Person => #{person_id}"
+    rescue => ex
+      puts ex
+    end
+  end
+
 end

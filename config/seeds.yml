@@ -7,6 +7,10 @@ locales:
     name: Seattle
     google_place_id: ChIJVTPokywQkFQRmtVEaUZlJRA
     beacon_major: 2
+    people:
+      - 520232754690776     # Louie Alexander
+      - 165928710106475     # Robbie Turner
+      - 98480863062         # Nark Magazine
     venues:
       - name: Purr
         facebook_id: 183716211669747
@@ -57,6 +61,13 @@ locales:
     name: New York
     google_place_id: ChIJOwg_06VPwokRYv534QaPC8g
     beacon_major: 4
+    people:
+      - 130643690349265
+      - 1039108789486821
+      - 548111538579797
+      - 394072014050084
+      - 572478392931390
+      - 152744978124635
     venues:
       - name: Industry
         facebook_id: 129095523800790
