@@ -18,6 +18,8 @@ Rails.application.routes.draw do
     end
 
     resources :events
+
+    resources :people
   end
 
   root to: 'status#index'

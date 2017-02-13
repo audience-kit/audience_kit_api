@@ -11,6 +11,7 @@ locales:
       - 520232754690776     # Louie Alexander
       - 165928710106475     # Robbie Turner
       - 98480863062         # Nark Magazine
+      - 522067367970941     # Veronica
     venues:
       - name: Purr
         facebook_id: 183716211669747
@@ -92,6 +93,7 @@ locales:
         google_place_id: ChIJ33p4aaNZwokRaqz6qL-Z_Rc
       - name: 9th Ave Saloon
         google_place_id: ChIJmeUU3FNYwokRb5-sS-RTfYU
+        facebook_id: 117772601611983
         beacon_minors:
           - 4
       - name: Atlas Social Club

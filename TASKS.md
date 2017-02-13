@@ -2,17 +2,18 @@
 - Launching view
 - Locale load before dismiss login
 - Cache locale to last
-- TLS certificate for marketing site
+-- TLS certificate for marketing site
 - Settings view must show Facebook user
   - Had this right in old application
 - Encrypt facebook_token / email address
 - Marketing site use CORS API for "preview content"
 - Marketing site beta signup
 - Screenshots for AppStore
-- Support people (use 11:11 as first example)
+-- Support people (use 11:11 as first example)
   - Promoters
   - Drag Performers
   - DJs
+  - Implement in app
 - Happening now view
 - Happening now guard view
 - Event view
