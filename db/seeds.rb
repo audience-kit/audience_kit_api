@@ -34,7 +34,7 @@ config[:locales].each do |locale_info|
 
   (locale_info[:people] || []).each do |person_id|
     begin
-      person = locale.people.find_or_initialze_by(facebook_id: person_id)
+      person = locale.people.find_or_initialize_by(facebook_id: person_id)
       person.requires_like = false
       person.save
 

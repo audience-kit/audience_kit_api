@@ -30,9 +30,9 @@ class UpdatePeopleJob < ApplicationJob
                 event_model.venue.facebook_graph = graph.get_object event_model.venue.facebook_id
                 event_model.venue.hidden = true
                 event_model.venue.locale = person.locale
-                event_model.person = person
               end
 
+              event_model.person = person
             else
               puts "No venue for #{event_graph}"
             end
