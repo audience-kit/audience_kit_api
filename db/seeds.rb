@@ -20,6 +20,7 @@ config[:locales].each do |locale_info|
 
       venue.name = venue_info[:name]
       venue.facebook_id = venue_info[:facebook_id]
+      venue.hidden = false
 
       if venue_info[:beacon_minors]
         venue.beacon_id = venue_info[:beacon_minors].first
@@ -33,7 +34,9 @@ config[:locales].each do |locale_info|
 
   (locale_info[:people] || []).each do |person_id|
     begin
-      person = locale.people.find_or_create_by(facebook_id: person_id)
+      person = locale.people.find_or_initialze_by(facebook_id: person_id)
+      person.requires_like = false
+      person.save
 
       puts "Upsert Person => #{person_id}"
     rescue => ex

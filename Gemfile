@@ -24,7 +24,7 @@ gem 'koala'
 gem 'newrelic_rpm'
 # ActiveJob backend
 gem 'resque'
-
+gem 'geocoder'
 gem 'activerecord-postgis-adapter'
 gem 'google_places'
 

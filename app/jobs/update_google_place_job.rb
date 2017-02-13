@@ -11,8 +11,9 @@ class UpdateGooglePlaceJob < ApplicationJob
       spot = client.spot place.google_place_id
 
       place.google_location = spot
-      place.location = RGeo::Geographic.simple_mercator_factory.point spot['lng'], spot['lat']
       place.google_updated_at = DateTime.now
+
+      place.update_location spot['lng'], spot['lat']
 
       place.save
     end
@@ -20,8 +21,7 @@ class UpdateGooglePlaceJob < ApplicationJob
     Venue.all.each do |venue|
       next unless venue.google_location
 
-      venue.street = venue.google_location['formatted_address']
-      venue.phone = venue.google_location['formatted_phone_number']
+      venue.update_data
 
       venue.save
     end

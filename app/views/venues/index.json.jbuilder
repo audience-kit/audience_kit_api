@@ -6,8 +6,8 @@ json.venues do
     json.is_open venue.is_open?
 
     if venue.google_location
-      json.address venue.google_location['formatted_address']
-      json.phone venue.google_location['formatted_phone_number']
+      json.address venue.street
+      json.phone venue.phone
     end
 
     if venue['distance']

@@ -15,6 +15,8 @@ class UpdateVenuesJob < ApplicationJob
 
         venue.facebook_graph = object_graph
         venue.facebook_updated_at = DateTime.now
+        venue.name = object_graph['name']
+        venue.update_data
 
         events = graph.get_connection venue.facebook_id, :events
 
@@ -29,7 +31,7 @@ class UpdateVenuesJob < ApplicationJob
             end
 
             event.name = event_graph['name']
-            event.facebook_graph = event_graph
+            event.facebook_graph = graph.get_object event_graph['id']
 
             event.start_at = DateTime.parse event_graph['start_time'] if event_graph['start_time']
             event.end_at = DateTime.parse event_graph['end_time'] if event_graph['end_time']

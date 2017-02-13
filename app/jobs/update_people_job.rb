@@ -8,6 +8,7 @@ class UpdatePeopleJob < ApplicationJob
 
         person.facebook_graph = person_graph
         person.facebook_updated_at = DateTime.now
+        person.display_name = person_graph['name']
 
         person.save
 
@@ -16,8 +17,25 @@ class UpdatePeopleJob < ApplicationJob
         events.each do |event|
           begin
             event_model = Event.find_or_create_by facebook_id: event['id']
+            event_graph = graph.get_object event['id']
+            event_model.facebook_graph = event_graph
 
-            event_model.facebook_graph = graph.get_object event['id']
+            if event_graph['venue'] and event_graph['venue']['id']
+              venue_id = event_graph['venue']['id']
+
+              event_model.venue = Venue.find_or_initialize_by(facebook_id: venue_id)
+
+              if event_model.venue.new_record?
+                event_model.venue.name = event_graph['venue']['name']
+                event_model.venue.facebook_graph = graph.get_object event_model.venue.facebook_id
+                event_model.venue.hidden = true
+                event_model.venue.locale = person.locale
+                event_model.person = person
+              end
+
+            else
+              puts "No venue for #{event_graph}"
+            end
 
             event_model.update_details_from_facebook
           rescue => ex

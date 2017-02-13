@@ -2,7 +2,7 @@ class VenuesController < ApplicationController
   def index
     @venues =  Venue.all
 
-    @venues = @venues.where(locale_id: params[:locale_id]) if params[:locale_id]
+    @venues = @venues.where(locale_id: params[:locale_id], hidden: false) if params[:locale_id]
 
     if params[:latitude] and params[:longitude]
       point = RGeo::Geographic.simple_mercator_factory.point(params[:longitude], params[:latitude])
