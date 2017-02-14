@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   def me
-    user
+    @user = user
   end
 
   def location

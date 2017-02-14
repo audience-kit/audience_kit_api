@@ -3,7 +3,7 @@ ruby '2.3.3'
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails'
+gem 'rails', '~> 5'
 # Use postgresql as the database for Active Record
 gem 'pg'
 # Use Puma as the app server
@@ -14,6 +14,10 @@ gem 'jbuilder'
 gem 'redis'
 # Used to encrypt PII and Facebook tokens
 gem 'bcrypt'
+gem 'typhoeus'
+gem 'yelp'
+gem 'google-api-client'
+
 # JWT for authentication
 gem 'jwt'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
@@ -27,6 +31,7 @@ gem 'resque'
 gem 'geocoder'
 gem 'activerecord-postgis-adapter'
 gem 'google_places'
+gem 'soundcloud'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -42,5 +47,3 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]

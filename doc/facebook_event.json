@@ -1,0 +1,31 @@
+{
+  "id": "1156117411136603",
+  "name": "MEAT - Special Event NYC MLK Weekend - DJ Aron",
+  "owner": {
+    "id": "394072014050084",
+    "name": "MEAT - NYC Underground Party",
+    "category": "Arts & Entertainment",
+    "category_list": [
+      {"id": "192119584190796", "name": "Event"},
+      {"id": "191478144212980", "name": "Dance & Night Club"}
+    ]
+  },
+  "venue": {
+    "id": "394072014050084",
+    "zip": "10036",
+    "city": "New York",
+    "state": "NY",
+    "street": "237 W 42nd St",
+    "country": "United States",
+    "latitude": 40.7568399,
+    "longitude": -73.98844
+  },
+  "privacy": "OPEN",
+  "end_time": "2017-01-15T06:00:00-0500",
+  "location": "MEAT - NYC Underground Party",
+  "timezone": "America/New_York",
+  "start_time": "2017-01-14T23:30:00-0500",
+  "description": "M.E.A.T. returns Saturday, Jan. 14th to ring in 2017. Unleash your deepest, dirtiest desires... Strap on that harness squeeze into your leather gear and get ready to SWEAT at our exclusive underground playground: KING.\n\nTel Aviv Circuit DJ/Producer ARON returns to his M.E.A.T. residency with exclusive remixes pumping NYC's SEXIEST men dancefloor all night long ... Oil up and save big by getting your advance tickets now.\n\nPresented by John Blair and Jake Resnicow in association with Alan Picus and Joe Roszak\n\nWEEKEND PASS includes Matinee LaLeche! MLK Weekend Sunday Main Event | DJ IVAN GOMEZ. Buy Both + Save!\n\nIn Partnership with Gov'ner Leather + Amity Jack Lube",
+  "is_date_only": false,
+  "updated_time": "2017-01-12T06:35:25+0000"
+}
