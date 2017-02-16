@@ -21,7 +21,7 @@ class VenuesController < ApplicationController
 
     @point = RGeo::Geographic.simple_mercator_factory.point @longitude, @latitude
 
-    @locale = Venue.closest @point
+    @venue = Venue.closest @point
 
     render :show
   end
