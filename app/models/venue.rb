@@ -30,4 +30,8 @@ class Venue < ApplicationRecord
       end
     end
   end
+
+  def hero_banner_url
+
+  end
 end
