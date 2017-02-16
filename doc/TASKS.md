@@ -8,15 +8,17 @@ Week 5
 -- People list link to facebook page
 -- Cache locale to last
 -- TLS certificate for marketing site
-
-- Launching view
-- Locale load before dismiss login
-- Settings view must show Facebook user
+-- Launching view
+-- Locale load before dismiss login
+-- Dismiss login view correctly
+-- Settings view must show Facebook user
   - Had this right in old application
+-- Improve people list with photo
 - Happening now view
 - Happening now guard view
 - Improve venue view
-- Dismiss login view correctly
+
+
 - Start disputes for Facebook and AppStore (long poll)
 
 

@@ -3,6 +3,10 @@ Rails.application.routes.draw do
   post :token, to: 'token#create'
 
   get :me, :to => 'users#me'
+
+  get '/locales/closest' => 'locales#closest'
+  get '/venues/closest' => 'venues#closest'
+
   post '/me/location', :to => 'users#location'
 
   resources :events
@@ -11,7 +15,8 @@ Rails.application.routes.draw do
     resources :events
   end
 
-  get '/locales/closest' => 'locales#closest'
+
+
   resources :locales do
     resources :venues do
       resources :events

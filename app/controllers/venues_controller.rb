@@ -14,4 +14,15 @@ class VenuesController < ApplicationController
   def show
     @venue = Venue.find params[:id]
   end
+
+  def closest
+    @latitude = params.require :latitude
+    @longitude = params.require :longitude
+
+    @point = RGeo::Geographic.simple_mercator_factory.point @longitude, @latitude
+
+    @locale = Venue.closest @point
+
+    render :show
+  end
 end

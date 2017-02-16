@@ -21,5 +21,11 @@ module Concerns
         self.google_location = spot
       end
     end
+
+    class_methods do
+      def closest(point)
+        order("st_distance(location, '#{point.as_text}')").first
+      end
+    end
   end
 end
