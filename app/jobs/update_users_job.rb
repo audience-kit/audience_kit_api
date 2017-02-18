@@ -7,6 +7,8 @@ class UpdateUsersJob < ApplicationJob
       graph = Koala::Facebook::API.new user.facebook_token
 
       user.update_from graph.get_object '/me'
+
+      user.save
     end
   end
 end
