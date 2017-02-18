@@ -1,7 +1,7 @@
 class UpdateUsersJob < ApplicationJob
 
   def perform
-    users = User.where { |u| u.facebook_token != nil }
+    users = User.where { |u| u.facebook_token != nil }.to_a
 
     users.each do |user|
       graph = Koala::Facebook::API.new user.facebook_token
