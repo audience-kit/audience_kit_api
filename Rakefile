@@ -29,4 +29,9 @@ namespace :update do
   task :people => :environment do
     UpdatePeopleJob.perform_now
   end
+
+  desc 'Update users'
+  task :users => :environment do
+    UpdateUsersJob.perform_now
+  end
 end
