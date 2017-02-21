@@ -26,4 +26,8 @@ class UsersController < ApplicationController
 
     user.save
   end
+
+  def picture
+    redirect_to "https://facebook.com/#{User.find(params[:id]).facebook_id}/picture"
+  end
 end

@@ -18,4 +18,8 @@ class LocalesController < ApplicationController
 
     render :show
   end
+
+  def picture
+    redirect_to "https://facebook.com/#{Locale.find(params[:id]).facebook_id}/picture"
+  end
 end

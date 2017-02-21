@@ -6,7 +6,7 @@ class UpdateUsersJob < ApplicationJob
     users.each do |user|
       graph = Koala::Facebook::API.new user.facebook_token
 
-      user.update_from graph.get_object '/me'
+      user.update_from graph.get_object('/me')
 
       user.save
     end

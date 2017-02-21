@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170213023316) do
+ActiveRecord::Schema.define(version: 20170219045127) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,9 +37,20 @@ ActiveRecord::Schema.define(version: 20170213023316) do
     t.jsonb    "facebook_graph"
     t.bigint   "facebook_id"
     t.uuid     "person_id"
+    t.boolean  "featured"
     t.index ["facebook_id"], name: "index_events_on_facebook_id", using: :btree
     t.index ["person_id"], name: "index_events_on_person_id", using: :btree
     t.index ["venue_id"], name: "index_events_on_venue_id", using: :btree
+  end
+
+  create_table "friendships", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid    "friend_high_id"
+    t.uuid    "friend_low_id"
+    t.date    "friends_at"
+    t.string  "friend_hash"
+    t.integer "weight"
+    t.index ["friend_high_id"], name: "index_friendships_on_friend_high_id", using: :btree
+    t.index ["friend_low_id"], name: "index_friendships_on_friend_low_id", using: :btree
   end
 
   create_table "locales", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -65,8 +76,19 @@ ActiveRecord::Schema.define(version: 20170213023316) do
     t.string   "display_name"
     t.string   "facebook_token"
     t.boolean  "requires_like",       default: false
+    t.string   "instagram"
+    t.string   "sound_cloud"
+    t.string   "twitter"
+    t.boolean  "featured"
     t.index ["locale_id"], name: "index_people_on_locale_id", using: :btree
     t.index ["venue_id"], name: "index_people_on_venue_id", using: :btree
+  end
+
+  create_table "person_locales", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.integer "person_id"
+    t.integer "locale_id"
+    t.index ["locale_id"], name: "index_person_locales_on_locale_id", using: :btree
+    t.index ["person_id"], name: "index_person_locales_on_person_id", using: :btree
   end
 
   create_table "sessions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -114,6 +136,18 @@ ActiveRecord::Schema.define(version: 20170213023316) do
     t.index ["facebook_id"], name: "index_users_on_facebook_id", using: :btree
   end
 
+  create_table "venue_beacons", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.integer "venue_id"
+    t.integer "beacon_id"
+    t.index ["venue_id"], name: "index_venue_beacons_on_venue_id", using: :btree
+  end
+
+  create_table "venue_mapping", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.integer "venue_id"
+    t.bigint  "facebook_id"
+    t.index ["venue_id"], name: "index_venue_mapping_on_venue_id", using: :btree
+  end
+
   create_table "venues", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.datetime  "created_at",                                                                                   null: false
     t.datetime  "updated_at",                                                                                   null: false
@@ -122,7 +156,6 @@ ActiveRecord::Schema.define(version: 20170213023316) do
     t.uuid      "locale_id"
     t.datetime  "facebook_updated_at"
     t.string    "label"
-    t.boolean   "is_hidden",                                                                    default: false
     t.string    "country"
     t.string    "state"
     t.string    "zip"
@@ -135,12 +168,15 @@ ActiveRecord::Schema.define(version: 20170213023316) do
     t.jsonb     "google_location"
     t.bigint    "beacon_id"
     t.boolean   "hidden",                                                                       default: false
+    t.boolean   "featured"
     t.index ["facebook_id"], name: "index_venues_on_facebook_id", using: :btree
     t.index ["google_place_id"], name: "index_venues_on_google_place_id", using: :btree
     t.index ["locale_id"], name: "index_venues_on_locale_id", using: :btree
   end
 
   add_foreign_key "events", "venues"
+  add_foreign_key "friendships", "users", column: "friend_high_id"
+  add_foreign_key "friendships", "users", column: "friend_low_id"
   add_foreign_key "sessions", "devices"
   add_foreign_key "sessions", "users"
   add_foreign_key "venues", "locales"
