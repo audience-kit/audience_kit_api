@@ -42,8 +42,4 @@ class TokenController < ApplicationController
       return render status: 400
     end
   end
-
-  def exchange
-
-  end
 end

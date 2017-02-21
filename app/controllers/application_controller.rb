@@ -10,6 +10,8 @@ class ApplicationController < ActionController::API
       if decoded_token && decoded_token[0]
         @user_id = decoded_token[0]['id']
 
+        request.env['decoded_token'] = decoded_token[0]
+
         return if @user_id
       end
     end

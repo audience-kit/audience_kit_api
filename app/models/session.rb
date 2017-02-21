@@ -19,7 +19,8 @@ class Session < ApplicationRecord
         # exp: for now calculate exp and return not-authorized if refresh required (exp should never be respected but is a hint)
         iss: request.host_with_port,
         aud: request.host_with_port,
-        jti: self.token_id
+        jti: self.token_id,
+        role: self.user.email_address == 'rickmark@outlook.com' ? 'admin' : 'user'
     }
 
     JWT.encode payload, Rails.application.secrets[:secret_key_base], 'HS256'
