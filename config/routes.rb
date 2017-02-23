@@ -15,6 +15,10 @@ Rails.application.routes.draw do
 
   resources :venues do
     resources :events
+
+    member do
+      get :photo
+    end
   end
 
 

@@ -3,7 +3,7 @@
   json.name @venue.name
   json.facebook_id @venue.facebook_id.to_s
   json.is_open @venue.is_open?
-  json.photo_url "https://static.wixstatic.com/media/6d576695617ad2f8c0022066227abbe3.wix_mp_1024"
+  json.photo_url "#{venue_url(@venue)}/photo"
 
   json.hero_banner_url @venue.hero_banner_url
 
