@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   get '/locales/closest' => 'locales#closest'
   get '/venues/closest' => 'venues#closest'
+  get '/venues/:id/friends' => 'venues#friends'
 
   post '/me/location', :to => 'users#location'
 

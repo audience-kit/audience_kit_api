@@ -25,4 +25,9 @@ class VenuesController < ApplicationController
 
     render :show
   end
+
+
+  def friends
+    @friends = User.first(5)
+  end
 end
