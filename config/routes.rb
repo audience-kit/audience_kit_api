@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   post :token, to: 'token#create'
 
   get :me, :to => 'users#me'
+  get :now, :to => 'venues#now'
 
   get '/locales/closest' => 'locales#closest'
   get '/venues/closest' => 'venues#closest'

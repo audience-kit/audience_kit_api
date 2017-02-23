@@ -30,4 +30,20 @@ class VenuesController < ApplicationController
   def friends
     @friends = User.first(5)
   end
+
+  def now
+    @latitude = params.require :latitude
+    @longitude = params.require :longitude
+
+    @point = RGeo::Geographic.simple_mercator_factory.point @longitude, @latitude
+
+    @venue = Venue.closest @point
+    @events = @venue.events
+
+
+    # TODO
+    @friends = User.take 5
+
+    render :now
+  end
 end

@@ -10,7 +10,7 @@ class UpdateUserJob < ApplicationJob
       graph.get_connections(user.facebook_id, :friends).each do |friend|
         friend_object = graph.get_object friend['id']
 
-        friend_user = User.find_or_initialize_by facebook_id: friend_object['id']
+        friend_user = User.find_or_create_by facebook_id: friend_object['id']
         friend_user.update_from friend_object
 
         friend_user.save
