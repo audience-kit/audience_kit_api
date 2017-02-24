@@ -37,7 +37,7 @@ class VenuesController < ApplicationController
     @venue = Venue.closest @point
     @events = @venue.events
 
-    @friends = UserLocation.where("venue_id = ? AND created_at > ?", @venue.id, 2.hours.ago).take(5).map { |ul| ul.user }
+    @friends = UserLocation.where("venue_id = ? AND created_at > ?", @venue.id, 2.hours.ago).map { |ul| ul.user }.select { |u| u != user }.uniq.take(5)
 
 
     render :now
