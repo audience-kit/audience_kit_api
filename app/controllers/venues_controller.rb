@@ -28,11 +28,6 @@ class VenuesController < ApplicationController
     render :show
   end
 
-
-  def friends
-    @friends = User.first(5)
-  end
-
   def now
     @latitude = params.require :latitude
     @longitude = params.require :longitude
@@ -42,9 +37,8 @@ class VenuesController < ApplicationController
     @venue = Venue.closest @point
     @events = @venue.events
 
+    @friends = UserLocation.where("venue_id = ? AND created_at > ?", @venue.id, 2.hours.ago).take(5).map { |ul| ul.user }
 
-    # TODO
-    @friends = User.take 5
 
     render :now
   end

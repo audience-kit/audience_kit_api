@@ -12,6 +12,9 @@ class UsersController < ApplicationController
     user_location = UserLocation.new
     user_location.location = @point
 
+    user_location.venue = Venue.closest @point
+
+    # Override with becaons if available
     if params[:beacon] and params[:beacon][:major] != 0
       user_location.locale = Locale.find_by(beacon_major: params[:beacon][:major])
 
