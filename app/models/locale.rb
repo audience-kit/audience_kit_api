@@ -3,6 +3,7 @@ class Locale < ApplicationRecord
 
   has_many :venues
   has_many :people
+  has_many :events, through: :venues
 
   def update_data
 

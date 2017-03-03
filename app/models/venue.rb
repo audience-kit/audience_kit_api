@@ -2,7 +2,10 @@ class Venue < ApplicationRecord
   include Concerns::HasLocation
 
   belongs_to :locale
+
+  has_many :user_locations
   has_many :events
+  has_many :users, through: :user_locations
 
   def is_open?
     #TODO

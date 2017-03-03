@@ -32,6 +32,7 @@ gem 'geocoder'
 gem 'activerecord-postgis-adapter'
 gem 'google_places'
 gem 'soundcloud'
+gem 'ruby-kafka'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -1,4 +1,4 @@
-Week 5
+Done
 -- Support people (use 11:11 as first example)
   - Promoters
   - Drag Performers
@@ -12,29 +12,34 @@ Week 5
 -- Locale load before dismiss login
 -- Dismiss login view correctly
 -- Settings view must show Facebook user
-  - Had this right in old application
+  -- Had this right in old application
 -- Improve people list with photo
-- Happening now view
+-- Happening now view
+-- Marketing site beta sign-up
+-- Screen-shots for AppStore
+-- here now
+-- user_locations
+-- JWT token has admin privilege 
+
+Week 7
+- Improve user_locations with geometry and tolerance
+- Improve happening now with round icons instead of list for here now
+- Beacon based user_locations
+- Venue exit events
 - Happening now guard view
 - Improve venue view
-
-
-- Start disputes for Facebook and AppStore (long poll)
-
-
-Week 6
-Version 1.0.6
+- Person view
+ - Social media
 - Improvements to the launch and first run experience
-- https://hotmess.social logs in and displays preview data
 - Event view
 - Improve venue list
   - Map
 - Encrypt facebook_token / email address
 - Marketing site use CORS API for "preview content"
-- Marketing site beta signup
-- Screenshots for AppStore
+- Beta prompt if no email
 - Guard view for locations services disabled
-
-Week 7
 - People list populates
   - Events from person pages also show in Events
+- CMS
+ - Facebook login
+- `hotmess` gem

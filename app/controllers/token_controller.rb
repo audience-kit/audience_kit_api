@@ -17,6 +17,8 @@ class TokenController < ApplicationController
       # Refresh profile data including email address
       @me = @graph.get_object 'me'
 
+      raise 'Facebook token invalid' unless @me
+
       # Create or Update user by application scoped FacebookID
       @user = User.from_facebook_graph @me
 
@@ -27,19 +29,17 @@ class TokenController < ApplicationController
 
       @device = Device.from_identifier params['device']['identifier'], type: params['device']['type']
 
-      @session = Session.new device: @device,
-                               user: @user,
-                          origin_ip: request.remote_ip
+      @session = @device.sessions.build device: @device,
+                                          user: @user,
+                                     origin_ip: request.remote_ip
 
       @session.save
 
-      token = @session.to_jwt request
+      @token = @session.to_jwt request
 
       UpdateUserJob.perform_later @user
-
-      return render json: { token: token }
     rescue => ex
-      return render status: 400
+      return render status: 400, text: ex
     end
   end
 end

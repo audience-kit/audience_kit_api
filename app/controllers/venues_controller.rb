@@ -1,4 +1,6 @@
 class VenuesController < ApplicationController
+  include Concerns::LocationParameters
+
   skip_before_action :authenticate, only: :photo
 
   def index
@@ -18,26 +20,16 @@ class VenuesController < ApplicationController
   end
 
   def closest
-    @latitude = params.require :latitude
-    @longitude = params.require :longitude
-
-    @point = RGeo::Geographic.simple_mercator_factory.point @longitude, @latitude
-
-    @venue = Venue.closest @point
+    @venue = Venue.closest location_param
 
     render :show
   end
 
   def now
-    @latitude = params.require :latitude
-    @longitude = params.require :longitude
-
-    @point = RGeo::Geographic.simple_mercator_factory.point @longitude, @latitude
-
-    @venue = Venue.closest @point
+    @venue = Venue.closest location_param
     @events = @venue.events
 
-    @friends = UserLocation.where("venue_id = ? AND created_at > ?", @venue.id, 2.hours.ago).map { |ul| ul.user }.select { |u| u != user }.uniq.take(5)
+    @friends = @venue.user_locations.recent.map { |ul| ul.user }.select { |u| u != user }.uniq.take(5)
 
 
     render :now

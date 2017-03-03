@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::API
   before_action :authenticate
+  before_action :authorize, only: [ :create, :update, :delete ]
 
   def authenticate
     token = /Bearer (.+)/.match(request.authorization)
@@ -10,7 +11,8 @@ class ApplicationController < ActionController::API
       if decoded_token && decoded_token[0]
         @user_id = decoded_token[0]['id']
 
-        request.env['decoded_token'] = decoded_token[0]
+        @token = request.env['decoded_token'] = decoded_token[0]
+        request.env['role'] = @token['role']
 
         return if @user_id
       end
@@ -21,5 +23,13 @@ class ApplicationController < ActionController::API
 
   def user
     @user ||= User.find_by_id(@user_id)
+  end
+
+  def admin?
+    request.env['role'] == 'admin'
+  end
+
+  def authorize
+    render status: 401 unless admin?
   end
 end

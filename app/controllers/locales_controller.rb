@@ -1,4 +1,5 @@
 class LocalesController < ApplicationController
+  include Concerns::LocationParameters
 
   def index
     Locale.all
@@ -9,17 +10,8 @@ class LocalesController < ApplicationController
   end
 
   def closest
-    @latitude = params.require :latitude
-    @longitude = params.require :longitude
-
-    @point = RGeo::Geographic.simple_mercator_factory.point @longitude, @latitude
-
-    @locale = Locale.closest @point
+    @locale = Locale.closest location_param
 
     render :show
-  end
-
-  def picture
-    redirect_to "https://facebook.com/#{Locale.find(params[:id]).facebook_id}/picture"
   end
 end

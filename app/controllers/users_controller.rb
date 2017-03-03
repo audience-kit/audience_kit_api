@@ -28,6 +28,9 @@ class UsersController < ApplicationController
     user.user_locations << user_location
 
     user.save
+
+
+
   end
 
   def picture
