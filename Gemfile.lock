@@ -44,6 +44,8 @@ GEM
     addressable (2.5.0)
       public_suffix (~> 2.0, >= 2.0.2)
     arel (7.1.4)
+    avro (1.8.1)
+      multi_json
     bcrypt (3.1.11)
     builder (3.2.3)
     byebug (9.0.6)
@@ -243,6 +245,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-postgis-adapter
+  avro
   bcrypt
   byebug
   geocoder

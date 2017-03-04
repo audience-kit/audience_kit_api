@@ -1,5 +1,6 @@
 class TokenController < ApplicationController
   skip_before_action :authenticate
+  skip_before_action :authorize
 
   def create
     # accept token from facebook
@@ -35,11 +36,12 @@ class TokenController < ApplicationController
 
       @session.save
 
-      @token = @session.to_jwt request
+      @token = @session.to_jwt(request).to_s
 
       UpdateUserJob.perform_later @user
     rescue => ex
-      return render status: 400, text: ex
+      logger.error ex
+      return render status: 400
     end
   end
 end

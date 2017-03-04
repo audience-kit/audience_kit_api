@@ -21,8 +21,6 @@ Rails.application.routes.draw do
     end
   end
 
-
-
   resources :locales do
     resources :venues do
       resources :events
@@ -32,6 +30,8 @@ Rails.application.routes.draw do
 
     resources :people
   end
+
+  resources :people
 
   root to: 'status#index'
 end
