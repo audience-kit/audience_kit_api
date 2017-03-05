@@ -1,7 +1,5 @@
 class ApplicationController < ActionController::API
   before_action :authenticate
-  before_action :authorize, only: [ :create, :update, :delete ]
-
   def authenticate
     token = /Bearer (.+)/.match(request.authorization)
 
@@ -27,9 +25,5 @@ class ApplicationController < ActionController::API
 
   def admin?
     request.env['role'] == 'admin'
-  end
-
-  def authorize
-    render status: 401 unless admin?
   end
 end

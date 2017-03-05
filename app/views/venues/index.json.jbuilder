@@ -9,7 +9,7 @@ json.venues do
     json.hero_banner_url venue.hero_banner_url
 
     if venue.google_location
-      json.address (venue.street || "").gsub!(/,.+/, "")
+      json.address (venue.street || '').gsub!(/,.+/, '')
       json.phone venue.phone
     end
 
