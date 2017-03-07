@@ -4,7 +4,7 @@ class Venue < ApplicationRecord
   belongs_to :locale
 
   has_many :user_locations
-  has_many :events
+  has_many :events, -> { where('start_at > ? OR end_at > ?', DateTime.now, DateTime.now).order(start_at: :asc) }
   has_many :users, through: :user_locations
 
   def is_open?
