@@ -4,7 +4,7 @@ json.venue do
   json.partial! 'venue'
 end
 
-json.events.future do
+json.events do
   json.array! @events do |event|
     json.id event.id
     json.name event.name

@@ -3,7 +3,7 @@ json.person do
   json.name @person.display_name
   json.facebook_id @person.facebook_id
 
-  json.events.future do
+  json.events do
     json.array! @person.events do |event|
       json.id event.id
       json.name event.name
