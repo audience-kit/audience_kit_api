@@ -1,6 +1,6 @@
 class PeopleController < ApplicationController
   def index
-    @people = Locale.find(params[:locale_id]).people + Person.where(locale_id: nil)
+    @people = (Locale.find(params[:locale_id]).people + Person.where(locale_id: nil)).sort_by { |p| p.order }
   end
 
   def show

@@ -19,6 +19,10 @@ class UserLocation < ApplicationRecord
 
     producer.produce(self.to_json, topic: 'user_locations', partition_key: self.user.id.to_s)
 
-    producer.deliver_messages
+    begin
+      producer.deliver_messages
+    rescue
+
+    end
   end
 end
