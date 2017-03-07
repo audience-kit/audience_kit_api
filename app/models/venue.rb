@@ -37,4 +37,8 @@ class Venue < ApplicationRecord
   def hero_banner_url
 
   end
+
+  def display_name
+    self.name_override || self.name
+  end
 end

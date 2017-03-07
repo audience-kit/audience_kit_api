@@ -1,7 +1,7 @@
 json.venues do
   json.array! @venues do |venue|
     json.id venue.id
-    json.name venue.name
+    json.name venue.display_name
     json.facebook_id venue.facebook_id.to_s
     json.is_open venue.is_open?
 

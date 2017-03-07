@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170219045127) do
+ActiveRecord::Schema.define(version: 20170307174742) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "postgis"
   enable_extension "pg_stat_statements"
+  enable_extension "postgis"
   enable_extension "uuid-ossp"
 
   create_table "devices", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20170219045127) do
     t.string   "vendor_identifier"
     t.macaddr  "bluetooth_address"
     t.macaddr  "wifi_address"
+    t.string   "model"
   end
 
   create_table "events", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -38,6 +39,7 @@ ActiveRecord::Schema.define(version: 20170219045127) do
     t.bigint   "facebook_id"
     t.uuid     "person_id"
     t.boolean  "featured"
+    t.string   "name_override"
     t.index ["facebook_id"], name: "index_events_on_facebook_id", using: :btree
     t.index ["person_id"], name: "index_events_on_person_id", using: :btree
     t.index ["venue_id"], name: "index_events_on_venue_id", using: :btree
@@ -68,20 +70,19 @@ ActiveRecord::Schema.define(version: 20170219045127) do
   create_table "people", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
-    t.uuid     "locale_id"
     t.bigint   "facebook_id",                         null: false
     t.jsonb    "facebook_graph"
     t.datetime "facebook_updated_at"
-    t.uuid     "venue_id"
     t.string   "display_name"
     t.string   "facebook_token"
     t.boolean  "requires_like",       default: false
+    t.uuid     "locale_id"
+    t.uuid     "venue_id"
     t.string   "instagram"
     t.string   "sound_cloud"
     t.string   "twitter"
     t.boolean  "featured"
-    t.index ["locale_id"], name: "index_people_on_locale_id", using: :btree
-    t.index ["venue_id"], name: "index_people_on_venue_id", using: :btree
+    t.string   "name_override"
   end
 
   create_table "person_locales", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -100,6 +101,8 @@ ActiveRecord::Schema.define(version: 20170219045127) do
     t.uuid      "user_id"
     t.inet      "origin_ip"
     t.geography "geo_ip_location", limit: {:srid=>4326, :type=>"point", :geographic=>true}
+    t.string    "version"
+    t.integer   "build"
     t.index ["device_id"], name: "index_sessions_on_device_id", using: :btree
     t.index ["token_id"], name: "index_sessions_on_token_id", using: :btree
     t.index ["user_id"], name: "index_sessions_on_user_id", using: :btree
@@ -169,7 +172,8 @@ ActiveRecord::Schema.define(version: 20170219045127) do
     t.bigint    "beacon_id"
     t.boolean   "hidden",                                                                       default: false
     t.boolean   "featured"
-    t.index ["facebook_id"], name: "index_venues_on_facebook_id", using: :btree
+    t.string    "name_override"
+    t.index ["facebook_id"], name: "index_venues_on_facebook_id", unique: true, using: :btree
     t.index ["google_place_id"], name: "index_venues_on_google_place_id", using: :btree
     t.index ["locale_id"], name: "index_venues_on_locale_id", using: :btree
   end
