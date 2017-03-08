@@ -14,8 +14,8 @@ ActiveRecord::Schema.define(version: 20170307174742) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "pg_stat_statements"
   enable_extension "postgis"
+  enable_extension "pg_stat_statements"
   enable_extension "uuid-ossp"
 
   create_table "devices", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -73,7 +73,7 @@ ActiveRecord::Schema.define(version: 20170307174742) do
     t.bigint   "facebook_id",                         null: false
     t.jsonb    "facebook_graph"
     t.datetime "facebook_updated_at"
-    t.string   "display_name"
+    t.string   "name"
     t.string   "facebook_token"
     t.boolean  "requires_like",       default: false
     t.uuid     "locale_id"

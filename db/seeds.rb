@@ -8,7 +8,7 @@
 config = YAML.load_file("#{Rails.root.to_s}/config/seeds.yml").with_indifferent_access
 
 config[:locales].each do |locale_info|
-  locale = Locale.find_or_initialize_by(label: locale_info[:label])
+  locale = HotMessModels::Locale.find_or_initialize_by(label: locale_info[:label])
   locale.name = locale_info[:name]
   locale.google_place_id = locale_info[:google_place_id]
   locale.beacon_major = locale_info[:beacon_major]

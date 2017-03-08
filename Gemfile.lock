@@ -260,6 +260,7 @@ DEPENDENCIES
   byebug
   geocoder
   google-api-client
+  google_places
   hot_mess_models!
   jbuilder
   jwt

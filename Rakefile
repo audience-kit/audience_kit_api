@@ -9,10 +9,15 @@ require 'resque/tasks'
 
 task 'resque:setup' => :environment
 
+desc 'Update data models'
+task :update => :environment do
+  UpdateJob.perform_now(true)
+end
+
 namespace :update do
   desc 'Update all Venue objects'
   task :venues => :environment do
-    UpdateVenuesJob.perform_now
+    UpdateVenuesJob.perform_now(true)
   end
 
   desc 'Update google place data'
@@ -27,7 +32,7 @@ namespace :update do
 
   desc 'Update people'
   task :people => :environment do
-    UpdatePeopleJob.perform_now
+    UpdatePeopleJob.perform_now(true)
   end
 
   desc 'Update users'

@@ -1,8 +1,10 @@
 class UpdateGooglePlaceJob < ApplicationJob
   def perform
-    client = GooglePlaces::Client.new(Rails.application.secrets.google_api_key)
+    client = ::GooglePlaces::Client.new(Rails.application.secrets.google_api_key)
 
-    locations = Venue.all + Locale.all
+    locations  = HotMessModels::Venue.all
+    locations += HotMessModels::Locale.all
+
     locations.each do |place|
       next unless place.google_place_id
 
@@ -18,7 +20,7 @@ class UpdateGooglePlaceJob < ApplicationJob
       place.save
     end
 
-    Venue.all.each do |venue|
+    HotMessModels::Venue.all.each do |venue|
       next unless venue.google_location
 
       venue.update_data
