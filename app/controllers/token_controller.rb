@@ -20,14 +20,14 @@ class TokenController < ApplicationController
       raise 'Facebook token invalid' unless @me
 
       # Create or Update user by application scoped FacebookID
-      @user = User.from_facebook_graph @me
+      @user = HotMessModels::User.from_facebook_graph @me
 
       @user.facebook_token            = extended_token
       @user.facebook_token_issued_at  = DateTime.now
 
       @user.save
 
-      @device = Device.from_identifier params['device']['identifier'], type: params['device']['type']
+      @device = HotMessModels::Device.from_identifier params['device']['identifier'], type: params['device']['type']
 
       @session = @device.sessions.build device: @device,
                                           user: @user,

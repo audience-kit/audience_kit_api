@@ -25,7 +25,7 @@ class ApplicationController < ActionController::API
   end
 
   def user
-    @user ||= User.find_by_id(@user_id)
+    @user ||= HotMessModels::User.find_by_id(@user_id)
   end
 
   def admin?

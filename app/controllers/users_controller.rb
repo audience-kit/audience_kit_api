@@ -31,6 +31,6 @@ class UsersController < ApplicationController
   end
 
   def picture
-    redirect_to "https://facebook.com/#{User.find(params[:id]).facebook_id}/picture"
+    redirect_to "https://facebook.com/#{HotMessModels::User.find(params[:id]).facebook_id}/picture"
   end
 end
