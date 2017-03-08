@@ -4,7 +4,7 @@ class VenuesController < ApplicationController
   skip_before_action :authenticate, only: :photo
 
   def index
-    @venues =  Venue.all
+    @venues =  HotMessModels::Venue.all
 
     @venues = @venues.where(locale_id: params[:locale_id], hidden: false) if params[:locale_id]
 
@@ -16,17 +16,17 @@ class VenuesController < ApplicationController
   end
 
   def show
-    @venue = Venue.find params[:id]
+    @venue = HotMessModels::Venue.find params[:id]
   end
 
   def closest
-    @venue = Venue.closest location_param
+    @venue = HotMessModels::Venue.closest location_param
 
     render :show
   end
 
   def now
-    @venue = Venue.closest location_param
+    @venue = HotMessModels::Venue.closest location_param
     @events = @venue.events
 
     @friends = @venue.user_locations.recent.map { |ul| ul.user }.select { |u| u != user }.uniq.take(5)
@@ -36,7 +36,7 @@ class VenuesController < ApplicationController
   end
 
   def photo
-    @venue = Venue.find(params[:id])
+    @venue = HotMessModels::Venue.find(params[:id])
 
     if @venue.google_location && @venue.google_location["photos"] && @venue.google_location["photos"].any?
       photo = @venue.google_location["photos"].first

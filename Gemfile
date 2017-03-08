@@ -28,12 +28,11 @@ gem 'koala'
 gem 'newrelic_rpm'
 # ActiveJob backend
 gem 'resque'
-gem 'geocoder'
 gem 'activerecord-postgis-adapter'
-gem 'google_places'
-gem 'soundcloud'
 gem 'ruby-kafka'
 gem 'avro'
+gem 'geocoder'
+gem 'hot_mess_models', git: 'git@github.com:rickmark/hot_mess_models.git'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

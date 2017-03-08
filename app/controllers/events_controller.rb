@@ -3,17 +3,17 @@ class EventsController < ApplicationController
     params.permit :venue_id
 
     if params[:venue_id]
-      @events = Venue.find(params[:venue_id]).events
+      @events = HotMessModels::Venue.find(params[:venue_id]).events
     elsif params[:locale_id]
-      @events = Locale.find(params[:locale_id]).events
+      @events = HotMessModels::Locale.find(params[:locale_id]).events
     else
-      @events = Event.all
+      @events = HotMessModels::Event.all
     end
 
     @events = @events.future
   end
 
   def show
-    @event = Event.find params[:id]
+    @event = HotMessModels::Event.find params[:id]
   end
 end

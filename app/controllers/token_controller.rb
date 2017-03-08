@@ -8,7 +8,7 @@ class TokenController < ApplicationController
 
     begin
       # Validate and exchange for long token
-      extended_token  = Concerns::Facebook.oauth.exchange_access_token params[:facebook_token]
+      extended_token  = HotMessModels::Concerns::Facebook.oauth.exchange_access_token params[:facebook_token]
 
       render status: :unauthorized, json: {} and return unless extended_token
 

@@ -2,15 +2,15 @@ class LocalesController < ApplicationController
   include Concerns::LocationParameters
 
   def index
-    Locale.all
+    HotMessModels::Locale.all
   end
 
   def show
-    Locale.find params[:id]
+    HotMessModels::Locale.find params[:id]
   end
 
   def closest
-    @locale = Locale.closest location_param
+    @locale = HotMessModels::Locale.closest location_param
 
     render :show
   end
