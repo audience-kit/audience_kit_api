@@ -33,7 +33,12 @@ gem 'ruby-kafka'
 gem 'avro'
 gem 'geocoder'
 gem 'google_places'
-gem 'hot_mess_models', git: 'https://f978ea15efa23d1660a55e6678e6022f8f2ffe76:x-oauth-basic@github.com/rickmark/hot_mess_models.git'
+
+if ENV['LOCAL_MODELS'] == 'true'
+  gem 'hot_mess_models', path: '~/Developer/hot_mess_models'
+else
+  gem 'hot_mess_models', git: 'https://f978ea15efa23d1660a55e6678e6022f8f2ffe76:x-oauth-basic@github.com/rickmark/hot_mess_models.git', branch: 'master'
+end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

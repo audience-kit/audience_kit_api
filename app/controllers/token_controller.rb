@@ -31,7 +31,7 @@ class TokenController < ApplicationController
 
       @device.model ||= params['device']['model']
       @device.save
-      logger.error "Hell Frozen Over #{@device.model} -> #{params['device']['model']}"
+      logger.error "Hell Frozen Over #{@device.model} -> #{params['device']['model']}" if @device.model != params['device']['model']
 
       @session = @device.sessions.build device: @device,
                                           user: @user,

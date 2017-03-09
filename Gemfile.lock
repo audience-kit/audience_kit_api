@@ -1,6 +1,7 @@
 GIT
   remote: https://f978ea15efa23d1660a55e6678e6022f8f2ffe76:x-oauth-basic@github.com/rickmark/hot_mess_models.git
   revision: 3250701dab7b6049862acae5488ff59451c0d329
+  branch: master
   specs:
     hot_mess_models (0.1.0)
       activerecord (~> 5.0)
