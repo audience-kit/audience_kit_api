@@ -27,7 +27,6 @@ class UsersController < ApplicationController
     end
 
     user.user_locations << user_location
-
     user.save
   end
 
