@@ -39,4 +39,9 @@ namespace :update do
   task :users => :environment do
     UpdateUsersJob.perform_now
   end
+
+  desc 'Update envelopes'
+  task :envelopes => :environment do
+    UpdateEnvelopeJob.perform_now
+  end
 end
