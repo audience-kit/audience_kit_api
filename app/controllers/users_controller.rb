@@ -12,7 +12,8 @@ class UsersController < ApplicationController
     user_location = HotMessModels::UserLocation.new
     user_location.location = @point
 
-    user_location.venue = HotMessModels::Venue.closest @point
+    user_location.venue = HotMessModels::Venue.closest @point, within: true
+    Rails.logger.info "Location #{@point} registered venue as #{user_location.venue.id}" if user_location.venue
 
     # Override with becaons if available
     if params[:beacon] and params[:beacon][:major] != 0
