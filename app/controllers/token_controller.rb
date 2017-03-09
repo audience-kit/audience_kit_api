@@ -29,9 +29,15 @@ class TokenController < ApplicationController
 
       @device = HotMessModels::Device.from_identifier params['device']['identifier'], type: params['device']['type']
 
+      @device.model ||= params['device']['model']
+      @device.save
+      logger.error "Hell Frozen Over #{@device.model} -> #{params['device']['model']}"
+
       @session = @device.sessions.build device: @device,
                                           user: @user,
-                                     origin_ip: request.remote_ip
+                                     origin_ip: request.remote_ip,
+                                       version: params['device']['version'],
+                                         build: params['device']['build']
 
       @session.save
 
