@@ -1,6 +1,6 @@
 GIT
   remote: https://f978ea15efa23d1660a55e6678e6022f8f2ffe76:x-oauth-basic@github.com/rickmark/hot_mess_models.git
-  revision: 3250701dab7b6049862acae5488ff59451c0d329
+  revision: 51932b1e363192852a09422cfe2eb8a011450fbd
   branch: master
   specs:
     hot_mess_models (0.1.0)
