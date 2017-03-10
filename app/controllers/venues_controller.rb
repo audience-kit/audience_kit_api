@@ -38,6 +38,7 @@ class VenuesController < ApplicationController
 
       @friends = @venue.user_locations.recent.map { |ul| ul.user }.select { |u| u != user }.uniq.take(5)
     else
+      @venue = HotMessModels::Venue.closest location_param
       @locale = HotMessModels::Locale.closest location_param
       @title = "Happening Now in #{@locale.name}"
       @image_url = 'https://hotmess.social/assets/homepage_background-f5ffbb436c2e5c0f7e822a376bb604a5fb66d0acaff989ab330f1246b1ad822c.jpg'
