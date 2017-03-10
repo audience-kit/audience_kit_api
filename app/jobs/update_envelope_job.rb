@@ -7,9 +7,13 @@ class UpdateEnvelopeJob < ApplicationJob
     end
 
     HotMessModels::Locale.all.each do |locale|
-      puts "Updating Envelope for Locale -> #{locale.name}"
-      locale.update_envelope
-      locale.save
+      begin
+        puts "Updating Envelope for Locale -> #{locale.name}"
+        locale.update_envelope
+        locale.save
+      rescue => ex
+        puts ex
+      end
     end
   end
 end

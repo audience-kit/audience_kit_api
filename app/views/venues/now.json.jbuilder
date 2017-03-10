@@ -1,7 +1,39 @@
-json.title @venue.name
+json.title @title
+json.image_url @image_url
 
-json.venue do
-  json.partial! 'venue'
+if @venue
+  json.venue do
+    json.partial! 'venue'
+  end
+
+  json.friends do
+    json.array! @friends do |friend|
+      json.id friend.id
+      json.name friend.name
+      json.facebook_id friend.facebook_id
+    end
+  end
+else
+  json.venues do
+    json.array! @venues do |venue|
+
+      json.id venue.id
+      json.name venue.display_name
+      json.facebook_id venue.facebook_id.to_s
+      json.is_open venue.is_open?
+      json.photo_url "#{venue_url(venue)}/photo"
+      json.description "You're the first to arrive."
+
+      json.hero_banner_url venue.hero_banner_url
+      json.friend_count 0
+
+      if venue.google_location
+        json.address (venue.street || "").gsub!(/,.+/, "")
+        json.phone venue.phone
+      end
+
+    end
+  end
 end
 
 json.events do
@@ -18,10 +50,3 @@ json.events do
   end
 end
 
-json.friends do
-  json.array! @friends do |friend|
-    json.id friend.id
-    json.name friend.name
-    json.facebook_id friend.facebook_id
-  end
-end

@@ -29,6 +29,10 @@ Rails.application.routes.draw do
     resources :events
 
     resources :people
+
+    member do
+      get :photo
+    end
   end
 
   resources :people

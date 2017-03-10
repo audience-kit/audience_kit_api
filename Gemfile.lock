@@ -1,6 +1,6 @@
 GIT
   remote: https://f978ea15efa23d1660a55e6678e6022f8f2ffe76:x-oauth-basic@github.com/rickmark/hot_mess_models.git
-  revision: 51932b1e363192852a09422cfe2eb8a011450fbd
+  revision: eefd526c87ef6af94b745a442cb43a9e80e9a841
   branch: master
   specs:
     hot_mess_models (0.1.0)
@@ -118,7 +118,7 @@ GEM
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
     little-plugger (1.1.4)
-    logging (2.1.0)
+    logging (2.2.0)
       little-plugger (~> 1.1)
       multi_json (~> 1.10)
     loofah (2.0.3)
@@ -194,6 +194,8 @@ GEM
     rgeo-activerecord (5.0.1)
       activerecord (~> 5.0.0)
       rgeo (~> 0.3)
+    rgeo-geojson (0.4.3)
+      rgeo (~> 0.5)
     rspec-core (3.5.4)
       rspec-support (~> 3.5.0)
     rspec-expectations (3.5.0)
@@ -275,6 +277,7 @@ DEPENDENCIES
   rails (~> 5)
   redis
   resque
+  rgeo-geojson
   rspec-rails
   ruby-kafka
   spring
