@@ -24,6 +24,9 @@ if @venues
         json.phone venue.phone
       end
 
+      if venue['distance']
+        json.distance venue['distance']
+      end
     end
   end
 

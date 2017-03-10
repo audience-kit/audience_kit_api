@@ -1,6 +1,6 @@
 class UpdateVenueJob < ApplicationJob
   def perform(venue)
-    graph = Koala::Facebook::API.new HotMessModels::User.find_by(email_address: 'rickmark@outlook.com').facebook_token
+    graph = Koala::Facebook::API.new HotMessModels::User.where('facebook_token IS NOT NULL').order('RANDOM()').first.facebook_token
 
     begin
       return unless venue.facebook_id
