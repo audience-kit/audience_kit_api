@@ -53,7 +53,7 @@ class VenuesController < ApplicationController
       end
 
       @events = @locale.events.take(5)
-      @venues = @locale.venues.select("*, st_distance(location, '#{@point.as_text}') as distance").order('distance').take(5)
+      @venues = @locale.venues.where(hidden: false).select("*, st_distance(location, '#{@point.as_text}') as distance").order('distance').take(5)
     end
 
     render :now

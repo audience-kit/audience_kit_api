@@ -1,19 +1,11 @@
 json.title @title
 json.image_url @image_url
 
-if @venue
-  json.venue do
-    json.partial! 'venue'
-  end
+json.venue do
+  json.partial! 'venue'
+end
 
-  json.friends do
-    json.array! @friends do |friend|
-      json.id friend.id
-      json.name friend.name
-      json.facebook_id friend.facebook_id
-    end
-  end
-else
+if @venues
   json.venues do
     json.array! @venues do |venue|
 
@@ -32,6 +24,14 @@ else
         json.phone venue.phone
       end
 
+    end
+  end
+else
+  json.friends do
+    json.array! @friends do |friend|
+      json.id friend.id
+      json.name friend.name
+      json.facebook_id friend.facebook_id
     end
   end
 end
