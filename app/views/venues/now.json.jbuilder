@@ -26,6 +26,8 @@ if @venues
 
     end
   end
+
+  json.friends []
 else
   json.friends do
     json.array! @friends do |friend|
