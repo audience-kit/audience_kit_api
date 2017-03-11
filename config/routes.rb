@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   post '/me/location', :to => 'users#location'
   post '/callbacks/facebook/user', :to => 'callbacks#facebook_user'
   post '/callbacks/facebook/page', :to => 'callbacks#facebook_page'
+  get '/callbacks/facebook/user', :to => 'callbacks#facebook_verify'
+  get '/callbacks/facebook/page', :to => 'callbacks#facebook_verify'
   post '/callbacks/facebook/deauthorize', :to => 'callbacks#facebook_deauthorize'
 
   resources :events
