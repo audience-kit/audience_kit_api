@@ -21,6 +21,20 @@
 - Create multiple facebook ID mapping
 - Move person locale mapping to relation table
 - Data model relate person to event via facet (DJ, performer, promoter)
+- Mutual friends API to determine social score for venue
+- RSVP scope
+
+### Facebook Graph Objects (ugh, please don't make me)
+- Check in via app?  (consent only)
+- Attended / attending event?
+
+### API Privacy
+- Sunset policy on records
+- Maximum tolerance on GPS coordinates recorded
+- Extended envelope for tracked areas to record
+- Gaussian field / bloom filter
+- Course location to detect new venues (long term as the bloom filter needs to be online)
+- Does time need to be recorded for above or just done by cohort (sliding window?)
 
 ## CMS
 - Facebook login
@@ -34,6 +48,8 @@
 - Cease and Desist to zYouSoft for Trademark infringement
 
 # Done
+## Week 9
+- LocaleID should be set by /me/location
 ## Week 8
 - Improve event page
 - Beta prompt if no email
