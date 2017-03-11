@@ -2,11 +2,25 @@ class CallbacksController < ApplicationController
   skip_before_action :authenticate
 
   def facebook_user
-    logger.info params.inspect
+    params[:entry].each do |entry|
+      user = HotMessModels::User.find_by(facebook_id: entry[:id])
+
+      UpdateUserJob.perform_later user if user
+    end
   end
 
   def facebook_page
-    logger.info params.inspect
+    params[:entry].each do |entry|
+      page = HotMessModels::Venue.find_by(facebook_id: entry[:id])
+
+      if page
+        UpdateVenueJob.perform_later page
+      else
+        page = HotMessModels::Person.find_by(facebook_id: entry[:id])
+
+        UpdatePersonJob.perform_later page if page
+      end
+    end
   end
 
   def facebook_verify
