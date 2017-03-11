@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   get '/venues/:id/friends' => 'venues#friends'
 
   post '/me/location', :to => 'users#location'
+  post '/callbacks/facebook/user', :to => 'callbacks#facebook_user'
+  post '/callbacks/facebook/page', :to => 'callbacks#facebook_page'
 
   resources :events
 
