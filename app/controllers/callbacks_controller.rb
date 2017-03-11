@@ -1,4 +1,6 @@
 class CallbacksController < ApplicationController
+  skip_before_action :authenticate
+
   def facebook_user
     logger.info params.inspect
   end
