@@ -4,7 +4,7 @@ class VenuesController < ApplicationController
   skip_before_action :authenticate, only: :photo
 
   def index
-    @venues =  HotMessModels::Venue.all
+    @venues =  HotMessModels::Venue.joins(:location)
 
     if params[:locale_id]
       @venues = @venues.where(locale_id: params[:locale_id], hidden: false)
@@ -14,7 +14,7 @@ class VenuesController < ApplicationController
     if params[:latitude] and params[:longitude]
       point = RGeo::Geographic.simple_mercator_factory.point(params[:longitude], params[:latitude])
 
-      @venues = @venues.select("*, st_distance(location, '#{point.as_text}') as distance").order('distance')
+      @venues = @venues.select("venues.*, st_distance(locations.location, '#{point.as_text}') as distance").order('distance')
     end
   end
 

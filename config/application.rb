@@ -29,7 +29,7 @@ module HotMessAPI
 
     config.active_record.primary_key = :uuid
 
-    config.autoload_paths += %W( lib )
+    config.autoload_paths += [ '~/Developer/hot_mess_models', Rails.root.join('lib') ]
 
     config.active_job.queue_adapter = :resque
   end

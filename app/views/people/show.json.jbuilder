@@ -2,8 +2,6 @@ json.person do
   json.id @person.id
   json.name @person.display_name
   json.facebook_id @person.facebook_id
-  # TODO - When migrated
-  json.facets @person.facets
 
   json.social_links do
     json.array! @person.social_links do |link|

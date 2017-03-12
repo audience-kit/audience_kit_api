@@ -25,7 +25,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :locales, only: [ :index ] do
+  resources :locales, only: [ :index, :show ] do
     resources :venues, only: [ :index ]
 
     resources :events, only: [ :index ]

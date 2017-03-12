@@ -1,11 +1,19 @@
 json.envelope @envelope
 
+if @locale
+  json.locale do
+    json.id @locale.id
+    json.name @locale.name
+    json.label @locale.label
+  end
+end
+
 json.venues do
   json.array! @venues do |venue|
     json.id venue.id
     json.name venue.display_name
     json.facebook_id venue.facebook_id.to_s
-    json.is_open venue.is_open?
+    json.is_open true
     json.point RGeo::GeoJSON.encode(venue.location)
     json.description "You're the first to arrive."
 
@@ -14,7 +22,7 @@ json.venues do
 
     if venue.google_location
       json.address (venue.street || '').gsub!(/,.+/, '')
-      json.phone venue.phone
+      json.phone venue.phone_number
     end
 
     if venue['distance']

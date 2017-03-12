@@ -60,6 +60,12 @@ class MigratePages < ActiveRecord::Migration[5.0]
     # Move existing locale mappings to supporting relation
     execute 'INSERT INTO person_locales SELECT uuid_generate_v4(), people.id, people.locale_id FROM people WHERE locale_id IS NOT NULL'
 
+    # Remove orphaned events
+    execute 'DELETE FROM events WHERE venue_id IS NULL'
+
+    # Require venue_id on events
+    change_column_null :events, :venue_id, false
+
     # Perform cleanup by removing duplicate columns
     [ :sound_cloud, :twitter, :instagram, :venue_id, :featured, :facebook_token, :locale_id ].each { |c| remove_column :people, c }
     [ :venues, :people ].each { |t|  [ :created_at, :updated_at, :name, :name_override, :facebook_id, :facebook_graph, :facebook_updated_at ].each { |c| remove_column t, c } }
