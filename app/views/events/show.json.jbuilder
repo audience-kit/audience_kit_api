@@ -15,7 +15,7 @@ json.event do
 
     if @event.venue.google_location
       json.address (@event.venue.street || '').gsub!(/,.+/, '')
-      json.phone @event.venue.phone
+      json.phone @event.venue.phone_number
     end
 
   end

@@ -4,7 +4,7 @@ class VenuesController < ApplicationController
   skip_before_action :authenticate, only: :photo
 
   def index
-    @venues =  HotMessModels::Venue.joins(:location)
+    @venues =  HotMessModels::Venue.joins(:location).includes(venue_pages: :page)
 
     if params[:locale_id]
       @venues = @venues.where(locale_id: params[:locale_id], hidden: false)
@@ -19,7 +19,7 @@ class VenuesController < ApplicationController
   end
 
   def show
-    @venue = HotMessModels::Venue.find params[:id]
+    @venue = HotMessModels::Venue.find(params[:id]).includes(venue_pages: :page)
   end
 
   def closest
@@ -29,6 +29,7 @@ class VenuesController < ApplicationController
   end
 
   def now
+    @locale = HotMessModels::Locale.closest location_param
     @venue = HotMessModels::Venue.closest location_param, within: true
 
     if @venue
@@ -38,21 +39,20 @@ class VenuesController < ApplicationController
 
       @friends = @venue.user_locations.recent.map { |ul| ul.user }.select { |u| u != user }.uniq.take(5)
     else
-      @locale = HotMessModels::Locale.closest location_param
       @title = "Happening Now in #{@locale.name}"
       @image_url = 'https://hotmess.social/assets/homepage_background-f5ffbb436c2e5c0f7e822a376bb604a5fb66d0acaff989ab330f1246b1ad822c.jpg'
 
       if  @locale &&
-          @locale.google_location &&
-          @locale.google_location['photos'] &&
-          @locale.google_location['photos'].any?
+          @locale.location &&
+          @locale.location.photos &&
+          @locale.location.photos.any?
 
-        photo = @locale.google_location['photos'].first
+        photo = @locale.location.photos.first
         @image_url = "https://maps.googleapis.com/maps/api/place/photo?maxheight=1600&maxwidth=1600&key=#{photo['api_key']}&photoreference=#{photo['photo_reference']}"
       end
 
       @events = @locale.events.take(5)
-      @venues = @locale.venues.select("*, st_distance(location, '#{@point.as_text}') as distance").order('distance').take(5)
+      @venues = @locale.venues.joins(:location).select("venues.*, st_distance(locations.location, '#{@point.as_text}') as distance").order('distance').take(5)
     end
 
     render :now

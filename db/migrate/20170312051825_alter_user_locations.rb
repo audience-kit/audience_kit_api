@@ -11,6 +11,9 @@ class AlterUserLocations < ActiveRecord::Migration[5.0]
     # Track only if the location fix was from beacon
     add_column :user_locations, :beacon, :boolean
 
+    # Remove ambiguity between location and postgis point
+    rename_column :user_locations, :location, :point
+
     # Remove columns for user_id (location will be done near release as the data will help improve envelopes)
     [ :user_id, :beacon_minor, :locale_id ].each { |c| remove_column :user_locations, c }
   end

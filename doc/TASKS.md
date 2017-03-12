@@ -13,8 +13,8 @@
 - RSVP buttons if scope granted
 
 ## API
-- **REBUILD API TO MATCH DATA MODEL**
-- Project venue_pages into social_links (enhance with handle, top 1 by order)
+- **REBUILD IMPORTERS FOR NEW DATA MODEL**
+- Project venue_pages into social_links (enhance with handle, top 1 by order, hold for materialized views?)
 - Venue exit events
 - Person SoundCloud tracks
 - Encrypt facebook_token / email address
@@ -62,6 +62,7 @@
 
 # Done
 ## Week 9
+- **REBUILD API TO MATCH DATA MODEL**
 - LocaleID should be set by /me/location
 - User update callback
 - Person Social media

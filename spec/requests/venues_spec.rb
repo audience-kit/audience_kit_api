@@ -21,6 +21,15 @@ RSpec.describe 'venues', type: :request do
     expect(data['venue']).not_to be nil
   end
 
+  it 'returns a venue at /now when in venue' do
+    get '/now', params: { longitude: '-117.1605916', latitude: '32.743582' }, headers: default_headers
+
+    expect(response).to have_http_status(200)
+    data = JSON.parse(response.body)
+
+    expect(data['venue']).not_to be nil
+  end
+
   it 'returns venues for locale at /locales/{id}/venues' do
     nyc = HotMessModels::Locale.find_by(label: 'nyc')
 

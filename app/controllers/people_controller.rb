@@ -1,7 +1,7 @@
 class PeopleController < ApplicationController
   def index
-    @people  = HotMessModels::Person.where(global: true)
-    @people += HotMessModels::PersonLocale.where(locale_id: params[:locale_id]).map { |pl| pl.person }
+    @people  = HotMessModels::Person.includes(:page).where(global: true)
+    @people += HotMessModels::PersonLocale.includes(person: :page).where(locale_id: params[:locale_id]).map { |pl| pl.person }
     @people  = @people.sort_by { |p| p.order }
   end
 
