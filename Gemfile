@@ -34,6 +34,7 @@ gem 'avro'
 gem 'geocoder'
 gem 'google_places'
 gem 'rgeo-geojson'
+gem 'soundcloud'
 
 if ENV['LOCAL_MODELS'] == 'true'
   gem 'hot_mess_models', path: '~/Developer/hot_mess_models'

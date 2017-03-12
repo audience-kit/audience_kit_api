@@ -11,6 +11,17 @@ class UpdatePersonJob < ApplicationJob
 
       person.save
 
+      # TODO - Update for social_links
+      if person.sound_cloud
+        client = SoundCloud.new(client_id: Rails.application.secrets['soundcloud']['id'])
+
+        tracks = client.get("/users/#{person.sound_cloud}/tracks", limit: 10)
+
+        tracks.each do |track|
+          person.tracks.find_by()
+        end
+      end
+
       events = graph.get_connection person.facebook_id, :events
 
       events.each do |event|

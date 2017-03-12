@@ -280,6 +280,7 @@ DEPENDENCIES
   rgeo-geojson
   rspec-rails
   ruby-kafka
+  soundcloud
   spring
   spring-watcher-listen (~> 2.0.0)
   typhoeus

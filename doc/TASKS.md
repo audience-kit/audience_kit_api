@@ -9,20 +9,33 @@
 - Improvements to the launch and first run experience
 - Cache images in client
 - Guard view for locations services disabled
+- RSVP scope request
+- RSVP buttons if scope granted
 
 ## API
+- **REBUILD API TO MATCH DATA MODEL**
+- Project venue_pages into social_links (enhance with handle, top 1 by order)
 - Venue exit events
-- Person Social media
 - Person SoundCloud tracks
-- Person facets column as array
 - Encrypt facebook_token / email address
 - Cache images on server
-- User update callback
-- Create multiple facebook ID mapping
-- Move person locale mapping to relation table
-- Data model relate person to event via facet (DJ, performer, promoter)
 - Mutual friends API to determine social score for venue
-- RSVP scope
+
+### Data Model
+- `add_table :photo...`
+- `add_table :track...`
+- Recurring events (not facebook linked)
+- Venues lacking pages:
+  - The Hanger
+  - Boiler Room
+  - Adonis Lounge
+  - The Out Hotel
+  - Phoenix Bar
+  - Ty's Bar NYC
+  - 11:11 Eleven Eleven
+  - Bill's Gay Nineties
+  - Evolve
+
 
 ### Facebook Graph Objects (ugh, please don't make me)
 - Check in via app?  (consent only)
@@ -50,6 +63,13 @@
 # Done
 ## Week 9
 - LocaleID should be set by /me/location
+- User update callback
+- Person Social media
+- Person facets column as array
+- Create multiple facebook ID mapping
+- Move person locale mapping to relation table
+- Data model relate person to event via facet (DJ, performer, promoter)
+
 ## Week 8
 - Improve event page
 - Beta prompt if no email
