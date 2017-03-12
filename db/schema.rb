@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170312051825) do
+ActiveRecord::Schema.define(version: 20170312143842) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,6 +74,12 @@ ActiveRecord::Schema.define(version: 20170312051825) do
     t.uuid      "location_id",                                                             null: false
   end
 
+  create_table "location_beacons", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid    "location_id",  null: false
+    t.integer "beacon_minor", null: false
+    t.index ["location_id"], name: "index_location_beacons_on_location_id", using: :btree
+  end
+
   create_table "locations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.datetime  "created_at",                                                               null: false
     t.datetime  "updated_at",                                                               null: false
@@ -102,7 +108,9 @@ ActiveRecord::Schema.define(version: 20170312051825) do
     t.integer "order",         default: 1000,  null: false
     t.boolean "global",        default: false, null: false
     t.boolean "like_required", default: false, null: false
+    t.uuid    "photo_id"
     t.index ["page_id"], name: "index_people_on_page_id", unique: true, using: :btree
+    t.index ["photo_id"], name: "index_people_on_photo_id", using: :btree
   end
 
   create_table "person_locales", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -111,6 +119,14 @@ ActiveRecord::Schema.define(version: 20170312051825) do
     t.index ["locale_id"], name: "index_person_locales_on_locale_id", using: :btree
     t.index ["person_id", "locale_id"], name: "person_locale_unique_key", unique: true, using: :btree
     t.index ["person_id"], name: "index_person_locales_on_person_id", using: :btree
+  end
+
+  create_table "photos", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "source_url", null: false
+    t.string   "hash",       null: false
+    t.binary   "content",    null: false
   end
 
   create_table "sessions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -136,6 +152,24 @@ ActiveRecord::Schema.define(version: 20170312051825) do
     t.string   "type",                       null: false
     t.string   "handle",                     null: false
     t.boolean  "primary",    default: false, null: false
+  end
+
+  create_table "social_updates", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.uuid     "social_link_id", null: false
+    t.string   "body",           null: false
+    t.index ["social_link_id"], name: "index_social_updates_on_social_link_id", using: :btree
+  end
+
+  create_table "tracks", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.uuid     "social_link_id",      null: false
+    t.string   "title",               null: false
+    t.string   "provider_url",        null: false
+    t.string   "provider_identifier", null: false
+    t.index ["social_link_id"], name: "index_tracks_on_social_link_id", using: :btree
   end
 
   create_table "user_locations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -169,12 +203,6 @@ ActiveRecord::Schema.define(version: 20170312051825) do
     t.index ["facebook_id"], name: "index_users_on_facebook_id", using: :btree
   end
 
-  create_table "venue_beacons", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.integer "venue_id"
-    t.integer "beacon_id"
-    t.index ["venue_id"], name: "index_venue_beacons_on_venue_id", using: :btree
-  end
-
   create_table "venue_pages", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
@@ -195,7 +223,10 @@ ActiveRecord::Schema.define(version: 20170312051825) do
     t.integer   "distance_tolerance"
     t.geography "envelope",           limit: {:srid=>4326, :type=>"polygon", :geographic=>true}
     t.uuid      "location_id"
+    t.uuid      "photo_id"
+    t.uuid      "hero_banner_id"
     t.index ["locale_id"], name: "index_venues_on_locale_id", using: :btree
+    t.index ["photo_id"], name: "index_venues_on_photo_id", using: :btree
   end
 
   add_foreign_key "events", "venues"
@@ -204,4 +235,5 @@ ActiveRecord::Schema.define(version: 20170312051825) do
   add_foreign_key "sessions", "devices"
   add_foreign_key "sessions", "users"
   add_foreign_key "venues", "locales"
+  add_foreign_key "venues", "photos", column: "hero_banner_id"
 end
