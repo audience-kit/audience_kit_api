@@ -15,7 +15,7 @@
 - Page / Venue "can_like" / "liked" attribute
 
 ## API
-- **REBUILD IMPORTERS FOR NEW DATA MODEL**
+
 - BUG: Phone number not shown
 - BUG: Events in now edge in past
 - Project venue_pages into social_links (enhance with handle, top 1 by order, hold for materialized views?)
@@ -67,6 +67,7 @@
 
 # Done
 ## Week 9
+- **REBUILD IMPORTERS FOR NEW DATA MODEL**
 - **REBUILD API TO MATCH DATA MODEL**
 - **NORMALIZE DATA MODEL**
 - LocaleID should be set by /me/location

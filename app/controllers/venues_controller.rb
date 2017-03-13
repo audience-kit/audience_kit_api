@@ -19,7 +19,7 @@ class VenuesController < ApplicationController
   end
 
   def show
-    @venue = HotMessModels::Venue.find(params[:id]).includes(venue_pages: :page)
+    @venue = HotMessModels::Venue.includes(venue_pages: :page).find(params[:id])
   end
 
   def closest
