@@ -13,8 +13,8 @@ class UpdatePersonJob < ApplicationJob
 
       person.save
 
-      person.social_links do |link|
-        link.update
+      if person_graph['username']
+        HotMessModels::SocialLink.find_or_create_by(object_id: person.id, provider: 'facebook', handle: person_graph['username'])
       end
 
       events = graph.get_connection person.facebook_id, :events

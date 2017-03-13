@@ -1,0 +1,66 @@
+{
+  "id": "101408476608233",
+  "link": "https://www.facebook.com/poshbarnyc/",
+  "name": "POSH Bar & Lounge",
+  "about": "The Original Gay Bar in Hells Kitchen! ",
+  "cover": {
+    "id": "956608334421572",
+    "source": "https://scontent.xx.fbcdn.net/v/t1.0-0/p180x540/12279064_956608334421572_4030138208421259122_n.jpg?oh=e6d99fa38184c1dc4b9c42cef65598c1&oe=596657F2",
+    "cover_id": "956608334421572",
+    "offset_x": 0,
+    "offset_y": 75
+  },
+  "hours": {
+    "fri_1_open": "14:00",
+    "mon_1_open": "14:00",
+    "sat_1_open": "14:00",
+    "sun_1_open": "14:00",
+    "thu_1_open": "14:00",
+    "tue_1_open": "14:00",
+    "wed_1_open": "14:00",
+    "fri_1_close": "04:00",
+    "mon_1_close": "04:00",
+    "sat_1_close": "04:00",
+    "sun_1_close": "04:00",
+    "thu_1_close": "04:00",
+    "tue_1_close": "04:00",
+    "wed_1_close": "04:00"
+  },
+  "likes": 22141,
+  "phone": "(212) 957-2222",
+  "attire": "Casual",
+  "parking": {
+    "lot": 0,
+    "valet": 0,
+    "street": 1
+  },
+  "website": "http://www.poshbarnyc.com",
+  "birthday": "03/10/1990",
+  "can_post": true,
+  "category": "Bar",
+  "checkins": 41640,
+  "location": {
+    "zip": "10019",
+    "city": "New York",
+    "state": "NY",
+    "street": "405 W 51st St",
+    "country": "United States",
+    "latitude": 40.764264814857,
+    "longitude": -73.988842575036
+  },
+  "username": "poshbarnyc",
+  "description": "The Original Gay Bar in Hells Kitchen! - www.poshbarnyc.com",
+  "price_range": "$$",
+  "is_published": true,
+  "category_list": [
+    { "id": "128470943900600", "name": "Gay Bar" },
+    { "id": "191478144212980", "name": "Dance & Night Club" }
+  ],
+  "has_added_app": false,
+  "payment_options": { "amex": 1, "visa": 1, "discover": 1, "cash_only": 0, "mastercard": 1 },
+  "were_here_count": 41640,
+  "is_community_page": false,
+  "restaurant_services": {"kids": 0, "groups": 1, "waiter": 1, "outdoor": 0, "reserve": 1, "takeout": 0, "walkins": 1, "catering": 0, "delivery": 0},
+  "talking_about_count": 72,
+  "name_with_location_descriptor": "POSH Bar & Lounge"
+}

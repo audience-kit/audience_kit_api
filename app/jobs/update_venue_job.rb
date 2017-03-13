@@ -12,6 +12,10 @@ class UpdateVenueJob < ApplicationJob
       venue.page.name = object_graph['name']
       venue.update_data
 
+      if object_graph['username']
+        HotMessModels::SocialLink.find_or_create_by(object_id: venue.id, provider: 'facebook', handle: object_graph['username'])
+      end
+
       events = []
       events = graph.get_connection venue.facebook_id, :events unless venue.hidden
 

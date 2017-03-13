@@ -1,6 +1,7 @@
 # Next
 
 ## Client
+- BUG: Phone number when nil from server should not show
 - BUG: No back on now view (NoRepro - ChrisN)
 - Improve friends with round icons instead of list for here now
 - Beacon based user_locations
@@ -13,11 +14,9 @@
 - RSVP scope request
 - RSVP buttons if scope granted
 - Page / Venue "can_like" / "liked" attribute
+- Optimize social icons
 
 ## API
-
-- BUG: Phone number not shown
-- BUG: Events in now edge in past
 - Project venue_pages into social_links (enhance with handle, top 1 by order, hold for materialized views?)
 - Venue exit events
 - Person SoundCloud tracks
@@ -26,8 +25,7 @@
 - Mutual friends API to determine social score for venue
 
 ### Data Model
-- `add_table :photo...`
-- `add_table :track...`
+- `change_column_null :people, :global, false`
 - Recurring events (not facebook linked)
 - Venues lacking pages:
   - The Hanger
@@ -77,6 +75,7 @@
 - Create multiple facebook ID mapping
 - Move person locale mapping to relation table
 - Data model relate person to event via facet (DJ, performer, promoter)
+- BUG: Events in now edge in past
 
 ## Week 8
 - Improve event page
