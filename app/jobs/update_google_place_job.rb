@@ -1,31 +1,28 @@
 class UpdateGooglePlaceJob < ApplicationJob
   def perform
-    client = ::GooglePlaces::Client.new(Rails.application.secrets.google_api_key)
+    begin
+      client = ::GooglePlaces::Client.new(Rails.application.secrets.google_api_key)
 
-    locations  = HotMessModels::Venue.all
-    locations += HotMessModels::Locale.all
+      locations  = HotMessModels::Location.all
 
-    locations.each do |place|
-      next unless place.google_place_id
+      locations.each do |place|
+        next unless place.google_place_id
 
-      puts "Updating => #{place.name}"
+        puts "Updating => #{place.name}"
 
-      spot = client.spot place.google_place_id
+        spot = client.spot place.google_place_id
 
-      place.google_location = spot
-      place.google_updated_at = DateTime.now
+        place.google_location = spot
+        place.google_updated_at = DateTime.now
 
-      place.update_location spot['lng'], spot['lat']
+        place.update_location spot['lng'], spot['lat']
 
-      place.save
-    end
+        place.save
+      end
 
-    HotMessModels::Venue.all.each do |venue|
-      next unless venue.google_location
-
-      venue.update_data
-
-      venue.save
+      HotMessModels::Venue.where('location_id IS NOT NULL').each { |v| v.update_data }
+    rescue => ex
+      puts "Error => #{ex}"
     end
   end
 end
