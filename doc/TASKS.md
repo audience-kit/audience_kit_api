@@ -1,6 +1,8 @@
 # Next
 
 ## Client
+- BUG: No back on now view (NoRepro - ChrisN)
+- BUG: Native like blank page
 - Improve friends with round icons instead of list for here now
 - Beacon based user_locations
 - Person Social media
@@ -14,6 +16,8 @@
 
 ## API
 - **REBUILD IMPORTERS FOR NEW DATA MODEL**
+- BUG: Phone number not shown
+- BUG: Events in now edge in past
 - Project venue_pages into social_links (enhance with handle, top 1 by order, hold for materialized views?)
 - Venue exit events
 - Person SoundCloud tracks
@@ -53,6 +57,7 @@
 - Facebook login
 
 ## Marketing
+- BUG: Some sign-ups dont contain email
 - `hotmess` gem
 - Marketing site use CORS API for "preview content"
 
@@ -63,6 +68,7 @@
 # Done
 ## Week 9
 - **REBUILD API TO MATCH DATA MODEL**
+- **NORMALIZE DATA MODEL**
 - LocaleID should be set by /me/location
 - User update callback
 - Person Social media

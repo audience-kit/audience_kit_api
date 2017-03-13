@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(version: 20170312143842) do
     t.string   "name"
     t.datetime "start_at"
     t.datetime "end_at"
-    t.uuid     "venue_id"
+    t.uuid     "venue_id",                      null: false
     t.jsonb    "facebook_graph"
     t.bigint   "facebook_id"
     t.string   "name_override"
@@ -175,7 +175,7 @@ ActiveRecord::Schema.define(version: 20170312143842) do
   create_table "user_locations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.datetime  "created_at",                                                           null: false
     t.datetime  "updated_at",                                                           null: false
-    t.geography "location",    limit: {:srid=>4326, :type=>"point", :geographic=>true}
+    t.geography "point",       limit: {:srid=>4326, :type=>"point", :geographic=>true}
     t.uuid      "venue_id"
     t.uuid      "session_id",                                                           null: false
     t.uuid      "location_id",                                                          null: false
@@ -190,7 +190,7 @@ ActiveRecord::Schema.define(version: 20170312143842) do
     t.datetime "updated_at",               null: false
     t.string   "name"
     t.string   "email_address"
-    t.bigint   "facebook_id"
+    t.bigint   "facebook_id",              null: false
     t.string   "facebook_token"
     t.datetime "facebook_token_issued_at"
     t.string   "profile_image_url"
@@ -200,7 +200,7 @@ ActiveRecord::Schema.define(version: 20170312143842) do
     t.string   "culture"
     t.jsonb    "facebook_graph"
     t.index ["email_address"], name: "index_users_on_email_address", using: :btree
-    t.index ["facebook_id"], name: "index_users_on_facebook_id", using: :btree
+    t.index ["facebook_id"], name: "users_facebook_id_uindex", unique: true, using: :btree
   end
 
   create_table "venue_pages", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
