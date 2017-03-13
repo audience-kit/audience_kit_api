@@ -2,7 +2,6 @@
 
 ## Client
 - BUG: No back on now view (NoRepro - ChrisN)
-- BUG: Native like blank page
 - Improve friends with round icons instead of list for here now
 - Beacon based user_locations
 - Person Social media
@@ -13,6 +12,7 @@
 - Guard view for locations services disabled
 - RSVP scope request
 - RSVP buttons if scope granted
+- Page / Venue "can_like" / "liked" attribute
 
 ## API
 - **REBUILD IMPORTERS FOR NEW DATA MODEL**
