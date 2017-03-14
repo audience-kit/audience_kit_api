@@ -27,4 +27,13 @@ json.event do
       json.facebook_id @event.person.facebook_id
     end
   end
+
+  json.people do
+    if @event.person
+      json.id @event.person.id
+      json.name @event.person.display_name
+      json.facebook_id @event.person.facebook_id
+      json.role 'host'
+    end
+  end
 end

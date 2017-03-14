@@ -149,7 +149,7 @@ ActiveRecord::Schema.define(version: 20170312143842) do
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
     t.uuid     "object_id",                  null: false
-    t.string   "type",                       null: false
+    t.string   "provider",                   null: false
     t.string   "handle",                     null: false
     t.boolean  "primary",    default: false, null: false
   end
