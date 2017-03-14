@@ -3,11 +3,11 @@ class EventsController < ApplicationController
     params.permit :venue_id
 
     if params[:venue_id]
-      @events = HotMessModels::Venue.find(params[:venue_id]).events
+      @events = HotMessModels::Venue.find(params[:venue_id]).events.includes([ { event_people: { person: :page } }, { venue: :pages } ])
     elsif params[:locale_id]
-      @events = HotMessModels::Locale.find(params[:locale_id]).events
+      @events = HotMessModels::Locale.find(params[:locale_id]).events.includes([ { event_people: { person: :page } }, { venue: :pages } ])
     else
-      @events = HotMessModels::Event.all
+      @events = HotMessModels::Event.includes([ { event_people: { person: :page } }, { venue: :pages } ])
     end
 
     @events = @events.future

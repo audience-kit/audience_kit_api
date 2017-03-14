@@ -21,7 +21,7 @@ namespace :update do
   end
 
   desc 'Update google place data'
-  task :google => :environment do
+  task :locations => :environment do
     UpdateGooglePlaceJob.perform_now
   end
 
@@ -43,5 +43,10 @@ namespace :update do
   desc 'Update envelopes'
   task :envelopes => :environment do
     UpdateEnvelopeJob.perform_now
+  end
+
+  desc 'Update social links'
+  task :social => :environment do
+    UpdateSocialLinksJob.perform_now
   end
 end

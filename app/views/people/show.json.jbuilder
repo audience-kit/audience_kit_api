@@ -3,6 +3,25 @@ json.person do
   json.name @person.display_name
   json.facebook_id @person.facebook_id
 
+  json.social_links do
+    json.array! @person.social_links do |link|
+      json.id link.id
+      json.provider link.provider
+      json.handle link.handle
+      json.url link.url
+    end
+  end
+
+  json.tracks do
+    json.array! @person.tracks.sort_by(&:created_at).take(5) do |track|
+      json.id track.id
+      json.released_at track.created_at
+      json.title track.title
+      json.provider track.social_link.provider
+      json.provider_url track.provider_url
+    end
+  end
+
   json.events do
     json.array! @person.events do |event|
       json.id event.id

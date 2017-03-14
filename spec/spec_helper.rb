@@ -97,3 +97,18 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 end
+
+def default_params
+  { longitude: '-73.99', latitude: '40.760' }
+end
+
+def default_headers
+  @session = HotMessModels::Session.new user: HotMessModels::User.find_by(email_address: 'rickmark@outlook.com'), device: HotMessModels::Device.first
+  @session.save
+
+  request_double = double('Rack::Request')
+  allow(request_double).to receive(:ip_address).and_return('127.0.0.1')
+  allow(request_double).to receive(:host_with_port).and_return('127.0.0.1:3000')
+
+  { accept: 'application/json', authorization: "Bearer #{@session.to_jwt(request_double)}" }
+end

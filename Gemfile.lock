@@ -1,7 +1,7 @@
 GIT
   remote: https://f978ea15efa23d1660a55e6678e6022f8f2ffe76:x-oauth-basic@github.com/rickmark/hot_mess_models.git
-  revision: eefd526c87ef6af94b745a442cb43a9e80e9a841
-  branch: master
+  revision: 600711208c3b5393cec9e8a076b10e7e19677204
+  branch: next
   specs:
     hot_mess_models (0.1.0)
       activerecord (~> 5.0)
@@ -78,7 +78,7 @@ GEM
     geocoder (1.4.3)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
-    google-api-client (0.10.0)
+    google-api-client (0.10.1)
       addressable (~> 2.3)
       googleauth (~> 0.5)
       httpclient (~> 2.7)
@@ -142,9 +142,9 @@ GEM
     nokogiri (1.7.0.1)
       mini_portile2 (~> 2.1.0)
     os (0.9.6)
-    pg (0.19.0)
+    pg (0.20.0)
     public_suffix (2.0.5)
-    puma (3.8.0)
+    puma (3.8.1)
     rack (2.0.1)
     rack-cors (0.4.1)
     rack-test (0.6.3)
@@ -280,6 +280,7 @@ DEPENDENCIES
   rgeo-geojson
   rspec-rails
   ruby-kafka
+  soundcloud
   spring
   spring-watcher-listen (~> 2.0.0)
   typhoeus

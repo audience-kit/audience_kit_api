@@ -10,5 +10,5 @@ json.friend_count 0
 
 if @venue.google_location
   json.address (@venue.street || "").gsub!(/,.+/, "")
-  json.phone @venue.phone
+  json.phone @venue.phone_number
 end

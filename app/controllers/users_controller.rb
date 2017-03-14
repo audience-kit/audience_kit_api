@@ -10,7 +10,7 @@ class UsersController < ApplicationController
     @point = RGeo::Geographic.simple_mercator_factory.point @longitude, @latitude
 
     user_location = HotMessModels::UserLocation.new
-    user_location.location = @point
+    user_location.point = @point
 
     user_location.venue = HotMessModels::Venue.closest @point, within: true
     Rails.logger.info "Location #{@point} registered venue as #{user_location.venue.id}" if user_location.venue
@@ -25,6 +25,9 @@ class UsersController < ApplicationController
         user_location.venue = HotMessModels::Venue.find_by(locale: user_location.locale, beacon_id: user_location.beacon_minor)
       end
     end
+
+    user_location.locale ||= user_location.venue.locale if user_location.venue
+    user_location.locale = HotMessModels::Locale.closest unless user_location.locale
 
     user.user_locations << user_location
     user.save

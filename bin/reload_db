@@ -1,0 +1,12 @@
+#!/bin/bash
+
+dropdb hotmess_development
+dropdb hotmess_test
+dropdb hotmess_production
+
+createdb hotmess_production
+echo "Restoring $0"
+pg_restore -d hotmess_production $1
+
+createdb -T hotmess_production hotmess_development
+createdb -T hotmess_production hotmess_test

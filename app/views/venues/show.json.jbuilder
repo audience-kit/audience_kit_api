@@ -1,3 +1,3 @@
 json.venue do
-  partial! 'venue'
+  json.partial! 'venue'
 end
