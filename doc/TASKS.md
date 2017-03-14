@@ -3,23 +3,22 @@
 ## Client
 - BUG: Phone number when nil from server should not show
 - BUG: No back on now view (NoRepro - ChrisN)
+- Optimize social icons
+- Design revision on person page
+- Cache images in client
 - Improve friends with round icons instead of list for here now
 - Beacon based user_locations
-- Person Social media
-- Person SoundCloud tracks
 - Request retry
 - Improvements to the launch and first run experience
-- Cache images in client
 - Guard view for locations services disabled
 - RSVP scope request
 - RSVP buttons if scope granted
 - Page / Venue "can_like" / "liked" attribute
-- Optimize social icons
+- Play tracks in app
 
 ## API
-- Project venue_pages into social_links (enhance with handle, top 1 by order, hold for materialized views?)
+- Social links where no "handle"
 - Venue exit events
-- Person SoundCloud tracks
 - Encrypt facebook_token / email address
 - Cache images on server
 - Mutual friends API to determine social score for venue
@@ -37,7 +36,6 @@
   - 11:11 Eleven Eleven
   - Bill's Gay Nineties
   - Evolve
-
 
 ### Facebook Graph Objects (ugh, please don't make me)
 - Check in via app?  (consent only)
@@ -65,6 +63,10 @@
 
 # Done
 ## Week 9
+- API: Person SoundCloud tracks
+- Project venue_pages into social_links (enhance with handle, top 1 by order, hold for materialized views?)
+- Client: Person Social media
+- Client: Person SoundCloud tracks
 - **REBUILD IMPORTERS FOR NEW DATA MODEL**
 - **REBUILD API TO MATCH DATA MODEL**
 - **NORMALIZE DATA MODEL**
