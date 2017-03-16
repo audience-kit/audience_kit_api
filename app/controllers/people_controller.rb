@@ -1,6 +1,8 @@
 class PeopleController < ApplicationController
   include Concerns::PageController
 
+  skip_before_action :authenticate, only: [ :picture, :cover ]
+
   def index
     @people  = HotMessModels::Person.includes(:page).where(global: true)
     @people += HotMessModels::PersonLocale.includes(person: :page).where(locale_id: params[:locale_id]).map { |pl| pl.person }

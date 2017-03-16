@@ -2,7 +2,7 @@ class VenuesController < ApplicationController
   include Concerns::LocationParameters
   include Concerns::PageController
 
-  skip_before_action :authenticate, only: :photo
+  skip_before_action :authenticate, only: [ :photo, :picture, :cover ]
 
   def index
     @venues =  HotMessModels::Venue.joins(:location).includes(venue_pages: :page)
