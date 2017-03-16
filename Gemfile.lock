@@ -1,6 +1,6 @@
 GIT
   remote: https://f978ea15efa23d1660a55e6678e6022f8f2ffe76:x-oauth-basic@github.com/rickmark/hot_mess_models.git
-  revision: a992b8a04ef35f3e547d4faa9a1e1a9204e7c0c4
+  revision: 8c885ef6e058f0ae3deb835217841032e690e1b7
   branch: next
   specs:
     hot_mess_models (0.1.0)
@@ -144,7 +144,7 @@ GEM
     os (0.9.6)
     pg (0.20.0)
     public_suffix (2.0.5)
-    puma (3.8.1)
+    puma (3.8.2)
     rack (2.0.1)
     rack-cors (0.4.1)
     rack-test (0.6.3)

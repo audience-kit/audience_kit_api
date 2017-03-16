@@ -28,6 +28,7 @@ else
       json.is_open true
       json.photo_url "#{venue_url(venue)}/photo"
       json.description "You're the first to arrive."
+      json.distance venue['distance']
 
       json.hero_banner_url venue.hero_banner_url
       json.friend_count 0

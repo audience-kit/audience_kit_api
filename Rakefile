@@ -15,9 +15,9 @@ task :update => :environment do
 end
 
 namespace :update do
-  desc 'Update all Venue objects'
-  task :venues => :environment do
-    UpdateVenuesJob.perform_now(true)
+  desc 'Update all Facebook page objects'
+  task :pages => :environment do
+    UpdatePagesJob.perform_now
   end
 
   desc 'Update google place data'
@@ -28,11 +28,6 @@ namespace :update do
   desc 'Update events'
   task :events => :environment do
     Event.all.each &:update_details_from_facebook
-  end
-
-  desc 'Update people'
-  task :people => :environment do
-    UpdatePeopleJob.perform_now(true)
   end
 
   desc 'Update users'

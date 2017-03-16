@@ -39,6 +39,13 @@ Rails.application.routes.draw do
 
   resources :people, only: [ :index, :show ]
 
+  resources :tracks, only: [ :show ] do
+    member do
+      get :artwork
+      get :waveform
+    end
+  end
+
   namespace :callbacks do
     namespace :facebook do
       post :user, :to => '/callbacks#facebook_user'

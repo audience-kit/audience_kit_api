@@ -3,7 +3,6 @@
 ## Client
 - BUG: Phone number when nil from server should not show
 - BUG: No back on now view (NoRepro - ChrisN)
-- Optimize social icons
 - Design revision on person page
 - Cache images in client
 - Improve friends with round icons instead of list for here now
@@ -20,8 +19,8 @@
 - Social links where no "handle"
 - Venue exit events
 - Encrypt facebook_token / email address
-- Cache images on server
 - Mutual friends API to determine social score for venue
+- Taggable friends to buy cover - Open graph story
 
 ### Data Model
 - `change_column_null :people, :global, false`
@@ -63,6 +62,9 @@
 
 # Done
 ## Week 9
+- **EFFICIENT UPDATE JOBS**
+- Cache images on server
+- Optimize social icons
 - API: Person SoundCloud tracks
 - Project venue_pages into social_links (enhance with handle, top 1 by order, hold for materialized views?)
 - Client: Person Social media

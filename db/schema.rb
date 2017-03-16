@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170312143842) do
+ActiveRecord::Schema.define(version: 20170315164703) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -92,14 +92,21 @@ ActiveRecord::Schema.define(version: 20170312143842) do
   end
 
   create_table "pages", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
-    t.string   "name",                  null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.string   "name",                                  null: false
     t.string   "name_override"
-    t.bigint   "facebook_id",           null: false
-    t.jsonb    "facebook_graph",        null: false
+    t.bigint   "facebook_id",                           null: false
+    t.jsonb    "facebook_graph",                        null: false
     t.string   "facebook_access_token"
-    t.string   "facets",                             array: true
+    t.string   "facets",                                             array: true
+    t.string   "picture_url"
+    t.string   "picture_mime"
+    t.binary   "picture_image"
+    t.string   "cover_url"
+    t.string   "cover_mime"
+    t.binary   "cover_image"
+    t.boolean  "requires_user_token",   default: false, null: false
     t.index ["facebook_id"], name: "index_pages_on_facebook_id", unique: true, using: :btree
   end
 
@@ -169,6 +176,13 @@ ActiveRecord::Schema.define(version: 20170312143842) do
     t.string   "title",               null: false
     t.string   "provider_url",        null: false
     t.string   "provider_identifier", null: false
+    t.string   "artwork_url"
+    t.binary   "artwork_image"
+    t.string   "waveform_url"
+    t.binary   "waveform_image"
+    t.string   "download_url"
+    t.string   "stream_url"
+    t.jsonb    "metadata"
     t.index ["social_link_id"], name: "index_tracks_on_social_link_id", using: :btree
   end
 

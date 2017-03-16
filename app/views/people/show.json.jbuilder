@@ -19,6 +19,10 @@ json.person do
       json.title track.title
       json.provider track.social_link.provider
       json.provider_url track.provider_url
+      json.stream_url track.stream_url
+      json.download_url track.download_url
+      json.artwork_url artwork_track_url(track)
+      json.waveform_url waveform_track_url(track)
     end
   end
 
