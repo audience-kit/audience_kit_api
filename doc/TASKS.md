@@ -4,7 +4,6 @@
 - BUG: Phone number when nil from server should not show
 - BUG: No back on now view (NoRepro - ChrisN)
 - Design revision on person page
-- Cache images in client
 - Improve friends with round icons instead of list for here now
 - Beacon based user_locations
 - Request retry
@@ -64,6 +63,7 @@
 
 # Done
 ## Week 9
+- Cache images in client
 - **EFFICIENT UPDATE JOBS**
 - Cache images on server
 - Optimize social icons
