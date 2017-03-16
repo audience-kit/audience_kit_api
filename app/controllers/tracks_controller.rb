@@ -1,4 +1,6 @@
 class TracksController < ApplicationController
+  skip_before_action :authenticate, only: [ :waveform, :artwork ]
+
   def show
     @track = HotMessModels::Track.find(params[:id])
 
