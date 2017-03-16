@@ -39,6 +39,7 @@
 ### Facebook Graph Objects (ugh, please don't make me)
 - Check in via app?  (consent only)
 - Attended / attending event?
+- Bought tickets with friends! (win)
 
 ### API Privacy
 - Sunset policy on records
@@ -57,6 +58,7 @@
 - Marketing site use CORS API for "preview content"
 
 ## Other
+- Add DJ Grind and Triston Jaxx
 - Investigate bloom filters to refine accuracy of venue while protecting privacy
 - Cease and Desist to zYouSoft for Trademark infringement
 

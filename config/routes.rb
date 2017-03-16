@@ -18,6 +18,8 @@ Rails.application.routes.draw do
 
     member do
       get :photo
+      get :picture
+      get :cover
     end
 
     collection do
@@ -27,9 +29,7 @@ Rails.application.routes.draw do
 
   resources :locales, only: [ :index, :show ] do
     resources :venues, only: [ :index ]
-
     resources :events, only: [ :index ]
-
     resources :people, only: [ :index ]
 
     member do
@@ -37,7 +37,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :people, only: [ :index, :show ]
+  resources :people, only: [ :index, :show ] do
+    member do
+      get :picture
+      get :cover
+    end
+  end
 
   resources :tracks, only: [ :show ] do
     member do

@@ -1,5 +1,6 @@
 class VenuesController < ApplicationController
   include Concerns::LocationParameters
+  include Concerns::PageController
 
   skip_before_action :authenticate, only: :photo
 
@@ -68,5 +69,13 @@ class VenuesController < ApplicationController
     end
 
     redirect_to 'https://hotmess.social/assets/homepage_background-f5ffbb436c2e5c0f7e822a376bb604a5fb66d0acaff989ab330f1246b1ad822c.jpg'
+  end
+
+  def picture
+    page_image(HotMessModels::Venue.find(params[:id]).page)
+  end
+
+  def cover
+    page_image(HotMessModels::Venue.find(params[:id]).page, :cover)
   end
 end
