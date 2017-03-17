@@ -15,6 +15,8 @@ class StatusController < ApplicationController
       result[:database] = false
     end
 
+    result[:client] = YAML.load_file(Rails.root.join('config/clients.yml'))
+
     render json: result
   end
 end

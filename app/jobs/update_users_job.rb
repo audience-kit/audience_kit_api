@@ -1,14 +1,10 @@
 class UpdateUsersJob < ApplicationJob
 
   def perform
-    users = User.where.not(facebook_token: nil)
+    users = HotMessModels::User.where.not(facebook_token: nil).to_a
 
     users.each do |user|
-      graph = Koala::Facebook::API.new user.facebook_token
-
-      user.update_from graph.get_object('/me')
-
-      user.save
+      UpdateUserJob.perform_now user
     end
   end
 end

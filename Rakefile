@@ -44,4 +44,9 @@ namespace :update do
   task :social => :environment do
     UpdateSocialLinksJob.perform_now
   end
+
+  desc 'Update users'
+  task :users => :environment do
+    UpdateUsersJob.perform_now
+  end
 end

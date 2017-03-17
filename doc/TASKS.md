@@ -1,6 +1,8 @@
 # Next
 
 ## Client
+- Prevent app from opening if build < minimum_build
+- Kingfisher - Send authorization header by subclassing ImageDownloader
 - BUG: Phone number when nil from server should not show
 - BUG: No back on now view (NoRepro - ChrisN)
 - Design revision on person page
@@ -15,6 +17,7 @@
 - Play tracks in app
 
 ## API
+- Images should be authenticated
 - Social links where no "handle"
 - Venue exit events
 - Encrypt facebook_token / email address

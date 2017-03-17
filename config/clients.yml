@@ -1,0 +1,5 @@
+mobile:
+  apple:
+    current_version: 1.0.10
+    minimum_version: 1.0.10
+    minimum_build: 492
