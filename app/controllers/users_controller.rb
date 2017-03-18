@@ -26,7 +26,7 @@ class UsersController < ApplicationController
     end
 
     user_location.location = user_location.venue.location if user_location.venue
-    user_location.location = HotMessModels::Locale.closest(@point).location unless user_location.locale
+    user_location.location = HotMessModels::Locale.closest(@point).location unless user_location.location
 
     user_location.save
   end
