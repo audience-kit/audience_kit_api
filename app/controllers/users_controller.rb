@@ -9,8 +9,7 @@ class UsersController < ApplicationController
 
     @point = RGeo::Geographic.simple_mercator_factory.point @longitude, @latitude
 
-    user_location = HotMessModels::UserLocation.new
-    user_location.point = @point
+    user_location = HotMessModels::UserLocation.new user: user, point: @point
 
     user_location.venue = HotMessModels::Venue.closest @point, within: true
     Rails.logger.info "Location #{@point} registered venue as #{user_location.venue.id}" if user_location.venue
@@ -26,11 +25,10 @@ class UsersController < ApplicationController
       end
     end
 
-    user_location.locale ||= user_location.venue.locale if user_location.venue
-    user_location.locale = HotMessModels::Locale.closest unless user_location.locale
+    user_location.location = user_location.venue.location if user_location.venue
+    user_location.location = HotMessModels::Locale.closest(@point).location unless user_location.locale
 
-    user.user_locations << user_location
-    user.save
+    user_location.save
   end
 
   def picture
