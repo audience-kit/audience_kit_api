@@ -13,6 +13,7 @@ class ApplicationController < ActionController::API
 
           @token = request.env['decoded_token'] = decoded_token[0]
           request.env['role'] = @token['role']
+          request.env['token_id'] = @token['token_id']
 
           return if @user_id
         end

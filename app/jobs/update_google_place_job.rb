@@ -19,8 +19,6 @@ class UpdateGooglePlaceJob < ApplicationJob
 
         place.save
       end
-
-      HotMessModels::Venue.where('location_id IS NOT NULL').each { |v| v.update_data }
     rescue => ex
       puts "Error => #{ex}"
     end
