@@ -170,12 +170,12 @@ ActiveRecord::Schema.define(version: 20170317125525) do
   end
 
   create_table "tracks", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
-    t.uuid     "social_link_id",      null: false
-    t.string   "title",               null: false
-    t.string   "provider_url",        null: false
-    t.string   "provider_identifier", null: false
+    t.datetime "created_at",          default: -> { "now()" }, null: false
+    t.datetime "updated_at",          default: -> { "now()" }, null: false
+    t.uuid     "social_link_id",                               null: false
+    t.string   "title",                                        null: false
+    t.string   "provider_url",                                 null: false
+    t.string   "provider_identifier",                          null: false
     t.string   "artwork_url"
     t.binary   "artwork_image"
     t.string   "waveform_url"
@@ -187,13 +187,13 @@ ActiveRecord::Schema.define(version: 20170317125525) do
   end
 
   create_table "user_locations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime  "created_at",                                                           null: false
-    t.datetime  "updated_at",                                                           null: false
-    t.geography "point",       limit: {:srid=>4326, :type=>"point", :geographic=>true}
+    t.datetime  "created_at",                                                           default: -> { "now()" }, null: false
+    t.datetime  "updated_at",                                                           default: -> { "now()" }, null: false
+    t.geography "point",       limit: {:srid=>4326, :type=>"point", :geographic=>true},                          null: false
     t.uuid      "venue_id"
-    t.uuid      "session_id",                                                           null: false
-    t.uuid      "location_id",                                                          null: false
-    t.boolean   "beacon"
+    t.uuid      "session_id",                                                                                    null: false
+    t.uuid      "location_id",                                                                                   null: false
+    t.boolean   "beacon",                                                               default: false,          null: false
     t.index ["location_id"], name: "index_user_locations_on_location_id", using: :btree
     t.index ["session_id"], name: "index_user_locations_on_session_id", using: :btree
     t.index ["venue_id"], name: "index_user_locations_on_venues_id", using: :btree
@@ -235,9 +235,9 @@ ActiveRecord::Schema.define(version: 20170317125525) do
 
   create_table "venues", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid      "locale_id"
-    t.boolean   "hidden",                                                                        default: false
-    t.integer   "order",                                                                         default: 1000
-    t.integer   "distance_tolerance"
+    t.boolean   "hidden",                                                                        default: false, null: false
+    t.integer   "order",                                                                         default: 1000,  null: false
+    t.integer   "distance_tolerance",                                                            default: 250,   null: false
     t.geography "envelope",           limit: {:srid=>4326, :type=>"polygon", :geographic=>true}
     t.uuid      "location_id"
     t.uuid      "photo_id"
@@ -251,6 +251,11 @@ ActiveRecord::Schema.define(version: 20170317125525) do
   add_foreign_key "friendships", "users", column: "friend_low_id"
   add_foreign_key "sessions", "devices"
   add_foreign_key "sessions", "users"
+  add_foreign_key "tracks", "social_links", name: "tracks_social_links_id_fk"
+  add_foreign_key "user_locations", "locations", name: "user_locations_locations_id_fk"
+  add_foreign_key "user_locations", "sessions", name: "user_locations_sessions_id_fk"
+  add_foreign_key "user_locations", "venues", name: "user_locations_venues_id_fk"
   add_foreign_key "venues", "locales"
+  add_foreign_key "venues", "locations", name: "venues_locations_id_fk"
   add_foreign_key "venues", "photos", column: "hero_banner_id"
 end

@@ -10,14 +10,6 @@ if @venue
   json.venue do
     json.partial! 'venue'
   end
-
-  json.friends do
-    json.array! @friends do |friend|
-      json.id friend.id
-      json.name friend.name
-      json.facebook_id friend.facebook_id
-    end
-  end
 else
   json.venues do
     json.array! @venues do |venue|
@@ -39,6 +31,14 @@ else
       end
 
     end
+  end
+end
+
+json.friends do
+  json.array! @friends do |friend|
+    json.id friend.id
+    json.name friend.name
+    json.facebook_id friend.facebook_id
   end
 end
 

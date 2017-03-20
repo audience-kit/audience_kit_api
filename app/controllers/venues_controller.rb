@@ -38,7 +38,8 @@ class VenuesController < ApplicationController
       @events = @venue.events
       @image_url = "#{url_for(@venue)}/photo"
 
-      @friends = @venue.user_locations.recent.map { |ul| ul.user }.select { |u| u != user }.uniq.take(5)
+      @friends = @venue.user_locations.includes(session: :user).recent.order(created_at: :desc).map { |ul| ul.session.user }.select { |u| u != user }.uniq.take(5)
+      @events = @venue.events
     else
       @title = "Happening Now in #{@locale.name}"
       @image_url = 'https://hotmess.social/assets/homepage_background-f5ffbb436c2e5c0f7e822a376bb604a5fb66d0acaff989ab330f1246b1ad822c.jpg'
@@ -52,6 +53,8 @@ class VenuesController < ApplicationController
         @image_url = "https://maps.googleapis.com/maps/api/place/photo?maxheight=1600&maxwidth=1600&key=#{photo['api_key']}&photoreference=#{photo['photo_reference']}"
       end
 
+      # TODO: Users who have issued recent pings
+      @friends = []
       @events = @locale.events.take(5)
       @venues = @locale.venues.joins(:location).select("venues.*, st_distance(locations.location, '#{@point.as_text}') as distance").order('distance').take(5)
     end
