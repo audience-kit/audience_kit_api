@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  skip_before_action :authenticate, only: [ :picture ]
+
   def me
     @user = user
   end
@@ -32,6 +34,8 @@ class UsersController < ApplicationController
   end
 
   def picture
-    redirect_to "https://facebook.com/#{HotMessModels::User.find(params[:id]).facebook_id}/picture"
+    user_object = HotMessModels::User.find(params[:id])
+
+    send_data user_object.picture_image, type: user_object.picture_mime
   end
 end

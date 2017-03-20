@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   post '/me/location', :to => 'users#location'
 
+
   resources :events, only: [ :index, :show ]
 
   resources :venues, only: [ :index, :show ] do
@@ -63,6 +64,11 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :users, only: [ :show ] do
+    member do
+      get :picture
+    end
+  end
 
   root to: 'status#index'
 end
