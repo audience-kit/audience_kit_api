@@ -1,4 +1,6 @@
 class LocalesController < ApplicationController
+  skip_before_action :authenticate, only: [ :photo ]
+
   include Concerns::LocationParameters
 
   def index
