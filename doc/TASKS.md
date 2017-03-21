@@ -1,22 +1,25 @@
 # Next
 
 ## Client
+- **VENUE CHAT VIEW**
+- Set up "Club Madagascar"
+- Native like on events
+- Native like on venues
+- Side scroll social_links
 - Prevent app from opening if build < minimum_build
 - Kingfisher - Send authorization header by subclassing ImageDownloader
 - BUG: Phone number when nil from server should not show
 - BUG: No back on now view (NoRepro - ChrisN)
-- Design revision on person page
-- Improve friends with round icons instead of list for here now
 - Beacon based user_locations
 - Request retry
 - Improvements to the launch and first run experience
 - Guard view for locations services disabled
 - RSVP scope request
 - RSVP buttons if scope granted
-- Page / Venue "can_like" / "liked" attribute
 - Play tracks in app
 
 ## API
+- **VENUE CHAT CHANNEL**
 - Images should be authenticated
 - Social links where no "handle"
 - Venue exit events
@@ -25,7 +28,6 @@
 - Taggable friends to buy cover - Open graph story
 
 ### Data Model
-- `change_column_null :people, :global, false`
 - Recurring events (not facebook linked)
 - Venues lacking pages:
   - The Hanger
@@ -66,6 +68,16 @@
 
 # Done
 ## Week 9
+- User chekins
+- API user images
+- Venue message aggregate
+- **REALTIME CHANNEL**
+- Page / Venue "can_like" / "liked" attribute
+- Improve friends with round icons instead of list for here now
+- Design revision on person page
+- Client shows liked when already liked
+- Import user_likes
+- Locations cache images
 - Cache images in client
 - **EFFICIENT UPDATE JOBS**
 - Cache images on server
