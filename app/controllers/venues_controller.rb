@@ -66,6 +66,7 @@ class VenuesController < ApplicationController
   end
 
   def photo
+    response.headers["Expires"] = 1.day.from_now.httpdate
     @venue = HotMessModels::Venue.find(params[:id])
 
     if @venue.location&.hero_image
@@ -76,10 +77,12 @@ class VenuesController < ApplicationController
   end
 
   def picture
+    response.headers["Expires"] = 1.day.from_now.httpdate
     page_image(HotMessModels::Venue.find(params[:id]).page)
   end
 
   def cover
+    response.headers["Expires"] = 1.day.from_now.httpdate
     page_image(HotMessModels::Venue.find(params[:id]).page, :cover)
   end
 end

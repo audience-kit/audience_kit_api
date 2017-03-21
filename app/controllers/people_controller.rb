@@ -18,10 +18,12 @@ class PeopleController < ApplicationController
   end
 
   def picture
+    response.headers["Expires"] = 1.day.from_now.httpdate
     page_image(HotMessModels::Person.find(params[:id]).page)
   end
 
   def cover
+    response.headers["Expires"] = 1.day.from_now.httpdate
     page_image(HotMessModels::Person.find(params[:id]).page, :cover)
   end
 end
