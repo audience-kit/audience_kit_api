@@ -1,6 +1,6 @@
 GIT
   remote: https://f978ea15efa23d1660a55e6678e6022f8f2ffe76:x-oauth-basic@github.com/rickmark/hot_mess_models.git
-  revision: 9198b4f9733125639331a05758e2d03090af9fcd
+  revision: 73ca39cae5104224ef81f33987cf28c5acf1b985
   branch: next
   specs:
     hot_mess_models (0.1.0)
@@ -139,7 +139,7 @@ GEM
     multipart-post (2.0.0)
     newrelic_rpm (4.0.0.332)
     nio4r (2.0.0)
-    nokogiri (1.7.0.1)
+    nokogiri (1.7.1)
       mini_portile2 (~> 2.1.0)
     os (0.9.6)
     pg (0.20.0)

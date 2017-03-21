@@ -2,6 +2,7 @@ json.person do
   json.id @person.id
   json.name @person.display_name
   json.facebook_id @person.facebook_id
+  json.is_liked @is_liked
 
   json.social_links do
     json.array! @person.social_links do |link|

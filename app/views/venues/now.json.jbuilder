@@ -9,6 +9,15 @@ end
 if @venue
   json.venue do
     json.partial! 'venue'
+
+    json.messages do
+      json.array! @venue.venue_messages do |message|
+        json.id message.id
+        json.sent_at message.created_at
+        json.sending_user_id message.user_id
+        json.message message.message
+      end
+    end
   end
 else
   json.venues do

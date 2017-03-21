@@ -22,7 +22,32 @@ class UpdateUserJob < ApplicationJob
 
       user_graph_client = Koala::Facebook::API.new user.facebook_token
 
-      friends = user_graph_client.get_connections(user.facebook_id, :friends)
+      # This will be additive only, should remove
+      puts 'Inserting user likes'
+      user_likes = user_graph_client.get_connections :me, :likes
+      existing_user_likes = user.user_likes.includes(:page)
+
+      while user_likes
+        user_likes.each do |like|
+          next if existing_user_likes.any? { |ul| ul.page.facebook_id == like['id'] }
+
+          page = HotMessModels::Page.find_by(facebook_id: like['id'])
+
+          next unless page
+
+          puts "Adding like for page #{page.name}"
+          user.user_likes.find_or_create_by(user: user, page: page)
+        end
+        user_likes = user_likes.next_page
+      end
+
+      friends = []
+      friend_pages = user_graph_client.get_connections(user.facebook_id, :friends)
+      while friend_pages
+        friend_pages.each { |f| firends << f }
+        friend_pages = friend_pages.next_page
+      end
+
       puts "Object #{user.name} has #{friends.count} application friends"
       friends.each do |friend|
         friend_id = friend['id'].to_i

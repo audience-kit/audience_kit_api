@@ -21,6 +21,8 @@ class VenuesController < ApplicationController
 
   def show
     @venue = HotMessModels::Venue.includes(venue_pages: :page).find(params[:id])
+
+    @is_liked = HotMessModels::UserLike.find_by(user: user, page: @venue.page) ? true : false
   end
 
   def closest
@@ -36,9 +38,10 @@ class VenuesController < ApplicationController
     if @venue
       @title = @venue.display_name
       @events = @venue.events
+      @is_liked = HotMessModels::UserLike.find_by(user: user, page: @venue.page) ? true : false
       @image_url = "#{url_for(@venue)}/photo"
 
-      @friends = @venue.user_locations.includes(session: :user).recent.order(created_at: :desc).map { |ul| ul.session.user }.select { |u| u != user }.uniq.take(5)
+      @friends = @venue.user_locations.includes(session: :user).recent.order(created_at: :desc).map { |ul| ul.session.user }.select { |u| u != user }.uniq.take(15)
       @events = @venue.events
     else
       @title = "Happening Now in #{@locale.name}"
@@ -65,13 +68,11 @@ class VenuesController < ApplicationController
   def photo
     @venue = HotMessModels::Venue.find(params[:id])
 
-    if @venue.google_location && @venue.google_location['photos'] && @venue.google_location['photos'].any?
-      photo = @venue.google_location['photos'].first
-
-      return redirect_to "https://maps.googleapis.com/maps/api/place/photo?maxheight=1600&maxwidth=1600&key=#{photo['api_key']}&photoreference=#{photo['photo_reference']}"
+    if @venue.location&.hero_image
+      return send_data @venue.location.hero_image, type: @venue.location.hero_mime
     end
 
-    redirect_to 'https://hotmess.social/assets/homepage_background-f5ffbb436c2e5c0f7e822a376bb604a5fb66d0acaff989ab330f1246b1ad822c.jpg'
+    send_file Rails.root.join "public/homepage_background.jpg"
   end
 
   def picture

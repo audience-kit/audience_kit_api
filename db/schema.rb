@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170317125525) do
+ActiveRecord::Schema.define(version: 20170321154418) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,6 +87,9 @@ ActiveRecord::Schema.define(version: 20170317125525) do
     t.jsonb     "google_location",                                                          null: false
     t.geography "location",        limit: {:srid=>4326, :type=>"point", :geographic=>true}, null: false
     t.uuid      "locale_id",                                                                null: false
+    t.string    "hero_url"
+    t.binary    "hero_image"
+    t.string    "hero_mime"
     t.index ["google_place_id"], name: "index_locations_on_google_place_id", unique: true, using: :btree
     t.index ["locale_id"], name: "index_locations_on_locale_id", using: :btree
   end
@@ -186,6 +189,15 @@ ActiveRecord::Schema.define(version: 20170317125525) do
     t.index ["social_link_id"], name: "index_tracks_on_social_link_id", using: :btree
   end
 
+  create_table "user_likes", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid     "user_id",    null: false
+    t.uuid     "page_id",    null: false
+    t.index ["page_id"], name: "index_user_likes_on_page_id", using: :btree
+    t.index ["user_id"], name: "index_user_likes_on_user_id", using: :btree
+  end
+
   create_table "user_locations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.datetime  "created_at",                                                           default: -> { "now()" }, null: false
     t.datetime  "updated_at",                                                           default: -> { "now()" }, null: false
@@ -220,6 +232,16 @@ ActiveRecord::Schema.define(version: 20170317125525) do
     t.index ["facebook_id"], name: "users_facebook_id_uindex", unique: true, using: :btree
   end
 
+  create_table "venue_messages", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid     "venue_id"
+    t.uuid     "user_id"
+    t.string   "message"
+    t.index ["user_id"], name: "index_venue_messages_on_user_id", using: :btree
+    t.index ["venue_id"], name: "index_venue_messages_on_venue_id", using: :btree
+  end
+
   create_table "venue_pages", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
@@ -252,9 +274,13 @@ ActiveRecord::Schema.define(version: 20170317125525) do
   add_foreign_key "sessions", "devices"
   add_foreign_key "sessions", "users"
   add_foreign_key "tracks", "social_links", name: "tracks_social_links_id_fk"
+  add_foreign_key "user_likes", "pages"
+  add_foreign_key "user_likes", "users"
   add_foreign_key "user_locations", "locations", name: "user_locations_locations_id_fk"
   add_foreign_key "user_locations", "sessions", name: "user_locations_sessions_id_fk"
   add_foreign_key "user_locations", "venues", name: "user_locations_venues_id_fk"
+  add_foreign_key "venue_messages", "users"
+  add_foreign_key "venue_messages", "venues"
   add_foreign_key "venues", "locales"
   add_foreign_key "venues", "locations", name: "venues_locations_id_fk"
   add_foreign_key "venues", "photos", column: "hero_banner_id"
