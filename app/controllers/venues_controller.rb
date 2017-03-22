@@ -52,8 +52,7 @@ class VenuesController < ApplicationController
           @locale.location.photos &&
           @locale.location.photos.any?
 
-        photo = @locale.location.photos.first
-        @image_url = "https://maps.googleapis.com/maps/api/place/photo?maxheight=1600&maxwidth=1600&key=#{photo['api_key']}&photoreference=#{photo['photo_reference']}"
+        @image_url = "#{url_for(@locale)}/photo"
       end
 
       # TODO: Users who have issued recent pings
