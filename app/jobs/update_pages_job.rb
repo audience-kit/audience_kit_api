@@ -24,8 +24,12 @@ class UpdatePagesJob < ApplicationJob
         page.update_graph object_graph, client: graph_client
         page.save
 
-        events = graph_client.get_connection page.facebook_id, :events
-        puts "Object #{page.name} has #{events.count} events"
+        if page.venue and page.venue.hidden
+          events = []
+        else
+          events = graph_client.get_connection page.facebook_id, :events
+          puts "Object #{page.name} has #{events.count} events"
+        end
 
         events.select { |e| e['start_time'] && DateTime.parse(e['start_time']) > DateTime.now }.each { |event| update_events page, event, graph_client }
 
