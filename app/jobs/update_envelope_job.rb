@@ -8,6 +8,8 @@ class UpdateEnvelopeJob < ApplicationJob
 
     HotMessModels::Locale.all.each do |locale|
       begin
+        next unless locale.venues.any?
+
         puts "Updating Envelope for Locale -> #{locale.name}"
         locale.update_envelope
         locale.save
