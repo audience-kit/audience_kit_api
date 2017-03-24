@@ -44,9 +44,13 @@ class TokenController < ApplicationController
       @token = @session.to_jwt(request).to_s
 
       UpdateUserJob.perform_later @user
+    rescue Koala::Facebook::APIError => ex
+      logger.error ex
+      #UGLY - gracefully handle some facebook exceptions
+      return render template: 'shared/fault', status: 400
     rescue => ex
       logger.error ex
-      return render status: 400
+      return render template: 'shared/fault', status: 400
     end
   end
 end

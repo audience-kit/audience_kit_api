@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170321154418) do
+ActiveRecord::Schema.define(version: 20170324174518) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -228,6 +228,7 @@ ActiveRecord::Schema.define(version: 20170321154418) do
     t.binary   "picture_image"
     t.string   "picture_mime"
     t.string   "picture_url"
+    t.string   "facebook_scopes",                       array: true
     t.index ["email_address"], name: "index_users_on_email_address", using: :btree
     t.index ["facebook_id"], name: "users_facebook_id_uindex", unique: true, using: :btree
   end

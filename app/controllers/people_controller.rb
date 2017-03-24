@@ -9,6 +9,8 @@ class PeopleController < ApplicationController
     @people  = @people.uniq.sort_by { |p| p.order }
 
     @user_likes = user.user_likes.to_a.map { |ul| [ ul.page, ul ] }.to_h
+
+    @people = @people.select { |p| p.like_required == false || @user_likes.key?(p) }
   end
 
   def show
