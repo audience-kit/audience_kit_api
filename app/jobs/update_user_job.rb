@@ -44,7 +44,7 @@ class UpdateUserJob < ApplicationJob
       friends = []
       friend_pages = user_graph_client.get_connections(user.facebook_id, :friends)
       while friend_pages
-        friend_pages.each { |f| firends << f }
+        friend_pages.each { |f| friends << f }
         friend_pages = friend_pages.next_page
       end
 
