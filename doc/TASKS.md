@@ -18,6 +18,7 @@
 - Play tracks in app
 
 ## API
+- Reissue local.hotmess.social certificate
 - Images should be authenticated
 - Social links where no "handle"
 - Venue exit events
