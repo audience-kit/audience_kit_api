@@ -1,7 +1,6 @@
 # Next
 
 ## Client
-- **VENUE CHAT VIEW**
 - Set up "Club Madagascar"
 - Native like on events
 - Native like on venues
@@ -19,7 +18,6 @@
 - Play tracks in app
 
 ## API
-- **VENUE CHAT CHANNEL**
 - Images should be authenticated
 - Social links where no "handle"
 - Venue exit events
@@ -67,6 +65,18 @@
 - Cease and Desist to zYouSoft for Trademark infringement
 
 # Done
+## Week 10
+- Improvements to person view
+- **VENUE CHAT CHANNEL**
+- **VENUE CHAT VIEW**
+- Environment switching
+- API restrict venues where like_required
+- Show person "liked"
+- Login / logout improvement
+- BUG: Hidden venue import
+- iOS refactor
+- **ANDROID START**
+
 ## Week 9
 - User chekins
 - API user images
