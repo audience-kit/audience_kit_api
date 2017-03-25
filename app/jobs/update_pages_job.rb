@@ -84,12 +84,11 @@ class UpdatePagesJob < ApplicationJob
             venue_page_link.save
           end
         end
-
-        # TODO: This is a kluge
-        event_model.event_people << HotMessModels::EventPerson.new(person: page.person) if page.person and not event_model.event_people.any?
       else
         puts "No venue for #{event_graph['name']} (#{event_graph['id']})"
       end
+
+      HotMessModels::EventPerson.find_or_create_by(person: page.person, event: event_model) if page.person
 
       event_model.update_details_from_facebook if event_model.venue
     rescue => ex
