@@ -1,6 +1,6 @@
 GIT
   remote: https://f978ea15efa23d1660a55e6678e6022f8f2ffe76:x-oauth-basic@github.com/rickmark/hot_mess_models.git
-  revision: 73ca39cae5104224ef81f33987cf28c5acf1b985
+  revision: 10a85777ae412870c3d2de73c1a630f6128919cb
   branch: next
   specs:
     hot_mess_models (0.1.0)
@@ -242,7 +242,7 @@ GEM
     thrift (0.10.0.0)
     typhoeus (1.1.2)
       ethon (>= 0.9.0)
-    tzinfo (1.2.2)
+    tzinfo (1.2.3)
       thread_safe (~> 0.1)
     uber (0.1.0)
     vegas (0.1.11)
