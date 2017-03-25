@@ -3,6 +3,7 @@ class UpdateUserJob < ApplicationJob
     puts "Updating user #{user.name}"
     begin
       graph = Koala::Facebook::API.new Concerns::Facebook.oauth.get_app_access_token
+      user_graph_client = Koala::Facebook::API.new user.facebook_token
 
       user_graph = graph.get_object user.facebook_id
 
@@ -17,10 +18,13 @@ class UpdateUserJob < ApplicationJob
         user.picture_mime = response['Content-Type']
       end
 
+      scopes = user_graph_client.get_connections :me, :permissions
+      user.facebook_scopes = scopes.select{ |s| s['status'] == 'granted' }.map { |s| s['permission'] }
+
       user.update_from user_graph
       user.save
 
-      user_graph_client = Koala::Facebook::API.new user.facebook_token
+
 
       # This will be additive only, should remove
       puts 'Inserting user likes'

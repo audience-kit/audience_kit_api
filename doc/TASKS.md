@@ -1,7 +1,7 @@
 # Next
 
 ## Client
-- Set up "Club Madagascar"
+- Set up "Everafter"
 - Native like on events
 - Native like on venues
 - Side scroll social_links
@@ -18,6 +18,8 @@
 - Play tracks in app
 
 ## API
+- Support obscure venue (hosted at neighbors without metntion)
+- Move to require app secret mode for Facebook graph
 - Reissue local.hotmess.social certificate
 - Images should be authenticated
 - Social links where no "handle"
@@ -56,6 +58,8 @@
 - Facebook login
 
 ## Marketing
+- Rewrite with Smarty countdown May 20
+- Updates to contact / owner profile
 - BUG: Some sign-ups dont contain email
 - `hotmess` gem
 - Marketing site use CORS API for "preview content"
@@ -64,8 +68,17 @@
 - Add DJ Grind and Triston Jaxx
 - Investigate bloom filters to refine accuracy of venue while protecting privacy
 - Cease and Desist to zYouSoft for Trademark infringement
+- Noncesoft / Hot Mess email
+- DUNS number
+- Apple company developer account
 
 # Done
+## Week 11
+- Staging server configured
+- Mail / MSODS
+- 1PW
+- Analytics tag manager
+- Heroku teams
 ## Week 10
 - Improvements to person view
 - **VENUE CHAT CHANNEL**
