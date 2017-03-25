@@ -24,7 +24,7 @@ class UpdatePagesJob < ApplicationJob
         page.update_graph object_graph, client: graph_client
         page.save
 
-        if page.venue and page.venue.hidden
+        if page.venues.any? and page.venues.any? { |p| not p.hidden }
           events = []
         else
           events = graph_client.get_connection page.facebook_id, :events
