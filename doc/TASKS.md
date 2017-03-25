@@ -13,7 +13,6 @@
 - Request retry
 - Improvements to the launch and first run experience
 - Guard view for locations services disabled
-- RSVP scope request
 - RSVP buttons if scope granted
 - Play tracks in app
 
@@ -65,6 +64,7 @@
 - Marketing site use CORS API for "preview content"
 
 ## Other
+- RSVP scope request app review
 - Add DJ Grind and Triston Jaxx
 - Investigate bloom filters to refine accuracy of venue while protecting privacy
 - Cease and Desist to zYouSoft for Trademark infringement
@@ -74,6 +74,7 @@
 
 # Done
 ## Week 11
+- BUG: race condition with setting facebook_token
 - Staging server configured
 - Mail / MSODS
 - 1PW
