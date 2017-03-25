@@ -3,7 +3,7 @@ class UpdatePagesJob < ApplicationJob
     puts 'Performing page update'
     app_token = HotMessModels::Concerns::Facebook.oauth.get_app_access_token
 
-    HotMessModels::Page.where('updated_at < ?', 12.hour.ago).order(updated_at: :desc).each do |page|
+    HotMessModels::Page.where('updated_at < ? and hidden IS FALSE', 12.hour.ago).order(updated_at: :desc).each do |page|
       puts "Updating page #{page.name}"
       begin
         user_token = HotMessModels::User.where('facebook_token IS NOT NULL').order('RANDOM()').first.facebook_token
