@@ -31,12 +31,17 @@ class UpdatePagesJob < ApplicationJob
           puts "Object #{page.name} has #{events.count} events"
         end
 
-        events.select { |e| e['start_time'] && DateTime.parse(e['start_time']) > DateTime.now }.each { |event| update_events page, event, graph_client }
-
         if page.person
           if object_graph['username']
             HotMessModels::SocialLink.find_or_create_by(object_id: page.person.id, provider: 'facebook', handle: object_graph['username'])
           end
+
+          events = graph_client.get_connection page.facebook_id, :events
+        end
+
+        while events
+          events.select { |e| e['start_time'] && DateTime.parse(e['start_time']) > DateTime.now }.each { |event| update_events page, event, graph_client }
+          events = events.next_page
         end
 
         page.venues.each do |venue|

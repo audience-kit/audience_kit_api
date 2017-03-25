@@ -24,8 +24,6 @@ class UpdateUserJob < ApplicationJob
       user.update_from user_graph
       user.save
 
-
-
       # This will be additive only, should remove
       puts 'Inserting user likes'
       user_likes = user_graph_client.get_connections :me, :likes
@@ -76,7 +74,6 @@ class UpdateUserJob < ApplicationJob
         friendship.friend_low_id = HotMessModels::User.find_by(facebook_id: pair[0]).id
         friendship.friend_high_id = HotMessModels::User.find_by(facebook_id: pair[1]).id
         friendship.save
-
       end
     rescue => ex
       puts "Error updating #{user.name} => #{ex}"

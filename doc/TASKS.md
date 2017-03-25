@@ -5,7 +5,7 @@
 - BUG: login should use dispatch_once for creation due to concurrent source (requestservice)
 - Set up "Everafter"
 - Native like on events
-- Native like on venues
+
 - Side scroll social_links
 - Prevent app from opening if build < minimum_build
 - Kingfisher - Send authorization header by subclassing ImageDownloader
@@ -76,12 +76,14 @@
 
 # Done
 ## Week 11
+- Native like on venues
 - BUG: race condition with setting facebook_token
 - Staging server configured
 - Mail / MSODS
 - 1PW
 - Analytics tag manager
 - Heroku teams
+
 ## Week 10
 - Improvements to person view
 - **VENUE CHAT CHANNEL**
