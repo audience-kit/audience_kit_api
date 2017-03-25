@@ -33,11 +33,16 @@ class UpdateUserJob < ApplicationJob
 
       while user_likes
         user_likes.each do |like|
-          next if existing_user_likes.any? { |ul| ul.page.facebook_id == like['id'] }
-
           page = HotMessModels::Page.find_by(facebook_id: like['id'])
 
-          next unless page
+          unless page
+            page = HotMessModels::Page.find_or_create_by(facebook_id: like['id']) do |p|
+              p.hidden = true
+              page_graph = user_graph.get_object like['id']
+              p.name = page_graph['name']
+              p.facebook_graph = page_graph
+            end
+          end
 
           puts "Adding like for page #{page.name}"
           user.user_likes.find_or_create_by(user: user, page: page)

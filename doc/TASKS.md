@@ -1,6 +1,8 @@
 # Next
 
 ## Client
+- BUG: login presets retry not retry present model
+- BUG: login should use dispatch_once for creation due to concurrent source (requestservice)
 - Set up "Everafter"
 - Native like on events
 - Native like on venues
@@ -136,6 +138,7 @@
   - Import venue
   - Edit person
   - Edit venue
+  
  ## Week 7
 - Support people (use 11:11 as first example)
   - Promoters

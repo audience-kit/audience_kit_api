@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170324174518) do
+ActiveRecord::Schema.define(version: 20170325195713) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,7 +71,7 @@ ActiveRecord::Schema.define(version: 20170324174518) do
     t.string    "name"
     t.integer   "beacon_major"
     t.geography "envelope",     limit: {:srid=>4326, :type=>"polygon", :geographic=>true}
-    t.uuid      "location_id",                                                             null: false
+    t.uuid      "location_id"
   end
 
   create_table "location_beacons", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -110,6 +110,7 @@ ActiveRecord::Schema.define(version: 20170324174518) do
     t.string   "cover_mime"
     t.binary   "cover_image"
     t.boolean  "requires_user_token",   default: false, null: false
+    t.boolean  "hidden",                default: false, null: false
     t.index ["facebook_id"], name: "index_pages_on_facebook_id", unique: true, using: :btree
   end
 
@@ -187,6 +188,16 @@ ActiveRecord::Schema.define(version: 20170324174518) do
     t.string   "stream_url"
     t.jsonb    "metadata"
     t.index ["social_link_id"], name: "index_tracks_on_social_link_id", using: :btree
+  end
+
+  create_table "user_event_rsvp", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid     "event_id",   null: false
+    t.uuid     "user_id",    null: false
+    t.string   "state",      null: false
+    t.index ["event_id"], name: "index_user_event_rsvp_on_event_id", using: :btree
+    t.index ["user_id"], name: "index_user_event_rsvp_on_user_id", using: :btree
   end
 
   create_table "user_likes", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -275,6 +286,7 @@ ActiveRecord::Schema.define(version: 20170324174518) do
   add_foreign_key "sessions", "devices"
   add_foreign_key "sessions", "users"
   add_foreign_key "tracks", "social_links", name: "tracks_social_links_id_fk"
+  add_foreign_key "user_event_rsvp", "events"
   add_foreign_key "user_likes", "pages"
   add_foreign_key "user_likes", "users"
   add_foreign_key "user_locations", "locations", name: "user_locations_locations_id_fk"
