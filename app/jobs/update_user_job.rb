@@ -38,7 +38,7 @@ class UpdateUserJob < ApplicationJob
           unless page
             page = HotMessModels::Page.find_or_create_by(facebook_id: like['id']) do |p|
               p.hidden = true
-              page_graph = user_graph.get_object like['id']
+              page_graph = user_graph_client.get_object like['id']
               p.name = page_graph['name']
               p.facebook_graph = page_graph
             end
