@@ -39,7 +39,7 @@ class UsersController < ApplicationController
 
     stream_name = "#{Rails.env}-hotmess-api"
     result = kinesis.put_record stream_name: stream_name, data: { type: :user_location_update, id: user_location.id, partition_key: user_location.user.id }
-    puts "Kineis user_location result => #{result}"
+    puts "Kinesis user_location result => #{result}"
   end
 
   def picture
