@@ -29,12 +29,11 @@ gem 'newrelic_rpm'
 # ActiveJob backend
 gem 'resque'
 gem 'activerecord-postgis-adapter'
-gem 'ruby-kafka'
-gem 'thrift'
 gem 'geocoder'
 gem 'google_places'
 gem 'rgeo-geojson'
 gem 'soundcloud'
+gem 'aws-sdk'
 
 gem 'hot_mess_models', git: 'https://f978ea15efa23d1660a55e6678e6022f8f2ffe76:x-oauth-basic@github.com/rickmark/hot_mess_models.git', branch: 'next'
 

@@ -1,4 +1,0 @@
-development:
-  client_id: hot_mess_api_development
-  seed_brokers:
-    - "localhost:9092"

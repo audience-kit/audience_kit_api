@@ -1,6 +1,6 @@
 GIT
   remote: https://f978ea15efa23d1660a55e6678e6022f8f2ffe76:x-oauth-basic@github.com/rickmark/hot_mess_models.git
-  revision: 916563a5476431795dcb982f1f5ab1687645c26e
+  revision: 9b092076a82f93d1782c48de5dcb1431d8dfad8e
   branch: next
   specs:
     hot_mess_models (0.1.0)
@@ -58,6 +58,14 @@ GEM
     addressable (2.5.0)
       public_suffix (~> 2.0, >= 2.0.2)
     arel (7.1.4)
+    aws-sdk (2.8.11)
+      aws-sdk-resources (= 2.8.11)
+    aws-sdk-core (2.8.11)
+      aws-sigv4 (~> 1.0)
+      jmespath (~> 1.0)
+    aws-sdk-resources (2.8.11)
+      aws-sdk-core (= 2.8.11)
+    aws-sigv4 (1.0.0)
     bcrypt (3.1.11)
     builder (3.2.3)
     byebug (9.0.6)
@@ -108,6 +116,7 @@ GEM
     jbuilder (2.6.3)
       activesupport (>= 3.0.0, < 5.2)
       multi_json (~> 1.2)
+    jmespath (1.3.1)
     json (2.0.3)
     jwt (1.5.6)
     koala (3.0.0)
@@ -213,7 +222,6 @@ GEM
       rspec-mocks (~> 3.5.0)
       rspec-support (~> 3.5.0)
     rspec-support (3.5.0)
-    ruby-kafka (0.3.16)
     signet (0.7.3)
       addressable (~> 2.3)
       faraday (~> 0.9)
@@ -239,7 +247,6 @@ GEM
       sprockets (>= 3.0.0)
     thor (0.19.4)
     thread_safe (0.3.6)
-    thrift (0.10.0.0)
     typhoeus (1.1.2)
       ethon (>= 0.9.0)
     tzinfo (1.2.3)
@@ -260,6 +267,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-postgis-adapter
+  aws-sdk
   bcrypt
   byebug
   geocoder
@@ -279,11 +287,9 @@ DEPENDENCIES
   resque
   rgeo-geojson
   rspec-rails
-  ruby-kafka
   soundcloud
   spring
   spring-watcher-listen (~> 2.0.0)
-  thrift
   typhoeus
   yelp
 

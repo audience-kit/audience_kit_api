@@ -31,6 +31,17 @@ class UsersController < ApplicationController
     user_location.location = HotMessModels::Locale.closest(@point).location unless user_location.location
 
     user_location.save
+
+    kinesis = Aws::Kinesis::Client.new(
+        region: 'us-west-2',
+        credentials: Aws::Credentials.new Rails.application.secrets[:aws_key_id], Rails.application.secrets[:aws_secret]
+    )
+
+    stream_name = "#{Rails.env}-hotmess-api"
+
+    params[:entry].each do |entry|
+      kinesis.put_record stream_name: stream_name, data: { type: :user_location_update, id: user_location.id, partition_key: user_location.user.id }
+    end
   end
 
   def picture

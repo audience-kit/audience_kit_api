@@ -4,8 +4,8 @@
 - BUG: login presets retry not retry present model
 - BUG: login should use dispatch_once for creation due to concurrent source (requestservice)
 - Set up "Everafter"
-- Native like on events
-
+- RSVP buttons for event
+  - Disable if not granted / prompt for permission
 - Side scroll social_links
 - Prevent app from opening if build < minimum_build
 - Kingfisher - Send authorization header by subclassing ImageDownloader
@@ -15,7 +15,6 @@
 - Request retry
 - Improvements to the launch and first run experience
 - Guard view for locations services disabled
-- RSVP buttons if scope granted
 - Play tracks in app
 
 ## API
@@ -76,6 +75,7 @@
 
 # Done
 ## Week 11
+- Normalize table photos
 - Native like on venues
 - BUG: race condition with setting facebook_token
 - Staging server configured
