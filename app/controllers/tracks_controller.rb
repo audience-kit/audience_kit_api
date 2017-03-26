@@ -9,11 +9,11 @@ class TracksController < ApplicationController
 
   def waveform
     @track = HotMessModels::Track.find(params[:id])
-    send_data @track.waveform_image, type: 'image/png'
+    redirect_to "/photos/#{@track.waveform_photo_id}"
   end
 
   def artwork
     @track = HotMessModels::Track.find(params[:id])
-    send_data @track.artwork_image, type: 'image/jpeg'
+    redirect_to "/photos/#{@track.photo_id}"
   end
 end
