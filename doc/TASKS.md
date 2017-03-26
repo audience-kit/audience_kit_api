@@ -75,6 +75,7 @@
 
 # Done
 ## Week 11
+- Kinesis to replace kafka, send basic events
 - Normalize table photos
 - Native like on venues
 - BUG: race condition with setting facebook_token
