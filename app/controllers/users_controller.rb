@@ -34,7 +34,7 @@ class UsersController < ApplicationController
 
     kinesis = Aws::Kinesis::Client.new(
         region: 'us-west-2',
-        credentials: Aws::Credentials.new(Rails.application.secrets[:aws_key_id], Rails.application.secrets[:aws_secret])
+        credentials: AWS_CREDENTIALS
     )
 
     stream_name = "#{Rails.env}-hotmess-api"
