@@ -13,7 +13,6 @@ class CallbacksController < ApplicationController
 
   def facebook_page
     params[:entry].each { |entry| kinesis entry[:id], type: :facebook_page_callback, id: entry[:id] }
-    end
   end
 
   def facebook_verify
