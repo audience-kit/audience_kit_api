@@ -70,5 +70,7 @@ Rails.application.routes.draw do
     end
   end
 
+  get '/photos/:id', to: 'photos#show'
+
   root to: 'status#index'
 end

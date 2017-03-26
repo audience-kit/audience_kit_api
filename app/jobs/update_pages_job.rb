@@ -88,9 +88,9 @@ class UpdatePagesJob < ApplicationJob
         puts "No venue for #{event_graph['name']} (#{event_graph['id']})"
       end
 
-      event_model.update_details_from_facebook
+      event_model.update_details_from_facebook if event_model.venue
 
-      HotMessModels::EventPerson.find_or_create_by(person: page.person, event: event_model, role: 'host') if page.person
+      HotMessModels::EventPerson.find_or_create_by(person: page.person, event: event_model, role: 'host') if event_model.venue and page.person
     rescue => ex
       puts "Error updating object #{page.name}'s event #{ex}"
     end

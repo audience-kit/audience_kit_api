@@ -34,8 +34,6 @@ class UsersController < ApplicationController
   end
 
   def picture
-    user_object = HotMessModels::User.find(params[:id])
-
-    send_data user_object.picture_image, type: user_object.picture_mime
+    redirect_to "/photos/#{user.photo_id}"
   end
 end
