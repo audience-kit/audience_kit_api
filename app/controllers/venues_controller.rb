@@ -39,8 +39,6 @@ class VenuesController < ApplicationController
     @locale = HotMessModels::Locale.closest location_param
     @venue = HotMessModels::Venue.closest location_param, within: true
 
-    kinesis :user_location_update, user_location.user.id, user_id: user.id, longatude: @longitude, latitude: @latitude, venue_id: @venue&.id
-
     if @venue
       @title = @venue.display_name
       @events = @venue.events
@@ -66,6 +64,9 @@ class VenuesController < ApplicationController
       @events = @locale.events.take(5)
       @venues = @locale.venues.joins(:location).select("venues.*, st_distance(locations.location, '#{@point.as_text}') as distance").order('distance').take(5)
     end
+
+    kinesis :user_location_update, user.id, user_id: user.id, longatude: @longitude, latitude: @latitude, venue_id: @venue&.id
+
 
     render :now
   end

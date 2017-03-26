@@ -32,7 +32,7 @@ class UsersController < ApplicationController
 
     user_location.save
 
-    kinesis :user_location_update, user_location.user.id, user_id: user.id, id: user_location.id, longatude: @longitude, latitude: @latitude
+    kinesis :user_location_update, user.id, user_id: user.id, id: user_location.id, longatude: @longitude, latitude: @latitude
   end
 
   def picture
