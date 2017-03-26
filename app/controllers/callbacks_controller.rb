@@ -4,7 +4,7 @@ class CallbacksController < ApplicationController
   def facebook_user
     kinesis = Aws::Kinesis::Client.new(
         region: 'us-west-2',
-        credentials: Aws::Credentials.new Rails.application.secrets[:aws_key_id], Rails.application.secrets[:aws_secret]
+        credentials: Aws::Credentials.new(Rails.application.secrets[:aws_key_id], Rails.application.secrets[:aws_secret])
     )
 
     stream_name = "#{Rails.env}-hotmess-api"
@@ -17,7 +17,7 @@ class CallbacksController < ApplicationController
   def facebook_page
     kinesis = Aws::Kinesis::Client.new(
         region: 'us-west-2',
-        credentials: Aws::Credentials.new Rails.application.secrets[:aws_key_id], Rails.application.secrets[:aws_secret]
+        credentials: Aws::Credentials.new(Rails.application.secrets[:aws_key_id], Rails.application.secrets[:aws_secret])
     )
 
     stream_name = "#{Rails.env}-hotmess-api"
