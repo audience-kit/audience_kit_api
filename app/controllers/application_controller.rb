@@ -26,6 +26,12 @@ class ApplicationController < ActionController::API
     end
   end
 
+  def kinesis(event, partition, data = {})
+    @kinesis_client ||= Aws::Kinesis::Client.new(region: 'us-west-2', credentials: AWS_CREDENTIALS)
+
+    kinesis.put_record stream_name: "#{Rails.env}-hotmess-api", data: { event: event, params: data, created_at: DateTime.now.utc }, partition_key: partition
+  end
+
   def user
     @user ||= HotMessModels::User.find_by_id(@user_id)
   end

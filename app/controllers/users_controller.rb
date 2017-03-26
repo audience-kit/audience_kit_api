@@ -32,14 +32,7 @@ class UsersController < ApplicationController
 
     user_location.save
 
-    kinesis = Aws::Kinesis::Client.new(
-        region: 'us-west-2',
-        credentials: AWS_CREDENTIALS
-    )
-
-    stream_name = "#{Rails.env}-hotmess-api"
-    result = kinesis.put_record stream_name: stream_name, data: { type: :user_location_update, id: user_location.id, partition_key: user_location.user.id }
-    puts "Kinesis user_location result => #{result}"
+    kinesis :user_location_update, user_location.user.id, user_id: user.id, id: user_location.id, longatude: @longitude, latitude: @latitude
   end
 
   def picture

@@ -1,18 +1,12 @@
 class CallbacksController < ApplicationController
   skip_before_action :authenticate
 
-  def kinesis(partition, data)
-    @kinesis_client ||= Aws::Kinesis::Client.new(region: 'us-west-2', credentials: AWS_CREDENTIALS)
-
-    kinesis.put_record stream_name: "#{Rails.env}-hotmess-api", data: data.to_json, partition_key: partition
-  end
-
   def facebook_user
-    params[:entry].each { |entry| kinesis entry[:id], type: :facebook_user_callback, id: entry[:id] }
+    params[:entry].each { |entry| kinesis :facebook_user_callback, entry[:id], id: entry[:id] }
   end
 
   def facebook_page
-    params[:entry].each { |entry| kinesis entry[:id], type: :facebook_page_callback, id: entry[:id] }
+    params[:entry].each { |entry| kinesis :facebook_page_callback, entry[:id], id: entry[:id] }
   end
 
   def facebook_verify

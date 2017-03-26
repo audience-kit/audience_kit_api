@@ -23,10 +23,14 @@ class VenuesController < ApplicationController
     @venue = HotMessModels::Venue.includes(venue_pages: :page).find(params[:id])
 
     @is_liked = HotMessModels::UserLike.find_by(user: user, page: @venue.page) ? true : false
+
+    kinesis :venue_view, @venue.id, id: @venue.id, user_id: user.id, is_liked: @is_liked
   end
 
   def closest
     @venue = HotMessModels::Venue.closest location_param
+
+    kinesis :user_location_update, user_location.user.id, user_id: user.id, id: user_location.id, longatude: @longitude, latitude: @latitude
 
     render :show
   end
@@ -34,6 +38,8 @@ class VenuesController < ApplicationController
   def now
     @locale = HotMessModels::Locale.closest location_param
     @venue = HotMessModels::Venue.closest location_param, within: true
+
+    kinesis :user_location_update, user_location.user.id, user_id: user.id, longatude: @longitude, latitude: @latitude, venue_id: @venue&.id
 
     if @venue
       @title = @venue.display_name

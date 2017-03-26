@@ -14,6 +14,8 @@ class LocalesController < ApplicationController
   def closest
     @locale = HotMessModels::Locale.closest location_param
 
+    kinesis.put_record :user_location_update, user_location.user.id, user_id: user.id, longatude: @longitude, latitude: @latitude
+
     render :show
   end
 

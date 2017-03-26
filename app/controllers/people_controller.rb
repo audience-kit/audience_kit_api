@@ -17,6 +17,8 @@ class PeopleController < ApplicationController
     @person = HotMessModels::Person.find params[:id]
 
     @is_liked = HotMessModels::UserLike.find_by(user: user, page: @person.page) ? true : false
+
+    kinesis :person_view, @person.id, id: @person.id, user_id: user.id, is_liked: @is_liked
   end
 
   def picture

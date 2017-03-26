@@ -39,9 +39,7 @@ class TokenController < ApplicationController
 
       @token = @session.to_jwt(request).to_s
 
-      kinesis = Aws::Kinesis::Client.new(region: 'us-west-2', credentials: AWS_CREDENTIALS)
-
-      kinesis.put_record stream_name: "#{Rails.env}-hotmess-api", data: { type: :user_session_create, id: @session.id }.to_json, partition_key: @session.user.id
+      kinesis :user_session_create,  @session.user.id, id: @session.id, user_id: @session.user.id
     rescue Koala::Facebook::APIError => ex
       logger.error ex
       #UGLY - gracefully handle some facebook exceptions

@@ -15,5 +15,7 @@ class EventsController < ApplicationController
 
   def show
     @event = HotMessModels::Event.find params[:id]
+
+    kinesis.put_record :event_view, params[:id], user_id: user.id, id: @event.id
   end
 end
