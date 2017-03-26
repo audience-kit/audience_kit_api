@@ -45,7 +45,7 @@ class TokenController < ApplicationController
       )
 
       stream_name = "#{Rails.env}-hotmess-api"
-      result = kinesis.put_record stream_name: stream_name, data: { type: :user_session_create, id: @session.id, partition_key: @session.user.id }
+      result = kinesis.put_record stream_name: stream_name, data: { type: :user_session_create, id: @session.id }.to_json, partition_key: @session.user.id
       puts "Kinesis user_session_create result => #{result}"
 
     rescue Koala::Facebook::APIError => ex
