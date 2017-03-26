@@ -5,7 +5,7 @@ class UpdateGooglePlaceJob < ApplicationJob
 
       locations  = HotMessModels::Location.all
 
-      locations.each do |place|
+      locations.where('updated_at < ?', 12.hour.ago).each do |place|
         next unless place.google_place_id
 
         puts "Updating => #{place.name}"
@@ -18,12 +18,7 @@ class UpdateGooglePlaceJob < ApplicationJob
         place.update_location spot['lng'], spot['lat']
 
         if spot.photos.any?
-          photo = spot.photos.first
-
-          place.hero_url = photo.fetch_url 1600
-          response =  Net::HTTP.get_response(URI(place.hero_url))
-          place.hero_image = response.body
-          place.hero_mime = response['Content-Type']
+          place.photo = HotMessModels::Photo.for_url spot.photos.first.fetch_url(1600)
         end
 
         place.save

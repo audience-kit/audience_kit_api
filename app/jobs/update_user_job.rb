@@ -8,15 +8,10 @@ class UpdateUserJob < ApplicationJob
       user_graph = graph.get_object user.facebook_id
 
       image_data = graph.get_picture_data(user.facebook_id, type: :large)['data']
-      image_url = image_data['url']
 
-      unless user.picture_url == image_url
-        puts "Updating profile image for #{user.name}"
-        user.picture_url = image_url
-        response =  Net::HTTP.get_response(URI(user.picture_url))
-        user.picture_image = response.body
-        user.picture_mime = response['Content-Type']
-      end
+      photo = HotMessModels::Photo.for_url image_data['url']
+
+      user.photo = photo
 
       scopes = user_graph_client.get_connections :me, :permissions
       user.facebook_scopes = scopes.select{ |s| s['status'] == 'granted' }.map { |s| s['permission'] }
