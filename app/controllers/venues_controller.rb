@@ -65,23 +65,20 @@ class VenuesController < ApplicationController
   end
 
   def photo
-    response.headers["Expires"] = 1.day.from_now.httpdate
     @venue = HotMessModels::Venue.find(params[:id])
 
-    if @venue.location&.hero_image
-      return send_data @venue.location.hero_image, type: @venue.location.hero_mime
+    if @venue.location&.photo
+      return redirect_to "/photos/#{@venue.location.photo_id}"
     end
 
     send_file Rails.root.join "public/homepage_background.jpg"
   end
 
   def picture
-    response.headers["Expires"] = 1.day.from_now.httpdate
     page_image(HotMessModels::Venue.find(params[:id]).page)
   end
 
   def cover
-    response.headers["Expires"] = 1.day.from_now.httpdate
     page_image(HotMessModels::Venue.find(params[:id]).page, :cover)
   end
 end
