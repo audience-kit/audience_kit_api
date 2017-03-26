@@ -65,10 +65,10 @@ class VenuesController < ApplicationController
   end
 
   def photo
-    @venue = HotMessModels::Venue.find(params[:id])
+    @venue = HotMessModels::Venue.find(params[:id]).includes(:location)
 
-    if @venue.location&.photo
-      return redirect_to "/photos/#{@venue.location.photo_id}"
+    if @venue.location.photo
+      return redirect_to "/photos/#{@venue.location.photo.id}"
     end
 
     send_file Rails.root.join "public/homepage_background.jpg"
