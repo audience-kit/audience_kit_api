@@ -18,7 +18,10 @@ class UpdateGooglePlaceJob < ApplicationJob
         place.update_location spot['lng'], spot['lat']
 
         if spot.photos.any?
-          place.photo = HotMessModels::Photo.for_url spot.photos.first.fetch_url(1600)
+          photo_url = spot.photos.first.fetch_url(1600)
+          photo = HotMessModels::Photo.for_url photo_url
+
+          place.photo = photo
         end
 
         place.save

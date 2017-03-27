@@ -27,7 +27,7 @@ else
       json.name venue.display_name
       json.facebook_id venue.facebook_id.to_s
       json.is_open true
-      json.photo_url "#{venue_url(venue)}/photo"
+      json.photo_url (venue.photo ? photo_url(venue.photo) : nil)
       json.description "You're the first to arrive."
       json.distance venue['distance']
 
