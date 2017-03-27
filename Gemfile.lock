@@ -69,6 +69,7 @@ GEM
     bcrypt (3.1.11)
     builder (3.2.3)
     byebug (9.0.6)
+    certified (1.0.0)
     concurrent-ruby (1.0.5)
     declarative (0.0.9)
     declarative-option (0.1.0)
@@ -270,6 +271,7 @@ DEPENDENCIES
   aws-sdk
   bcrypt
   byebug
+  certified
   geocoder
   google-api-client
   google_places
