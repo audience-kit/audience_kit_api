@@ -74,7 +74,7 @@ class VenuesController < ApplicationController
   def photo
     @venue = HotMessModels::Venue.find(params[:id])
 
-    if @venue.location.photo
+    if @venue.location.photo_id
       return redirect_to "/photos/#{@venue.location.photo_id}"
     end
 
