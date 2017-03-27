@@ -21,6 +21,6 @@ class LocalesController < ApplicationController
 
   def photo
     @locale = HotMessModels::Locale.find params[:id]
-    redirect_to "/photos/#{@locale.location.photo.id}"
+    redirect_to "/photos/#{@locale.location.photo_id}"
   end
 end
