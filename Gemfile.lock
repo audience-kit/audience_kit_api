@@ -1,6 +1,6 @@
 GIT
   remote: https://f978ea15efa23d1660a55e6678e6022f8f2ffe76:x-oauth-basic@github.com/rickmark/hot_mess_models.git
-  revision: c2404b23839bbfbf3266f23ce2114e8bbc374869
+  revision: 829e1893acfab6114a400a16432aae3df2d1a7dd
   branch: next
   specs:
     hot_mess_models (0.1.0)
@@ -58,13 +58,13 @@ GEM
     addressable (2.5.0)
       public_suffix (~> 2.0, >= 2.0.2)
     arel (7.1.4)
-    aws-sdk (2.8.11)
-      aws-sdk-resources (= 2.8.11)
-    aws-sdk-core (2.8.11)
+    aws-sdk (2.8.12)
+      aws-sdk-resources (= 2.8.12)
+    aws-sdk-core (2.8.12)
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.8.11)
-      aws-sdk-core (= 2.8.11)
+    aws-sdk-resources (2.8.12)
+      aws-sdk-core (= 2.8.12)
     aws-sigv4 (1.0.0)
     bcrypt (3.1.11)
     builder (3.2.3)
@@ -85,7 +85,7 @@ GEM
     geocoder (1.4.3)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
-    google-api-client (0.10.1)
+    google-api-client (0.10.2)
       addressable (~> 2.3)
       googleauth (~> 0.5)
       httpclient (~> 2.7)

@@ -43,7 +43,7 @@ class VenuesController < ApplicationController
       @title = @venue.display_name
       @events = @venue.events
       @is_liked = HotMessModels::UserLike.find_by(user: user, page: @venue.page) ? true : false
-      @image_url = photo_url(@venue.location.photo)
+      @image_url = @venue.location.photo ? photo_url(@venue.location.photo) : 'https://hotmess.social/assets/homepage_background-f5ffbb436c2e5c0f7e822a376bb604a5fb66d0acaff989ab330f1246b1ad822c.jpg'
 
       @friends = @venue.user_locations.includes(session: :user).recent.order(created_at: :desc).map { |ul| ul.session.user }.select { |u| u != user }.uniq.take(15)
       @events = @venue.events
@@ -56,7 +56,7 @@ class VenuesController < ApplicationController
           @locale.location.photos &&
           @locale.location.photos.any?
 
-        @image_url = photo_url(@locale.location.photo)
+        @image_url = @locale.location.photo ? photo_url(@locale.location.photo) : 'https://hotmess.social/assets/homepage_background-f5ffbb436c2e5c0f7e822a376bb604a5fb66d0acaff989ab330f1246b1ad822c.jpg'
       end
 
       # TODO: Users who have issued recent pings

@@ -23,7 +23,7 @@ class UpdateGooglePlaceJob < ApplicationJob
 
           place.photo = photo
         else
-          place.photo = HotMessModels::Photo.for_url 'http://api.hotmess.social/homepage_background.jpg'
+          place.photo = HotMessModels::Photo.for_url 'https://api.hotmess.social./homepage_background.jpg'
         end
 
         place.save
