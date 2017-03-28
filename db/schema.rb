@@ -10,13 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170325195713) do
+ActiveRecord::Schema.define(version: 20170328182417) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_stat_statements"
+  enable_extension "pgcrypto"
   enable_extension "postgis"
   enable_extension "uuid-ossp"
+
+  create_table "audiences", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.string   "hostname",                null: false
+    t.bigint   "production_facebook_id",  null: false
+    t.bigint   "stage_facebook_id"
+    t.bigint   "development_facebook_id"
+    t.uuid     "beacon_uuid",             null: false
+  end
 
   create_table "devices", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.datetime "created_at",        null: false
@@ -35,6 +46,8 @@ ActiveRecord::Schema.define(version: 20170325195713) do
     t.uuid     "person_id",  null: false
     t.uuid     "event_id",   null: false
     t.string   "role",       null: false
+    t.index ["event_id", "person_id", "role"], name: "index_event_people_on_event_id_and_person_id_and_role", unique: true, using: :btree
+    t.index ["event_id", "person_id"], name: "index_event_people_on_event_id_and_person_id", using: :btree
     t.index ["event_id"], name: "index_event_people_on_event_id", using: :btree
     t.index ["person_id"], name: "index_event_people_on_person_id", using: :btree
   end
@@ -60,6 +73,7 @@ ActiveRecord::Schema.define(version: 20170325195713) do
     t.date    "friends_at"
     t.string  "friend_hash"
     t.integer "weight"
+    t.index ["friend_hash"], name: "index_friendships_on_friend_hash", unique: true, using: :btree
     t.index ["friend_high_id"], name: "index_friendships_on_friend_high_id", using: :btree
     t.index ["friend_low_id"], name: "index_friendships_on_friend_low_id", using: :btree
   end
@@ -90,6 +104,7 @@ ActiveRecord::Schema.define(version: 20170325195713) do
     t.string    "hero_url"
     t.binary    "hero_image"
     t.string    "hero_mime"
+    t.uuid      "photo_id"
     t.index ["google_place_id"], name: "index_locations_on_google_place_id", unique: true, using: :btree
     t.index ["locale_id"], name: "index_locations_on_locale_id", using: :btree
   end
@@ -103,14 +118,10 @@ ActiveRecord::Schema.define(version: 20170325195713) do
     t.jsonb    "facebook_graph",                        null: false
     t.string   "facebook_access_token"
     t.string   "facets",                                             array: true
-    t.string   "picture_url"
-    t.string   "picture_mime"
-    t.binary   "picture_image"
-    t.string   "cover_url"
-    t.string   "cover_mime"
-    t.binary   "cover_image"
     t.boolean  "requires_user_token",   default: false, null: false
     t.boolean  "hidden",                default: false, null: false
+    t.uuid     "photo_id"
+    t.uuid     "cover_photo_id"
     t.index ["facebook_id"], name: "index_pages_on_facebook_id", unique: true, using: :btree
   end
 
@@ -119,9 +130,7 @@ ActiveRecord::Schema.define(version: 20170325195713) do
     t.integer "order",         default: 1000,  null: false
     t.boolean "global",        default: false, null: false
     t.boolean "like_required", default: false, null: false
-    t.uuid    "photo_id"
     t.index ["page_id"], name: "index_people_on_page_id", unique: true, using: :btree
-    t.index ["photo_id"], name: "index_people_on_photo_id", using: :btree
   end
 
   create_table "person_locales", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -133,11 +142,13 @@ ActiveRecord::Schema.define(version: 20170325195713) do
   end
 
   create_table "photos", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string   "source_url", null: false
-    t.string   "hash",       null: false
-    t.binary   "content",    null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.string   "source_url",   null: false
+    t.binary   "content_hash", null: false
+    t.binary   "content",      null: false
+    t.string   "mime",         null: false
+    t.index ["content_hash"], name: "photos_hash_uindex", unique: true, using: :btree
   end
 
   create_table "sessions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -163,6 +174,7 @@ ActiveRecord::Schema.define(version: 20170325195713) do
     t.string   "provider",                   null: false
     t.string   "handle",                     null: false
     t.boolean  "primary",    default: false, null: false
+    t.index ["object_id", "provider", "handle"], name: "index_social_links_on_object_id_and_provider_and_handle", unique: true, using: :btree
   end
 
   create_table "social_updates", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -187,17 +199,21 @@ ActiveRecord::Schema.define(version: 20170325195713) do
     t.string   "download_url"
     t.string   "stream_url"
     t.jsonb    "metadata"
+    t.uuid     "photo_id"
+    t.uuid     "waveform_photo_id"
     t.index ["social_link_id"], name: "index_tracks_on_social_link_id", using: :btree
   end
 
-  create_table "user_event_rsvp", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.uuid     "event_id",   null: false
-    t.uuid     "user_id",    null: false
-    t.string   "state",      null: false
-    t.index ["event_id"], name: "index_user_event_rsvp_on_event_id", using: :btree
-    t.index ["user_id"], name: "index_user_event_rsvp_on_user_id", using: :btree
+  create_table "user_audiences", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.uuid     "audience_id",      null: false
+    t.uuid     "user_id",          null: false
+    t.bigint   "facebook_user_id", null: false
+    t.string   "facebook_token",   null: false
+    t.index ["audience_id", "user_id"], name: "index_user_audiences_on_audience_id_and_user_id", unique: true, using: :btree
+    t.index ["audience_id"], name: "index_user_audiences_on_audience_id", using: :btree
+    t.index ["user_id"], name: "index_user_audiences_on_user_id", using: :btree
   end
 
   create_table "user_likes", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -206,6 +222,7 @@ ActiveRecord::Schema.define(version: 20170325195713) do
     t.uuid     "user_id",    null: false
     t.uuid     "page_id",    null: false
     t.index ["page_id"], name: "index_user_likes_on_page_id", using: :btree
+    t.index ["user_id", "page_id"], name: "index_user_likes_on_user_id_and_page_id", unique: true, using: :btree
     t.index ["user_id"], name: "index_user_likes_on_user_id", using: :btree
   end
 
@@ -222,24 +239,32 @@ ActiveRecord::Schema.define(version: 20170325195713) do
     t.index ["venue_id"], name: "index_user_locations_on_venues_id", using: :btree
   end
 
+  create_table "user_rsvps", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid     "event_id",   null: false
+    t.uuid     "user_id",    null: false
+    t.string   "state",      null: false
+    t.index ["event_id", "user_id"], name: "index_user_rsvps_on_event_id_and_user_id", unique: true, using: :btree
+    t.index ["event_id"], name: "index_user_rsvps_on_event_id", using: :btree
+    t.index ["user_id"], name: "index_user_rsvps_on_user_id", using: :btree
+  end
+
   create_table "users", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
     t.string   "name"
-    t.string   "email_address"
+    t.string   "email_address",            null: false
     t.bigint   "facebook_id",              null: false
     t.string   "facebook_token"
     t.datetime "facebook_token_issued_at"
-    t.string   "profile_image_url"
     t.string   "gender"
     t.string   "first_name"
     t.string   "last_name"
     t.string   "culture"
     t.jsonb    "facebook_graph"
-    t.binary   "picture_image"
-    t.string   "picture_mime"
-    t.string   "picture_url"
     t.string   "facebook_scopes",                       array: true
+    t.uuid     "photo_id"
     t.index ["email_address"], name: "index_users_on_email_address", using: :btree
     t.index ["facebook_id"], name: "users_facebook_id_uindex", unique: true, using: :btree
   end
@@ -260,9 +285,9 @@ ActiveRecord::Schema.define(version: 20170325195713) do
     t.uuid     "venue_id",                  null: false
     t.uuid     "page_id",                   null: false
     t.integer  "order",      default: 1000, null: false
-    t.index ["page_id", "venue_id", "order"], name: "venue_pages_unique_key", unique: true, using: :btree
     t.index ["page_id"], name: "index_venue_pages_on_page_id", using: :btree
     t.index ["page_id"], name: "venue_pages_by_page_id", using: :btree
+    t.index ["venue_id", "page_id"], name: "index_venue_pages_on_venue_id_and_page_id", unique: true, using: :btree
     t.index ["venue_id"], name: "index_venue_pages_on_venue_id", using: :btree
     t.index ["venue_id"], name: "venue_pages_by_venue_id", using: :btree
   end
@@ -283,18 +308,29 @@ ActiveRecord::Schema.define(version: 20170325195713) do
   add_foreign_key "events", "venues"
   add_foreign_key "friendships", "users", column: "friend_high_id"
   add_foreign_key "friendships", "users", column: "friend_low_id"
+  add_foreign_key "locations", "photos", name: "locations_photos_id_fk"
+  add_foreign_key "pages", "photos", column: "cover_photo_id", name: "pages_photos_cover_id_fk"
+  add_foreign_key "pages", "photos", name: "pages_photos_id_fk"
+  add_foreign_key "people", "pages"
   add_foreign_key "sessions", "devices"
   add_foreign_key "sessions", "users"
+  add_foreign_key "tracks", "photos", column: "waveform_photo_id", name: "tracks_photos_waveform_id_fk"
+  add_foreign_key "tracks", "photos", name: "tracks_photos_id_fk"
   add_foreign_key "tracks", "social_links", name: "tracks_social_links_id_fk"
-  add_foreign_key "user_event_rsvp", "events"
+  add_foreign_key "user_audiences", "audiences"
+  add_foreign_key "user_audiences", "users"
   add_foreign_key "user_likes", "pages"
   add_foreign_key "user_likes", "users"
   add_foreign_key "user_locations", "locations", name: "user_locations_locations_id_fk"
   add_foreign_key "user_locations", "sessions", name: "user_locations_sessions_id_fk"
   add_foreign_key "user_locations", "venues", name: "user_locations_venues_id_fk"
+  add_foreign_key "user_rsvps", "events"
+  add_foreign_key "user_rsvps", "users"
+  add_foreign_key "users", "photos", name: "users_photos_id_fk"
   add_foreign_key "venue_messages", "users"
   add_foreign_key "venue_messages", "venues"
   add_foreign_key "venues", "locales"
   add_foreign_key "venues", "locations", name: "venues_locations_id_fk"
+  add_foreign_key "venues", "photos"
   add_foreign_key "venues", "photos", column: "hero_banner_id"
 end
