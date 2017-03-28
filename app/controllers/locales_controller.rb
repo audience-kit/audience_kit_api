@@ -14,9 +14,17 @@ class LocalesController < ApplicationController
   def closest
     @locale = HotMessModels::Locale.closest location_param
 
-    kinesis :user_location_update, user.id, user_id: user.id, longatude: @longitude, latitude: @latitude
+    kinesis :user_location_update, current_user.id, user_id: current_user.id, longatude: @longitude, latitude: @latitude
 
     render :show
+  end
+
+  def events
+    @locale = HotMessModels::Locale.find params[:id]
+
+    @events = @locale.events
+
+    render 'events/index'
   end
 
   def photo

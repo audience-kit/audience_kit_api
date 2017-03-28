@@ -32,8 +32,9 @@ class ApplicationController < ActionController::API
     @kinesis_client.put_record stream_name: "#{Rails.env}-hotmess-api", data: { event: event, params: data, created_at: DateTime.now.utc }.to_json, partition_key: partition
   end
 
-  def user
-    @user ||= HotMessModels::User.find_by_id(@user_id)
+  def current_user
+    puts "UserID => #{@user_id}"
+    @current_user ||= HotMessModels::User.find_by_id(@user_id)
   end
 
   def admin?

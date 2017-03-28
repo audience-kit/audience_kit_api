@@ -2,10 +2,10 @@ class UsersController < ApplicationController
   skip_before_action :authenticate, only: [ :picture ]
 
   def me
-    @user = user
+    @user = current_user
   end
 
-  def location
+  def coordinates
     @latitude = params[:coordinates][:latitude]
     @longitude = params[:coordinates][:longitude]
 
@@ -36,6 +36,6 @@ class UsersController < ApplicationController
   end
 
   def picture
-    redirect_to "/photos/#{user.photo_id}"
+    redirect_to HotMessModels::User.find(params[:id]).photo
   end
 end

@@ -24,13 +24,13 @@ class VenuesController < ApplicationController
 
     @is_liked = HotMessModels::UserLike.find_by(user: user, page: @venue.page) ? true : false
 
-    kinesis :venue_view, @venue.id, id: @venue.id, user_id: user.id, is_liked: @is_liked
+    kinesis :venue_view, @venue.id, id: @venue.id, user_id: current_user.id, is_liked: @is_liked
   end
 
   def closest
     @venue = HotMessModels::Venue.closest location_param
 
-    kinesis :user_location_update, user_location.user.id, user_id: user.id, id: user_location.id, longatude: @longitude, latitude: @latitude
+    kinesis :user_location_update, current_user.id, user_id: current_user.id, id: @venue.id, longatude: @longitude, latitude: @latitude
 
     render :show
   end
@@ -42,7 +42,7 @@ class VenuesController < ApplicationController
     if @venue
       @title = @venue.display_name
       @events = @venue.events
-      @is_liked = HotMessModels::UserLike.find_by(user: user, page: @venue.page) ? true : false
+      @is_liked = HotMessModels::UserLike.find_by(user: current_user, page: @venue.page) ? true : false
       @image_url = @venue.location.photo ? photo_url(@venue.location.photo) : 'https://hotmess.social/assets/homepage_background-f5ffbb436c2e5c0f7e822a376bb604a5fb66d0acaff989ab330f1246b1ad822c.jpg'
 
       @friends = @venue.user_locations.includes(session: :user).recent.order(created_at: :desc).map { |ul| ul.session.user }.select { |u| u != user }.uniq.take(15)
@@ -65,7 +65,7 @@ class VenuesController < ApplicationController
       @venues = @locale.venues.joins(:location).select("venues.*, st_distance(locations.location, '#{@point.as_text}') as distance").order('distance').take(5)
     end
 
-    kinesis :user_location_update, user.id, user_id: user.id, longatude: @longitude, latitude: @latitude, venue_id: @venue&.id
+    kinesis :user_location_update, current_user.id, user_id: current_user.id, longatude: @longitude, latitude: @latitude, venue_id: @venue&.id
 
 
     render :now
@@ -87,5 +87,13 @@ class VenuesController < ApplicationController
 
   def cover
     page_image(HotMessModels::Venue.find(params[:id]).page, :cover)
+  end
+
+  def events
+    @venue = HotMessModels::Venue.find(params[:id])
+
+    @events = @venue.events.includes(event_people: { person: :page })
+
+    render 'events/index'
   end
 end
