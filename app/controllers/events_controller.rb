@@ -27,6 +27,10 @@ class EventsController < ApplicationController
       when 'attending'
         graph_client.put_object @event.facebook_id, :attending
       when 'unsure'
+      when 'maybe'
+        graph_client.put_object @event.facebook_id, :maybe
+      when 'declined'
+        graph_client.put_object @event.facebook_id, :declined
       else
         return render status: :bad_request
     end

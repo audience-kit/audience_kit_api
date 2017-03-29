@@ -36,6 +36,7 @@ gem 'soundcloud'
 gem 'aws-sdk'
 gem 'certified'
 gem 'eventbrite'
+gem 'ticketmaster-sdk'
 
 gem 'hot_mess_models', git: 'https://f978ea15efa23d1660a55e6678e6022f8f2ffe76:x-oauth-basic@github.com/rickmark/hot_mess_models.git', branch: 'next'
 
