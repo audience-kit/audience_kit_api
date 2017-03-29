@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170328182417) do
+ActiveRecord::Schema.define(version: 20170329163353) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,14 +19,28 @@ ActiveRecord::Schema.define(version: 20170328182417) do
   enable_extension "postgis"
   enable_extension "uuid-ossp"
 
+  create_table "application_tokens", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.uuid     "application_id", null: false
+    t.string   "token",          null: false
+    t.index ["application_id"], name: "index_application_tokens_on_application_id", using: :btree
+  end
+
+  create_table "applications", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.uuid     "audiences_id", null: false
+    t.bigint   "facebook_id",  null: false
+    t.string   "environment"
+    t.index ["audiences_id"], name: "index_applications_on_audiences_id", using: :btree
+  end
+
   create_table "audiences", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.string   "hostname",                null: false
-    t.bigint   "production_facebook_id",  null: false
-    t.bigint   "stage_facebook_id"
-    t.bigint   "development_facebook_id"
-    t.uuid     "beacon_uuid",             null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.string   "hostname",    null: false
+    t.uuid     "beacon_uuid", null: false
   end
 
   create_table "devices", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -53,17 +67,20 @@ ActiveRecord::Schema.define(version: 20170328182417) do
   end
 
   create_table "events", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.string   "name"
     t.datetime "start_at"
     t.datetime "end_at"
-    t.uuid     "venue_id",                      null: false
+    t.uuid     "venue_id",                          null: false
     t.jsonb    "facebook_graph"
     t.bigint   "facebook_id"
     t.string   "name_override"
-    t.integer  "order",          default: 1000
+    t.integer  "order",              default: 1000
+    t.string   "ticket_provider"
+    t.string   "ticket_provider_id"
     t.index ["facebook_id"], name: "index_events_on_facebook_id", using: :btree
+    t.index ["start_at"], name: "index_events_on_start_at", using: :btree
     t.index ["venue_id"], name: "index_events_on_venue_id", using: :btree
   end
 
@@ -151,6 +168,18 @@ ActiveRecord::Schema.define(version: 20170328182417) do
     t.index ["content_hash"], name: "photos_hash_uindex", unique: true, using: :btree
   end
 
+  create_table "reviews", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid     "page_id",    null: false
+    t.string   "source"
+    t.uuid     "user_id"
+    t.string   "content"
+    t.integer  "stars"
+    t.index ["page_id"], name: "index_reviews_on_page_id", using: :btree
+    t.index ["user_id"], name: "index_reviews_on_user_id", using: :btree
+  end
+
   create_table "sessions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.datetime  "created_at",                                                             null: false
     t.datetime  "updated_at",                                                             null: false
@@ -185,6 +214,16 @@ ActiveRecord::Schema.define(version: 20170328182417) do
     t.index ["social_link_id"], name: "index_social_updates_on_social_link_id", using: :btree
   end
 
+  create_table "ticket_types", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.uuid     "event_id",                     null: false
+    t.string   "title",                        null: false
+    t.string   "provider_ticket_id",           null: false
+    t.money    "price",              scale: 2
+    t.index ["event_id"], name: "index_ticket_types_on_event_id", using: :btree
+  end
+
   create_table "tracks", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.datetime "created_at",          default: -> { "now()" }, null: false
     t.datetime "updated_at",          default: -> { "now()" }, null: false
@@ -202,6 +241,27 @@ ActiveRecord::Schema.define(version: 20170328182417) do
     t.uuid     "photo_id"
     t.uuid     "waveform_photo_id"
     t.index ["social_link_id"], name: "index_tracks_on_social_link_id", using: :btree
+  end
+
+  create_table "tribe_users", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid     "tribe_id",   null: false
+    t.uuid     "user_id",    null: false
+    t.index ["tribe_id", "user_id"], name: "index_tribe_users_on_tribe_id_and_user_id", unique: true, using: :btree
+    t.index ["tribe_id"], name: "index_tribe_users_on_tribe_id", using: :btree
+    t.index ["user_id"], name: "index_tribe_users_on_user_id", using: :btree
+  end
+
+  create_table "tribes", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.uuid     "audience_id",                 null: false
+    t.boolean  "is_private",  default: false, null: false
+    t.string   "handle",                      null: false
+    t.string   "description"
+    t.index ["audience_id", "handle"], name: "index_tribes_on_audience_id_and_handle", unique: true, using: :btree
+    t.index ["audience_id"], name: "index_tribes_on_audience_id", using: :btree
   end
 
   create_table "user_audiences", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -240,13 +300,16 @@ ActiveRecord::Schema.define(version: 20170328182417) do
   end
 
   create_table "user_rsvps", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.uuid     "event_id",   null: false
-    t.uuid     "user_id",    null: false
-    t.string   "state",      null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.uuid     "event_id",        null: false
+    t.uuid     "user_id",         null: false
+    t.string   "state",           null: false
+    t.uuid     "ticket_type_id"
+    t.integer  "ticket_quantity"
     t.index ["event_id", "user_id"], name: "index_user_rsvps_on_event_id_and_user_id", unique: true, using: :btree
     t.index ["event_id"], name: "index_user_rsvps_on_event_id", using: :btree
+    t.index ["ticket_type_id"], name: "index_user_rsvps_on_ticket_type_id", using: :btree
     t.index ["user_id"], name: "index_user_rsvps_on_user_id", using: :btree
   end
 
@@ -265,6 +328,7 @@ ActiveRecord::Schema.define(version: 20170328182417) do
     t.jsonb    "facebook_graph"
     t.string   "facebook_scopes",                       array: true
     t.uuid     "photo_id"
+    t.string   "handle"
     t.index ["email_address"], name: "index_users_on_email_address", using: :btree
     t.index ["facebook_id"], name: "users_facebook_id_uindex", unique: true, using: :btree
   end
@@ -305,6 +369,7 @@ ActiveRecord::Schema.define(version: 20170328182417) do
     t.index ["photo_id"], name: "index_venues_on_photo_id", using: :btree
   end
 
+  add_foreign_key "application_tokens", "applications"
   add_foreign_key "events", "venues"
   add_foreign_key "friendships", "users", column: "friend_high_id"
   add_foreign_key "friendships", "users", column: "friend_low_id"
@@ -314,9 +379,11 @@ ActiveRecord::Schema.define(version: 20170328182417) do
   add_foreign_key "people", "pages"
   add_foreign_key "sessions", "devices"
   add_foreign_key "sessions", "users"
+  add_foreign_key "ticket_types", "events"
   add_foreign_key "tracks", "photos", column: "waveform_photo_id", name: "tracks_photos_waveform_id_fk"
   add_foreign_key "tracks", "photos", name: "tracks_photos_id_fk"
   add_foreign_key "tracks", "social_links", name: "tracks_social_links_id_fk"
+  add_foreign_key "tribe_users", "users"
   add_foreign_key "user_audiences", "audiences"
   add_foreign_key "user_audiences", "users"
   add_foreign_key "user_likes", "pages"

@@ -59,11 +59,11 @@ class UpdatePagesJob < ApplicationJob
 
       puts "Updating event => #{event_model['name']}"
 
-      event_graph = graph_client.get_object event['id']
+      event_graph = graph_client.get_object event['id'], fields: [ 'ticket_uri', 'owner', 'name', 'cover', 'start_time', 'end_time', 'place' ]
       event_model.facebook_graph = event_graph
 
-      if event_graph['venue'] and event_graph['venue']['id']
-        venue_id = event_graph['venue']['id']
+      if event_graph['place']
+        venue_id = event_graph['place']['id']
 
         venue_page = HotMessModels::Page.find_by(facebook_id: venue_id)
         if venue_page
@@ -77,12 +77,15 @@ class UpdatePagesJob < ApplicationJob
             venue_page_link.save
           end
         else
-          venue_page.facebook_graph = graph_client.get_object event_model.venue.facebook_id
-          venue_page.name = event_model.venue.facebook_graph['name']
+          venue_page = HotMessModels::Page.new(facebook_id: event_graph['place']['id'])
+          venue_page.facebook_graph = graph_client.get_object venue_page.facebook_id
+          venue_page.name = event_graph['place']['name']
 
           venue_page_link = HotMessModels::VenuePage.new(page: venue_page)
           venue_page_link.venue = HotMessModels::Venue.new(hidden: true)
           venue_page_link.save
+
+          event_model.venue = venue_page_link.venue
         end
       else
         puts "No venue for #{event_graph['name']} (#{event_graph['id']})"
@@ -92,7 +95,7 @@ class UpdatePagesJob < ApplicationJob
 
       HotMessModels::EventPerson.find_or_create_by(person: page.person, event: event_model, role: 'host') if event_model.venue and page.person
     rescue => ex
-      puts "Error updating object #{page.name}'s event #{ex}"
+      puts "Error updating object #{page.name}'s event #{ex.to_s}\n#{ex.backtrace}"
     end
   end
 end

@@ -19,59 +19,100 @@ class UpdateUserJob < ApplicationJob
       user.update_from user_graph
       user.save
 
-      # This will be additive only, should remove
-      puts 'Inserting user likes'
-      user_likes = user_graph_client.get_connections :me, :likes
-      existing_user_likes = user.user_likes.includes(:page)
+      self.update_likes user, user_graph_client
+      self.update_friends user, user_graph_client
+      self.update_events user, user_graph_client
 
-      while user_likes
-        user_likes.each do |like|
-          page = HotMessModels::Page.find_by(facebook_id: like['id'])
-
-          unless page
-            page = HotMessModels::Page.find_or_create_by(facebook_id: like['id']) do |p|
-              p.hidden = true
-              page_graph = user_graph_client.get_object like['id']
-              p.name = page_graph['name']
-              p.facebook_graph = page_graph
-            end
-          end
-
-          puts "Adding like for page #{page.name}"
-          user.user_likes.find_or_create_by(user: user, page: page)
-        end
-        user_likes = user_likes.next_page
-      end
-
-      friends = []
-      friend_pages = user_graph_client.get_connections(user.facebook_id, :friends)
-      while friend_pages
-        friend_pages.each { |f| friends << f }
-        friend_pages = friend_pages.next_page
-      end
-
-      puts "Object #{user.name} has #{friends.count} application friends"
-      friends.each do |friend|
-        friend_id = friend['id'].to_i
-
-        pair = [ user.facebook_id, friend_id ].sort
-        pair_hash = pair.join('_')
-
-        friend_object = graph.get_object friend_id
-
-        friend_user = HotMessModels::User.find_or_create_by facebook_id: friend_object['id']
-        friend_user.update_from friend_object
-
-        friend_user.save
-
-        friendship = HotMessModels::Friendship.find_or_initialize_by(friend_hash: pair_hash)
-
-        friendship.friend_low_id = HotMessModels::User.find_by(facebook_id: pair[0]).id
-        friendship.friend_high_id = HotMessModels::User.find_by(facebook_id: pair[1]).id
-        friendship.save
-      end
     rescue => ex
       puts "Error updating #{user.name} => #{ex}"
+    end
+  end
+
+  # TODO: NOT FUNCTIONAL PARADIGM
+  def update_events(user, user_graph_client)
+    events = user_graph_client.get_connection :me, :events
+
+    event_rsvps = []
+
+    while events
+      events.each do |event|
+        event_rsvps << { facebook_id: event[:id], rsvp: event[:rsvp_status] }
+      end
+
+      events = events.next_page
+    end
+
+    event_table = HotMessModels::Event.where(facebook_id: event_rsvps.map { |e| e[:facebook_id] }).to_h {|e| e.facebook_id }
+
+    event_rsvps.each do |rsvp|
+      rsvp[:event] = event_table[rsvp[:facebook_id].to_i]
+    end
+
+    event_rsvps.each do |rsvp|
+      next unless rsvp[:event]
+
+      rsvp[:model] = user.rsvps.find_or_create_by(event: rsvp[:event]) do |rsvp|
+        rsvp.state = rsvp[:rsvp_status]
+      end
+
+      rsvp[:model].state = rsvp[:rsvp_status]
+    end
+  end
+
+  def update_likes(user, user_graph_client)
+    # This will be additive only, should remove
+    puts 'Inserting user likes'
+    user_likes = user_graph_client.get_connections :me, :likes
+    existing_user_likes = user.user_likes.includes(:page)
+
+    while user_likes
+      user_likes.each do |like|
+        page = HotMessModels::Page.find_by(facebook_id: like['id'])
+
+        unless page
+          page = HotMessModels::Page.find_or_create_by(facebook_id: like['id']) do |p|
+            p.hidden = true
+            page_graph = user_graph_client.get_object like['id']
+            p.name = page_graph['name']
+            p.facebook_graph = page_graph
+          end
+        end
+
+        puts "Adding like for page #{page.name}"
+        user.user_likes.find_or_create_by(user: user, page: page)
+      end
+      user_likes = user_likes.next_page
+    end
+  end
+
+  def update_friends(user, user_graph_client)
+
+    friends = []
+    friend_pages = user_graph_client.get_connections(user.facebook_id, :friends)
+    while friend_pages
+      friend_pages.each { |f| friends << f }
+      friend_pages = friend_pages.next_page
+    end
+
+    puts "Object #{user.name} has #{friends.count} application friends"
+    friends.each do |friend|
+      friend_id = friend['id'].to_i
+
+      pair = [ user.facebook_id, friend_id ].sort
+      pair_hash = pair.join('_')
+
+      friend_object = user_graph_client.get_object friend_id
+
+      friend_user = HotMessModels::User.find_or_create_by facebook_id: friend_object['id']
+      friend_user.update_from friend_object
+
+      friend_user.save
+
+      friendship = HotMessModels::Friendship.find_or_initialize_by(friend_hash: pair_hash)
+
+      friendship.friend_low_id = HotMessModels::User.find_by(facebook_id: pair[0]).id
+      friendship.friend_high_id = HotMessModels::User.find_by(facebook_id: pair[1]).id
+      friendship.save
     end
   end
 end
