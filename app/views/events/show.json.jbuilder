@@ -4,6 +4,7 @@ json.event do
   json.start_at @event.start_at
   json.end_at @event.end_at
   json.facebook_id @event.facebook_id
+  json.rsvp @rsvp&.state || 'unsure'
   json.venue do
     json.id @event.venue.id
     json.name @event.venue.display_name

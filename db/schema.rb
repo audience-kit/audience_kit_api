@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170329163353) do
+ActiveRecord::Schema.define(version: 20170330044103) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,13 +44,14 @@ ActiveRecord::Schema.define(version: 20170329163353) do
   end
 
   create_table "devices", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
     t.string   "device_type"
     t.string   "vendor_identifier"
     t.macaddr  "bluetooth_address"
     t.macaddr  "wifi_address"
     t.string   "model"
+    t.string   "notification_token"
     t.index ["device_type", "vendor_identifier"], name: "devices_by_vendor", unique: true, using: :btree
   end
 

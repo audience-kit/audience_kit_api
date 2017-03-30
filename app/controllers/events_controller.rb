@@ -8,6 +8,8 @@ class EventsController < ApplicationController
   def show
     @event = HotMessModels::Event.find params[:id]
 
+    @rsvp = @event.rsvps.find_by(user: current_user)
+
     kinesis :event_view, @event.id, user_id: current_user.id, id: @event.id
   end
 
@@ -16,10 +18,8 @@ class EventsController < ApplicationController
 
     @event = HotMessModels::Event.find params[:id]
 
-    @rsvp = @event.rsvps.find_or_initialize_by user: current_user
-
+    @rsvp = HotMessModels::UserRSVP.find_or_initialize_by user: current_user, event: @event
     @rsvp.state = params[:state]
-
 
     graph_client = Koala::Facebook::API.new current_user.facebook_token
 

@@ -1,6 +1,6 @@
 GIT
   remote: https://f978ea15efa23d1660a55e6678e6022f8f2ffe76:x-oauth-basic@github.com/rickmark/hot_mess_models.git
-  revision: 74b690ecf2f8862894ad6fd4502702919e4bdf65
+  revision: 8a8b570f30fd82d954453fa601f2f0c673b91334
   branch: next
   specs:
     hot_mess_models (0.1.0)
@@ -55,7 +55,7 @@ GEM
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
-    addressable (2.5.0)
+    addressable (2.5.1)
       public_suffix (~> 2.0, >= 2.0.2)
     arel (7.1.4)
     aws-sdk (2.8.14)
