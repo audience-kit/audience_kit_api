@@ -49,4 +49,14 @@ class TokenController < ApplicationController
       return render template: 'shared/fault', status: 400
     end
   end
+
+  def device
+    @device = HotMessModels::Device.find_by(vendor_token: params[:vendor_token])
+
+    @device.notification_token = params[:notification_token]
+
+    @device.save
+
+    render nothing: true
+  end
 end
