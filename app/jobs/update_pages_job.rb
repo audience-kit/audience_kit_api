@@ -24,7 +24,7 @@ class UpdatePagesJob < ApplicationJob
         page.update_graph object_graph, client: graph_client
         page.save
 
-        if page.venues.any? and page.venues.any? { |p| not p.hidden }
+        if page.venue and !page.venue.hidden
           events = []
         else
           events = graph_client.get_connection page.facebook_id, :events
@@ -44,9 +44,7 @@ class UpdatePagesJob < ApplicationJob
           events = events.next_page
         end
 
-        page.venues.each do |venue|
-          venue.update_data
-        end
+        page.venue.update_data
       rescue => ex
         puts "Error updating page #{page.name} (#{page.facebook_id}) => #{ex}"
       end
