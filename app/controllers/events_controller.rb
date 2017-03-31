@@ -2,7 +2,11 @@ class EventsController < ApplicationController
   def index
     params.permit :venue_id
 
-    @events = HotMessModels::Event.future.includes([ { event_people: { person: :page } }, { venue: :pages } ])
+    @events = HotMessModels::Event.future.includes([ { event_people: { person: :page } }, { venue: :pages } ]).take(30)
+
+    @sections = []
+
+    @sections << { name: :recommended, events: HotMessModels::Event.future.take(1), title: 'Recomended for you' }
   end
 
   def show
