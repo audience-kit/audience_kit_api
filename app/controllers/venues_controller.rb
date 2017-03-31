@@ -5,7 +5,7 @@ class VenuesController < ApplicationController
   skip_before_action :authenticate, only: [ :photo, :picture, :cover ]
 
   def index
-    @venues =  HotMessModels::Venue.joins(:location).includes(venue_pages: :page)
+    @venues =  HotMessModels::Venue.joins(:location).includes(:page)
 
     if params[:locale_id]
       @venues = @venues.where(locale_id: params[:locale_id], hidden: false)
@@ -20,7 +20,7 @@ class VenuesController < ApplicationController
   end
 
   def show
-    @venue = HotMessModels::Venue.includes(venue_pages: :page).find(params[:id])
+    @venue = HotMessModels::Venue.includes(:page).find(params[:id])
 
     @is_liked = HotMessModels::UserLike.find_by(user: user, page: @venue.page) ? true : false
 

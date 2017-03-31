@@ -36,6 +36,7 @@ class UsersController < ApplicationController
   end
 
   def picture
-    redirect_to HotMessModels::User.find(params[:id]).photo
+    @user = HotMessModels::User.find(params[:id])
+    redirect_to url_for(@user.photo)
   end
 end

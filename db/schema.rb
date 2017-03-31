@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170330044103) do
+ActiveRecord::Schema.define(version: 20170331220339) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -122,7 +122,6 @@ ActiveRecord::Schema.define(version: 20170330044103) do
     t.string    "hero_url"
     t.binary    "hero_image"
     t.string    "hero_mime"
-    t.uuid      "photo_id"
     t.index ["google_place_id"], name: "index_locations_on_google_place_id", unique: true, using: :btree
     t.index ["locale_id"], name: "index_locations_on_locale_id", using: :btree
   end
@@ -136,6 +135,12 @@ ActiveRecord::Schema.define(version: 20170330044103) do
     t.jsonb    "facebook_graph",                        null: false
     t.string   "facebook_access_token"
     t.string   "facets",                                             array: true
+    t.string   "picture_url"
+    t.string   "picture_mime"
+    t.binary   "picture_image"
+    t.string   "cover_url"
+    t.string   "cover_mime"
+    t.binary   "cover_image"
     t.boolean  "requires_user_token",   default: false, null: false
     t.boolean  "hidden",                default: false, null: false
     t.uuid     "photo_id"
@@ -148,7 +153,9 @@ ActiveRecord::Schema.define(version: 20170330044103) do
     t.integer "order",         default: 1000,  null: false
     t.boolean "global",        default: false, null: false
     t.boolean "like_required", default: false, null: false
+    t.uuid    "photo_id"
     t.index ["page_id"], name: "index_people_on_page_id", unique: true, using: :btree
+    t.index ["photo_id"], name: "index_people_on_photo_id", using: :btree
   end
 
   create_table "person_locales", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -166,6 +173,7 @@ ActiveRecord::Schema.define(version: 20170330044103) do
     t.binary   "content_hash", null: false
     t.binary   "content",      null: false
     t.string   "mime",         null: false
+    t.string   "cdn_url"
     t.index ["content_hash"], name: "photos_hash_uindex", unique: true, using: :btree
   end
 
@@ -239,8 +247,6 @@ ActiveRecord::Schema.define(version: 20170330044103) do
     t.string   "download_url"
     t.string   "stream_url"
     t.jsonb    "metadata"
-    t.uuid     "photo_id"
-    t.uuid     "waveform_photo_id"
     t.index ["social_link_id"], name: "index_tracks_on_social_link_id", using: :btree
   end
 
@@ -322,11 +328,15 @@ ActiveRecord::Schema.define(version: 20170330044103) do
     t.bigint   "facebook_id",              null: false
     t.string   "facebook_token"
     t.datetime "facebook_token_issued_at"
+    t.string   "profile_image_url"
     t.string   "gender"
     t.string   "first_name"
     t.string   "last_name"
     t.string   "culture"
     t.jsonb    "facebook_graph"
+    t.binary   "picture_image"
+    t.string   "picture_mime"
+    t.string   "picture_url"
     t.string   "facebook_scopes",                       array: true
     t.uuid     "photo_id"
     t.string   "handle"
@@ -344,29 +354,19 @@ ActiveRecord::Schema.define(version: 20170330044103) do
     t.index ["venue_id"], name: "index_venue_messages_on_venue_id", using: :btree
   end
 
-  create_table "venue_pages", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-    t.uuid     "venue_id",                  null: false
-    t.uuid     "page_id",                   null: false
-    t.integer  "order",      default: 1000, null: false
-    t.index ["page_id"], name: "index_venue_pages_on_page_id", using: :btree
-    t.index ["page_id"], name: "venue_pages_by_page_id", using: :btree
-    t.index ["venue_id", "page_id"], name: "index_venue_pages_on_venue_id_and_page_id", unique: true, using: :btree
-    t.index ["venue_id"], name: "index_venue_pages_on_venue_id", using: :btree
-    t.index ["venue_id"], name: "venue_pages_by_venue_id", using: :btree
-  end
-
   create_table "venues", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid      "locale_id"
-    t.boolean   "hidden",                                                                        default: false, null: false
-    t.integer   "order",                                                                         default: 1000,  null: false
-    t.integer   "distance_tolerance",                                                            default: 250,   null: false
-    t.geography "envelope",           limit: {:srid=>4326, :type=>"polygon", :geographic=>true}
+    t.boolean   "hidden",                                                                            default: false, null: false
+    t.integer   "order",                                                                             default: 1000,  null: false
+    t.integer   "distance_tolerance",                                                                default: 250,   null: false
+    t.geography "envelope",               limit: {:srid=>4326, :type=>"polygon", :geographic=>true}
     t.uuid      "location_id"
     t.uuid      "photo_id"
     t.uuid      "hero_banner_id"
+    t.uuid      "page_id"
+    t.string    "alternate_facebook_ids",                                                                                         array: true
     t.index ["locale_id"], name: "index_venues_on_locale_id", using: :btree
+    t.index ["page_id"], name: "index_venues_on_page_id", using: :btree
     t.index ["photo_id"], name: "index_venues_on_photo_id", using: :btree
   end
 
@@ -374,15 +374,12 @@ ActiveRecord::Schema.define(version: 20170330044103) do
   add_foreign_key "events", "venues"
   add_foreign_key "friendships", "users", column: "friend_high_id"
   add_foreign_key "friendships", "users", column: "friend_low_id"
-  add_foreign_key "locations", "photos", name: "locations_photos_id_fk"
   add_foreign_key "pages", "photos", column: "cover_photo_id", name: "pages_photos_cover_id_fk"
   add_foreign_key "pages", "photos", name: "pages_photos_id_fk"
   add_foreign_key "people", "pages"
   add_foreign_key "sessions", "devices"
   add_foreign_key "sessions", "users"
   add_foreign_key "ticket_types", "events"
-  add_foreign_key "tracks", "photos", column: "waveform_photo_id", name: "tracks_photos_waveform_id_fk"
-  add_foreign_key "tracks", "photos", name: "tracks_photos_id_fk"
   add_foreign_key "tracks", "social_links", name: "tracks_social_links_id_fk"
   add_foreign_key "tribe_users", "users"
   add_foreign_key "user_audiences", "audiences"
@@ -399,6 +396,7 @@ ActiveRecord::Schema.define(version: 20170330044103) do
   add_foreign_key "venue_messages", "venues"
   add_foreign_key "venues", "locales"
   add_foreign_key "venues", "locations", name: "venues_locations_id_fk"
+  add_foreign_key "venues", "pages"
   add_foreign_key "venues", "photos"
   add_foreign_key "venues", "photos", column: "hero_banner_id"
 end

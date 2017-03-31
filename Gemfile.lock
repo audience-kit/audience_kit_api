@@ -1,6 +1,6 @@
 GIT
   remote: https://f978ea15efa23d1660a55e6678e6022f8f2ffe76:x-oauth-basic@github.com/rickmark/hot_mess_models.git
-  revision: 8a8b570f30fd82d954453fa601f2f0c673b91334
+  revision: 4c3db4964c893f55c7104a96f2099ed870b4cb5c
   branch: next
   specs:
     hot_mess_models (0.1.0)
@@ -58,15 +58,16 @@ GEM
     addressable (2.5.1)
       public_suffix (~> 2.0, >= 2.0.2)
     arel (7.1.4)
-    aws-sdk (2.8.14)
-      aws-sdk-resources (= 2.8.14)
-    aws-sdk-core (2.8.14)
+    aws-sdk (2.9.1)
+      aws-sdk-resources (= 2.9.1)
+    aws-sdk-core (2.9.1)
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.8.14)
-      aws-sdk-core (= 2.8.14)
+    aws-sdk-resources (2.9.1)
+      aws-sdk-core (= 2.9.1)
     aws-sigv4 (1.0.0)
     bcrypt (3.1.11)
+    bson (4.2.1)
     builder (3.2.3)
     byebug (9.0.6)
     certified (1.0.0)
@@ -90,7 +91,7 @@ GEM
     geocoder (1.4.3)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
-    google-api-client (0.10.2)
+    google-api-client (0.10.3)
       addressable (~> 2.3)
       googleauth (~> 0.5)
       httpclient (~> 2.7)
@@ -148,6 +149,11 @@ GEM
     mimemagic (0.3.2)
     mini_portile2 (2.1.0)
     minitest (5.10.1)
+    mongo (2.4.1)
+      bson (>= 4.2.1, < 5.0.0)
+    mongoid (6.1.0)
+      activemodel (~> 5.0)
+      mongo (>= 2.4.1, < 3.0.0)
     mono_logger (1.1.0)
     multi_json (1.12.1)
     multi_xml (0.6.0)
@@ -297,6 +303,7 @@ DEPENDENCIES
   jwt
   koala
   listen (~> 3.0.5)
+  mongoid
   newrelic_rpm
   pg
   puma
