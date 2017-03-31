@@ -64,27 +64,21 @@ class UpdatePagesJob < ApplicationJob
         venue_id = event_graph['place']['id']
 
         venue_page = HotMessModels::Page.find_by(facebook_id: venue_id)
-        if venue_page
-          venue_page_link = HotMessModels::VenuePage.find_by(page: venue_page)
 
-          if venue_page_link
-            event_model.venue = venue_page_link.venue
-          else
-            venue_page_link = HotMessModels::VenuePage.new(page: venue_page)
-            venue_page_link.venue = HotMessModels::Venue.new(hidden: true)
-            venue_page_link.save
-          end
-        else
+        unless venue_page
           venue_page = HotMessModels::Page.new(facebook_id: event_graph['place']['id'])
           venue_page.facebook_graph = graph_client.get_object venue_page.facebook_id
           venue_page.name = event_graph['place']['name']
 
-          venue_page_link = HotMessModels::VenuePage.new(page: venue_page)
-          venue_page_link.venue = HotMessModels::Venue.new(hidden: true)
-          venue_page_link.save
+          venue_page.save
 
-          event_model.venue = venue_page_link.venue
+          venue = HotMessModels::Venue.new(hidden: true, page: venue_page)
+          venue.save
+
+
         end
+
+        event_model.venue = venue_page.venue
       else
         puts "No venue for #{event_graph['name']} (#{event_graph['id']})"
       end
