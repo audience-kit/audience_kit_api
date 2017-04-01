@@ -20,7 +20,7 @@ json.venues do
     json.photo_url "#{venue_url(venue)}/photo"
     json.hero_banner_url venue.hero_banner_url
 
-    if venue.google_location
+    if venue.location&.google_location
       json.address (venue.street || '').gsub!(/,.+/, '')
       json.phone venue.phone_number
     end

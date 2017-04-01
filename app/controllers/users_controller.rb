@@ -11,9 +11,9 @@ class UsersController < ApplicationController
 
     @point = RGeo::Geographic.simple_mercator_factory.point @longitude, @latitude
 
-    user_location = HotMessModels::UserLocation.new session: HotMessModels::Session.find_by(token_id: request.env['token_id']), point: @point
+    user_location = UserLocation.new session: HotMessModels::Session.find_by(token_id: request.env['token_id']), point: @point
 
-    user_location.venue = HotMessModels::Venue.closest @point, within: true
+    user_location.venue = Venue.closest @point, within: true
     Rails.logger.info "Location #{@point} registered venue as #{user_location.venue.id}" if user_location.venue
 
     # Override with becaons if available
@@ -23,12 +23,12 @@ class UsersController < ApplicationController
       if params[:beacon][:minor] != 0
         user_location.beacon_minor = params[:beacon][:minor]
 
-        user_location.venue = HotMessModels::Venue.find_by(locale: user_location.locale, beacon_id: user_location.beacon_minor)
+        user_location.venue = Venue.find_by(locale: user_location.locale, beacon_id: user_location.beacon_minor)
       end
     end
 
     user_location.location = user_location.venue.location if user_location.venue
-    user_location.location = HotMessModels::Locale.closest(@point).location unless user_location.location
+    user_location.location = Locale.closest(@point).location unless user_location.location
 
     user_location.save
 
@@ -36,7 +36,7 @@ class UsersController < ApplicationController
   end
 
   def picture
-    @user = HotMessModels::User.find(params[:id])
+    @user = User.find(params[:id])
     redirect_to url_for(@user.photo)
   end
 end

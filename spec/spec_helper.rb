@@ -103,7 +103,7 @@ def default_params
 end
 
 def default_headers
-  @session = HotMessModels::Session.new user: HotMessModels::User.find_by(email_address: 'rickmark@outlook.com'), device: HotMessModels::Device.first
+  @session = Session.new user: HotMessModels::User.find_by(email_address: 'rickmark@outlook.com'), device: Device.first
   @session.save
 
   request_double = double('Rack::Request')

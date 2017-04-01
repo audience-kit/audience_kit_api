@@ -34,7 +34,7 @@ class ApplicationController < ActionController::API
 
   def current_user
     puts "UserID => #{@user_id}"
-    @current_user ||= HotMessModels::User.find_by_id(@user_id)
+    @current_user ||= User.find_by_id(@user_id)
   end
 
   def admin?

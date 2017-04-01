@@ -10,7 +10,7 @@ json.venue do
 
   json.hero_banner_url event.venue.hero_banner_url
 
-  if event.venue.google_location
+  if event.venue.location&.google_location
     json.address (event.venue.street || '').gsub!(/,.+/, '')
     json.phone event.venue.phone_number
   end

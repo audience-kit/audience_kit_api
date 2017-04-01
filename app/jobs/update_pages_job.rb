@@ -1,12 +1,12 @@
 class UpdatePagesJob < ApplicationJob
   def perform
     puts 'Performing page update'
-    app_token = HotMessModels::Concerns::Facebook.oauth.get_app_access_token
+    app_token = Concerns::Facebook.oauth.get_app_access_token
 
     HotMessModels::Page.where('updated_at < ? and hidden IS FALSE', 12.hour.ago).order(updated_at: :desc).each do |page|
       puts "Updating page #{page.name}"
       begin
-        user_token = HotMessModels::User.where('facebook_token IS NOT NULL').order('RANDOM()').first.facebook_token
+        user_token = User.where('facebook_token IS NOT NULL').order('RANDOM()').first.facebook_token
 
         graph_client = Koala::Facebook::API.new app_token
         page.requires_user_token = false
@@ -24,7 +24,7 @@ class UpdatePagesJob < ApplicationJob
         page.update_graph object_graph, client: graph_client
         page.save
 
-        if page.venue and !page.venue.hidden
+        if page.venues.any? and page.venues.any? { |p| not p.hidden }
           events = []
         else
           events = graph_client.get_connection page.facebook_id, :events
@@ -44,7 +44,9 @@ class UpdatePagesJob < ApplicationJob
           events = events.next_page
         end
 
-        page.venue.update_data
+        page.venues.each do |venue|
+          venue.update_data
+        end
       rescue => ex
         puts "Error updating page #{page.name} (#{page.facebook_id}) => #{ex}"
       end
@@ -53,7 +55,7 @@ class UpdatePagesJob < ApplicationJob
 
   def update_events(page, event, graph_client)
     begin
-      event_model = HotMessModels::Event.find_or_create_by facebook_id: event['id']
+      event_model = Event.find_or_create_by facebook_id: event['id']
 
       puts "Updating event => #{event_model['name']}"
 
@@ -63,22 +65,28 @@ class UpdatePagesJob < ApplicationJob
       if event_graph['place']
         venue_id = event_graph['place']['id']
 
-        venue_page = HotMessModels::Page.find_by(facebook_id: venue_id)
+        venue_page = Page.find_by(facebook_id: venue_id)
+        if venue_page
+          venue_page_link = VenuePage.find_by(page: venue_page)
 
-        unless venue_page
-          venue_page = HotMessModels::Page.new(facebook_id: event_graph['place']['id'])
+          if venue_page_link
+            event_model.venue = venue_page_link.venue
+          else
+            venue_page_link = VenuePage.new(page: venue_page)
+            venue_page_link.venue = Venue.new(hidden: true)
+            venue_page_link.save
+          end
+        else
+          venue_page = Page.new(facebook_id: event_graph['place']['id'])
           venue_page.facebook_graph = graph_client.get_object venue_page.facebook_id
           venue_page.name = event_graph['place']['name']
 
-          venue_page.save
+          venue_page_link = VenuePage.new(page: venue_page)
+          venue_page_link.venue = Venue.new(hidden: true)
+          venue_page_link.save
 
-          venue = HotMessModels::Venue.new(hidden: true, page: venue_page)
-          venue.save
-
-
+          event_model.venue = venue_page_link.venue
         end
-
-        event_model.venue = venue_page.venue
       else
         puts "No venue for #{event_graph['name']} (#{event_graph['id']})"
       end

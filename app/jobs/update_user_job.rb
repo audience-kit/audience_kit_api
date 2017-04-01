@@ -9,7 +9,7 @@ class UpdateUserJob < ApplicationJob
 
       image_data = graph.get_picture_data(user.facebook_id, type: :large)['data']
 
-      photo = HotMessModels::Photo.for_url image_data['url']
+      photo = Photo.for_url image_data['url']
 
       user.photo = photo
 
@@ -67,10 +67,10 @@ class UpdateUserJob < ApplicationJob
 
     while user_likes
       user_likes.each do |like|
-        page = HotMessModels::Page.find_by(facebook_id: like['id'])
+        page = Page.find_by(facebook_id: like['id'])
 
         unless page
-          page = HotMessModels::Page.find_or_create_by(facebook_id: like['id']) do |p|
+          page = Page.find_or_create_by(facebook_id: like['id']) do |p|
             p.hidden = true
             page_graph = user_graph_client.get_object like['id']
             p.name = page_graph['name']
@@ -103,15 +103,15 @@ class UpdateUserJob < ApplicationJob
 
       friend_object = user_graph_client.get_object friend_id
 
-      friend_user = HotMessModels::User.find_or_create_by facebook_id: friend_object['id']
+      friend_user = User.find_or_create_by facebook_id: friend_object['id']
       friend_user.update_from friend_object
 
       friend_user.save
 
-      friendship = HotMessModels::Friendship.find_or_initialize_by(friend_hash: pair_hash)
+      friendship = Friendship.find_or_initialize_by(friend_hash: pair_hash)
 
-      friendship.friend_low_id = HotMessModels::User.find_by(facebook_id: pair[0]).id
-      friendship.friend_high_id = HotMessModels::User.find_by(facebook_id: pair[1]).id
+      friendship.friend_low_id = User.find_by(facebook_id: pair[0]).id
+      friendship.friend_high_id = User.find_by(facebook_id: pair[1]).id
       friendship.save
     end
   end

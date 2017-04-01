@@ -1,4 +1,4 @@
-ruby '2.3.3'
+ruby '2.4.1'
 
 source 'https://rubygems.org'
 
@@ -38,8 +38,6 @@ gem 'certified'
 gem 'eventbrite'
 gem 'ticketmaster-sdk'
 gem 'mongoid'
-
-gem 'hot_mess_models', git: 'https://f978ea15efa23d1660a55e6678e6022f8f2ffe76:x-oauth-basic@github.com/rickmark/hot_mess_models.git', branch: 'next'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

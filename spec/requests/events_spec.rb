@@ -13,7 +13,7 @@ RSpec.describe 'events', type: :request do
   end
 
   it 'returns events for locale at /locale/{id}/events' do
-    nyc = HotMessModels::Locale.find_by(label: 'nyc')
+    nyc = Locale.find_by(label: 'nyc')
 
     get "/locales/#{nyc.id}/events", params: default_params, headers: default_headers
 

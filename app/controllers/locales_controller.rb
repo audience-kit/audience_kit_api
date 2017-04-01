@@ -4,15 +4,15 @@ class LocalesController < ApplicationController
   include Concerns::LocationParameters
 
   def index
-    @locales = HotMessModels::Locale.all
+    @locales = Locale.all
   end
 
   def show
-    @locale = HotMessModels::Locale.find params[:id]
+    @locale = Locale.find params[:id]
   end
 
   def closest
-    @locale = HotMessModels::Locale.closest location_param
+    @locale = Locale.closest location_param
 
     kinesis :user_location_update, current_user.id, user_id: current_user.id, longatude: @longitude, latitude: @latitude
 
@@ -20,7 +20,7 @@ class LocalesController < ApplicationController
   end
 
   def events
-    @locale = HotMessModels::Locale.find params[:id]
+    @locale = Locale.find params[:id]
 
     @events = @locale.events
 
@@ -28,7 +28,7 @@ class LocalesController < ApplicationController
   end
 
   def photo
-    @locale = HotMessModels::Locale.find params[:id]
+    @locale = Locale.find params[:id]
     redirect_to "/photos/#{@locale.location.photo_id}"
   end
 end
