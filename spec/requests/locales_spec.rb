@@ -25,7 +25,7 @@ RSpec.describe 'locales', type: :request do
   end
 
   it 'returns locale for locale at /locale/{id}' do
-    nyc = HotMessModels::Locale.find_by(label: 'nyc')
+    nyc = Locale.find_by(label: 'nyc')
 
     get '/locales', params: default_params, headers: default_headers
 

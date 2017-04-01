@@ -16,7 +16,7 @@ RSpec.describe 'people', type: :request do
   end
 
   it 'returns people for locale at /locales/{id}/people' do
-    nyc = HotMessModels::Locale.find_by(label: 'nyc')
+    nyc = Locale.find_by(label: 'nyc')
 
     get "/locales/#{nyc.id}/people", params: default_params, headers: default_headers
 
@@ -27,7 +27,7 @@ RSpec.describe 'people', type: :request do
   end
 
   it 'returns person for locale at /people/{id}' do
-    model = HotMessModels::Person.first
+    model = Person.first
 
     get "/people/#{model.id}", params: default_params, headers: default_headers
 

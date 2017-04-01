@@ -1,12 +1,12 @@
 class UpdateEnvelopeJob < ApplicationJob
   def perform
-    HotMessModels::Venue.all.each do |venue|
+    Venue.all.each do |venue|
       puts "Updating Envelope for Venue -> #{venue.display_name}"
       venue.update_envelope
       venue.save
     end
 
-    HotMessModels::Locale.all.each do |locale|
+    Locale.all.each do |locale|
       begin
         next unless locale.venues.any?
 

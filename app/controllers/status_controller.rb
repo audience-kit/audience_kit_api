@@ -8,7 +8,7 @@ class StatusController < ApplicationController
     begin
       result[:database] = false
 
-      if HotMessModels::Venue.any?
+      if Venue.any?
         result[:database] = true
       end
     rescue

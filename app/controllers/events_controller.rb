@@ -2,15 +2,15 @@ class EventsController < ApplicationController
   def index
     params.permit :venue_id
 
-    @events = HotMessModels::Event.future.includes([ { event_people: { person: :page } }, { venue: :page } ]).take(30)
+    @events = Event.future.includes([ { event_people: { person: :page } }, { venue: :page } ]).take(30)
 
     @sections = []
 
-    @sections << { name: :recommended, events: HotMessModels::Event.future.take(1), title: 'Recomended for you' }
+    @sections << { name: :recommended, events: Event.future.take(1), title: 'Recomended for you' }
   end
 
   def show
-    @event = HotMessModels::Event.find params[:id]
+    @event = Event.find params[:id]
 
     @rsvp = @event.rsvps.find_by(user: current_user)
 
@@ -20,9 +20,9 @@ class EventsController < ApplicationController
   def rsvp
     params.require :state
 
-    @event = HotMessModels::Event.find params[:id]
+    @event = Event.find params[:id]
 
-    @rsvp = HotMessModels::UserRSVP.find_or_initialize_by user: current_user, event: @event
+    @rsvp = UserRSVP.find_or_initialize_by user: current_user, event: @event
     @rsvp.state = params[:state]
 
     graph_client = Koala::Facebook::API.new current_user.facebook_token

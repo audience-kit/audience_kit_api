@@ -2,7 +2,7 @@ class UpdateSocialLinksJob < ApplicationJob
   def perform
     @sound_client = SoundCloud.new(:client_id => Rails.application.secrets['soundcloud']['id'])
 
-    HotMessModels::SocialLink.all.each do |social_link|
+    SocialLink.all.each do |social_link|
       self.send "update_#{social_link.provider}".to_sym, social_link
     end
   end

@@ -1,17 +1,3 @@
-GIT
-  remote: https://f978ea15efa23d1660a55e6678e6022f8f2ffe76:x-oauth-basic@github.com/rickmark/hot_mess_models.git
-  revision: 4c3db4964c893f55c7104a96f2099ed870b4cb5c
-  branch: next
-  specs:
-    hot_mess_models (0.1.0)
-      activerecord (~> 5.0)
-      activerecord-postgis-adapter
-      geocoder
-      google-api-client
-      google_places
-      koala
-      soundcloud
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -83,7 +69,7 @@ GEM
     eventbrite (0.0.1)
       hashie (~> 3.0)
       rest-client (~> 1.4)
-    faraday (0.11.0)
+    faraday (0.12.0)
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.11.0.1)
       faraday (>= 0.7.4, < 1.0)
@@ -298,7 +284,6 @@ DEPENDENCIES
   geocoder
   google-api-client
   google_places
-  hot_mess_models!
   jbuilder
   jwt
   koala
@@ -321,7 +306,7 @@ DEPENDENCIES
   yelp
 
 RUBY VERSION
-   ruby 2.3.3p222
+   ruby 2.4.1p111
 
 BUNDLED WITH
    1.14.6

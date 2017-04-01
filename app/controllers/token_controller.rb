@@ -8,7 +8,7 @@ class TokenController < ApplicationController
 
     begin
       # Validate and exchange for long token
-      extended_token  = HotMessModels::Concerns::Facebook.oauth.exchange_access_token params[:facebook_token]
+      extended_token  = Concerns::Facebook.oauth.exchange_access_token params[:facebook_token]
 
       render status: :unauthorized, json: {} and return unless extended_token
 
@@ -20,10 +20,10 @@ class TokenController < ApplicationController
       raise 'Facebook token invalid' unless @me
 
       # Create or Update user by application scoped FacebookID
-      @user = HotMessModels::User.from_facebook_graph @me, extended_token
+      @user = User.from_facebook_graph @me, extended_token
 
 
-      @device = HotMessModels::Device.from_identifier params['device']['identifier'], type: params['device']['type']
+      @device = Device.from_identifier params['device']['identifier'], type: params['device']['type']
 
       @device.model ||= params['device']['model']
       @device.save

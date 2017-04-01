@@ -31,7 +31,7 @@ RSpec.describe 'venues', type: :request do
   end
 
   it 'returns venues for locale at /locales/{id}/venues' do
-    nyc = HotMessModels::Locale.find_by(label: 'nyc')
+    nyc = Locale.find_by(label: 'nyc')
 
     get "/locales/#{nyc.id}/venues", params: default_params, headers: default_headers
 
@@ -61,7 +61,7 @@ RSpec.describe 'venues', type: :request do
   end
 
   it 'returns events for locale at /venues/{id}/events' do
-    nyc = HotMessModels::Locale.find_by(label: 'nyc')
+    nyc = Locale.find_by(label: 'nyc')
 
     get "/locales/#{nyc.id}/venues", params: default_params, headers: default_headers
 
