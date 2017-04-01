@@ -49,15 +49,7 @@ class VenuesController < ApplicationController
       @events = @venue.events
     else
       @title = "Happening Now in #{@locale.name}"
-      @image_url = @locale.location.photo
-
-      if  @locale &&
-          @locale.location &&
-          @locale.location.photos &&
-          @locale.location.photos.any?
-
-        @image_url = @locale.location.photo ? photo_url(@locale.location.photo) : 'https://hotmess.social/assets/homepage_background-f5ffbb436c2e5c0f7e822a376bb604a5fb66d0acaff989ab330f1246b1ad822c.jpg'
-      end
+      @image_url = url_for(@locale.locale_location.photo)
 
       # TODO: Users who have issued recent pings
       @friends = []
