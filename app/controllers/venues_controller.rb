@@ -49,7 +49,7 @@ class VenuesController < ApplicationController
       @events = @venue.events
     else
       @title = "Happening Now in #{@locale.name}"
-      @image_url = url_for(@locale.locale_location.photo)
+      @image_url = url_for(@locale.location&.photo)
 
       @image_url = photo_url(@locale.location.photo) if @locale.location&.photo
 
