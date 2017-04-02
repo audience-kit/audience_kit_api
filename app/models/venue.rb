@@ -42,7 +42,7 @@ class Venue < ApplicationRecord
   end
 
   def update_envelope
-    return unless location.point
+    return unless location&.point
 
     location.envelope = location.point.buffer(self.distance_tolerance)
   end
