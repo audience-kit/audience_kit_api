@@ -9,6 +9,6 @@ class Location < ApplicationRecord
 
   def update_location(longitude, latitude)
     puts "Location => #{self.to_s}"
-    location.point = RGeo::Geographic.simple_mercator_factory.point longitude, latitude
+    self.point = RGeo::Geographic.simple_mercator_factory.point longitude, latitude
   end
 end

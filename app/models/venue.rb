@@ -44,7 +44,7 @@ class Venue < ApplicationRecord
   def update_envelope
     return unless location.point
 
-    location.envelope = self.location.point.buffer(self.distance_tolerance)
+    location.envelope = location.point.buffer(self.distance_tolerance)
   end
 
   def display_name
