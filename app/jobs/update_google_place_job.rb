@@ -13,7 +13,6 @@ class UpdateGooglePlaceJob < ApplicationJob
         spot = client.spot place.google_place_id
 
         place.google_location = spot
-        place.google_updated_at = DateTime.now
 
         place.update_location spot['lng'], spot['lat']
 
