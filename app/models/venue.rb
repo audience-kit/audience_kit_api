@@ -45,6 +45,8 @@ class Venue < ApplicationRecord
     return unless location&.point
 
     location.envelope = location.point.buffer(self.distance_tolerance)
+
+    location.save
   end
 
   def display_name
