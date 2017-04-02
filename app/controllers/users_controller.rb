@@ -18,7 +18,7 @@ class UsersController < ApplicationController
 
     # Override with becaons if available
     if params[:beacon] and params[:beacon][:major] != 0
-      user_location.locale = HotMessModels::Locale.find_by(beacon_major: params[:beacon][:major])
+      user_location.locale = Locale.find_by(beacon_major: params[:beacon][:major])
 
       if params[:beacon][:minor] != 0
         user_location.beacon_minor = params[:beacon][:minor]

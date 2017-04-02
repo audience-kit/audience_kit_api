@@ -18,7 +18,7 @@ class UpdateGooglePlaceJob < ApplicationJob
 
         if spot.photos.any?
           photo_url = spot.photos.first.fetch_url(1600)
-          photo = HotMessModels::Photo.for_url photo_url
+          photo = Photo.for_url photo_url
 
           place.photo = photo
         end
