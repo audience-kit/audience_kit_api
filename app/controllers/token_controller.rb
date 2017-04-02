@@ -51,7 +51,7 @@ class TokenController < ApplicationController
   end
 
   def device
-    @device = HotMessModels::Device.find_by(device_type: params[:device_type], vendor_identifier: params[:vendor_identifier])
+    @device = Device.find_by(device_type: params[:device_type], vendor_identifier: params[:vendor_identifier])
 
     @device.notification_token = params[:notification_token]
 

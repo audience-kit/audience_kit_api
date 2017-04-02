@@ -3,7 +3,7 @@ class UpdateGooglePlaceJob < ApplicationJob
     begin
       client = ::GooglePlaces::Client.new(Rails.application.secrets.google_api_key)
 
-      locations  = HotMessModels::Location.all
+      locations  = Location.all
 
       locations.where('updated_at < ?', 12.hour.ago).each do |place|
         next unless place.google_place_id
@@ -23,7 +23,7 @@ class UpdateGooglePlaceJob < ApplicationJob
 
           place.photo = photo
         else
-          place.photo = HotMessModels::Photo.for_url 'https://api.hotmess.social./homepage_background.jpg'
+          place.photo = Photo.for_url 'https://api.hotmess.social./homepage_background.jpg'
         end
 
         place.save

@@ -42,7 +42,7 @@ class UpdateUserJob < ApplicationJob
       events = events.next_page
     end
 
-    event_table = HotMessModels::Event.where(facebook_id: event_rsvps.map { |e| e[:facebook_id] }).to_h {|e| e.facebook_id }
+    event_table = Event.where(facebook_id: event_rsvps.map { |e| e[:facebook_id] }).to_h {|e| e.facebook_id }
 
     event_rsvps.each do |rsvp|
       rsvp[:event] = event_table[rsvp[:facebook_id].to_i]

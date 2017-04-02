@@ -3,7 +3,7 @@ class UpdatePagesJob < ApplicationJob
     puts 'Performing page update'
     app_token = Concerns::Facebook.oauth.get_app_access_token
 
-    HotMessModels::Page.where('updated_at < ? and hidden IS FALSE', 12.hour.ago).order(updated_at: :desc).each do |page|
+    Page.where('updated_at < ? and hidden IS FALSE', 12.hour.ago).order(updated_at: :desc).each do |page|
       puts "Updating page #{page.name}"
       begin
         user_token = User.where('facebook_token IS NOT NULL').order('RANDOM()').first.facebook_token
@@ -33,7 +33,7 @@ class UpdatePagesJob < ApplicationJob
 
         if page.person
           if object_graph['username']
-            HotMessModels::SocialLink.find_or_create_by(object_id: page.person.id, provider: 'facebook', handle: object_graph['username'])
+            SocialLink.find_or_create_by(object_id: page.person.id, provider: 'facebook', handle: object_graph['username'])
           end
 
           events = graph_client.get_connection page.facebook_id, :events

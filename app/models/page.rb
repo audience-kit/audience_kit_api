@@ -33,7 +33,7 @@ class Page < ApplicationRecord
       image_data = options[:client].get_picture_data(graph['id'], type: :large)['data']
       image_url = image_data['url']
 
-      self.photo = HotMessModels::Photo.for_url image_url
+      self.photo = Photo.for_url image_url
     end
   end
 end
