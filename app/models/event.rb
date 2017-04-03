@@ -6,6 +6,7 @@ class Event < ApplicationRecord
   has_many :ticket_types
   has_many :people, through: :event_people
   has_many :rsvps, class_name: 'UserRSVP'
+  belongs_to :cover_photo, class_name: 'Photo'
 
   delegate :locale, to: :venue
 

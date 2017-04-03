@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170403035749) do
+ActiveRecord::Schema.define(version: 20170403044045) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,6 +51,8 @@ ActiveRecord::Schema.define(version: 20170403035749) do
     t.bigint   "facebook_id"
     t.string   "name_override"
     t.integer  "order",          default: 1000
+    t.uuid     "cover_photo_id"
+    t.index ["cover_photo_id"], name: "index_events_on_cover_photo_id", using: :btree
     t.index ["facebook_id"], name: "index_events_on_facebook_id", using: :btree
     t.index ["venue_id"], name: "index_events_on_venue_id", using: :btree
   end
@@ -275,6 +277,7 @@ ActiveRecord::Schema.define(version: 20170403035749) do
     t.index ["page_id"], name: "index_venues_on_page_id", using: :btree
   end
 
+  add_foreign_key "events", "photos", column: "cover_photo_id"
   add_foreign_key "events", "venues"
   add_foreign_key "friendships", "users", column: "friend_high_id"
   add_foreign_key "friendships", "users", column: "friend_low_id"

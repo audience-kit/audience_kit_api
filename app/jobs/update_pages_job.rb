@@ -91,6 +91,10 @@ class UpdatePagesJob < ApplicationJob
         puts "No venue for #{event_graph['name']} (#{event_graph['id']})"
       end
 
+      if event_graph['cover']
+        event_model.cover_photo = Photo.for_url event_graph['cover']['source']
+      end
+
       event_model.update_details_from_facebook if event_model.venue
 
       EventPerson.find_or_create_by(person: page.person, event: event_model, role: 'host') if page.person
