@@ -6,7 +6,7 @@ json.venue do
   json.name event.venue.display_name
   json.facebook_id event.venue.facebook_id.to_s
   json.is_open event.venue.is_open?
-  json.photo_url "#{venue_url(event.venue)}/photo"
+  json.photo_url event.venue.photo&.cdn_url
 
   json.hero_banner_url event.venue.hero_banner_url
 

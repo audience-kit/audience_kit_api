@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170401221639) do
+ActiveRecord::Schema.define(version: 20170403035749) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,11 +87,9 @@ ActiveRecord::Schema.define(version: 20170401221639) do
     t.string    "google_place_id",                                                            null: false
     t.jsonb     "google_location",                                                            null: false
     t.geography "point",           limit: {:srid=>4326, :type=>"point", :geographic=>true},   null: false
-    t.uuid      "locale_id",                                                                  null: false
     t.uuid      "photo_id"
     t.geography "envelope",        limit: {:srid=>4326, :type=>"polygon", :geographic=>true}
     t.index ["google_place_id"], name: "index_locations_on_google_place_id", unique: true, using: :btree
-    t.index ["locale_id"], name: "index_locations_on_locale_id", using: :btree
   end
 
   create_table "pages", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -131,8 +129,8 @@ ActiveRecord::Schema.define(version: 20170401221639) do
     t.datetime "updated_at",   null: false
     t.string   "source_url",   null: false
     t.binary   "content_hash", null: false
-    t.binary   "content",      null: false
     t.string   "mime",         null: false
+    t.string   "cdn_url",      null: false
     t.index ["content_hash"], name: "photos_hash_uindex", unique: true, using: :btree
   end
 
@@ -169,6 +167,17 @@ ActiveRecord::Schema.define(version: 20170401221639) do
     t.index ["social_link_id"], name: "index_social_updates_on_social_link_id", using: :btree
   end
 
+  create_table "ticket_types", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.uuid     "event_id",                   null: false
+    t.decimal  "price"
+    t.boolean  "available",   default: true, null: false
+    t.string   "provider",                   null: false
+    t.string   "provider_id",                null: false
+    t.index ["event_id"], name: "index_ticket_types_on_event_id", using: :btree
+  end
+
   create_table "tracks", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.datetime "created_at",          default: -> { "now()" }, null: false
     t.datetime "updated_at",          default: -> { "now()" }, null: false
@@ -176,10 +185,6 @@ ActiveRecord::Schema.define(version: 20170401221639) do
     t.string   "title",                                        null: false
     t.string   "provider_url",                                 null: false
     t.string   "provider_identifier",                          null: false
-    t.string   "artwork_url"
-    t.binary   "artwork_image"
-    t.string   "waveform_url"
-    t.binary   "waveform_image"
     t.string   "download_url"
     t.string   "stream_url"
     t.jsonb    "metadata"
@@ -259,19 +264,6 @@ ActiveRecord::Schema.define(version: 20170401221639) do
     t.index ["venue_id"], name: "index_venue_messages_on_venue_id", using: :btree
   end
 
-  create_table "venue_pages", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-    t.uuid     "venue_id",                  null: false
-    t.uuid     "page_id",                   null: false
-    t.integer  "order",      default: 1000, null: false
-    t.index ["page_id", "venue_id", "order"], name: "venue_pages_unique_key", unique: true, using: :btree
-    t.index ["page_id"], name: "index_venue_pages_on_page_id", using: :btree
-    t.index ["page_id"], name: "venue_pages_by_page_id", using: :btree
-    t.index ["venue_id"], name: "index_venue_pages_on_venue_id", using: :btree
-    t.index ["venue_id"], name: "venue_pages_by_venue_id", using: :btree
-  end
-
   create_table "venues", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid    "locale_id"
     t.boolean "hidden",             default: false, null: false
@@ -291,6 +283,7 @@ ActiveRecord::Schema.define(version: 20170401221639) do
   add_foreign_key "pages", "photos", name: "pages_photos_id_fk"
   add_foreign_key "sessions", "devices"
   add_foreign_key "sessions", "users"
+  add_foreign_key "ticket_types", "events"
   add_foreign_key "tracks", "photos", column: "waveform_photo_id", name: "tracks_photos_waveform_id_fk"
   add_foreign_key "tracks", "photos", name: "tracks_photos_id_fk"
   add_foreign_key "tracks", "social_links", name: "tracks_social_links_id_fk"

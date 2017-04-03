@@ -17,7 +17,7 @@ json.venues do
     json.point RGeo::GeoJSON.encode(venue.location)
     json.description "You're the first to arrive."
 
-    json.photo_url "#{venue_url(venue)}/photo"
+    json.photo_url venue.photo&.cdn_url
     json.hero_banner_url venue.hero_banner_url
 
     if venue.location&.google_location
