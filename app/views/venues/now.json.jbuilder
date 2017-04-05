@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 json.title @title
-json.image_url @image_url
+json.photo_url @image_url
 
 json.locale do
   json.id @locale.id

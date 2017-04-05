@@ -22,7 +22,7 @@ RSpec.describe 'venues', type: :request do
       end
 
       it 'should have a photo when not in a venue' do
-        expect(@data['image_url']).to eq 'https://cdn.hotmess.social/bvmajHp6gqw0ICpV-txYtBkCPA8'
+        expect(@data['photo_url']).to eq 'https://cdn.hotmess.social/bvmajHp6gqw0ICpV-txYtBkCPA8'
       end
     end
 
@@ -46,7 +46,7 @@ RSpec.describe 'venues', type: :request do
       it 'should return a friend if they checked in recently'
 
       it 'should have a photo for a venue' do
-        expect(@data['image_url']).to eq 'https://cdn.hotmess.social/nF9pK74Uf699JAM5XqYgNFDgDPU'
+        expect(@data['photo_url']).to eq 'https://cdn.hotmess.social/nF9pK74Uf699JAM5XqYgNFDgDPU'
       end
     end
   end

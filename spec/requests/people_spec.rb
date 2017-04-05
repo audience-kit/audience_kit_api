@@ -61,7 +61,7 @@ RSpec.describe 'people', type: :request do
     expect(response).to have_http_status(200)
     data = JSON.parse(response.body)
 
-    expect(data['person']['image_url']).to eq 'https://cdn.hotmess.social/bYqVDHFKrFvDRdzvgkLSTzw1MGo'
+    expect(data['person']['photo_url']).to eq 'https://cdn.hotmess.social/bYqVDHFKrFvDRdzvgkLSTzw1MGo'
   end
 
   it 'should have a cover' do
