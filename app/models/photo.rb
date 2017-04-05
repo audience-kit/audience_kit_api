@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Photo < ApplicationRecord
-  validates_presence_of :content_hash, :content, :mime, :source_url
+  validates_presence_of :content_hash, :mime, :source_url
 
   S3_BUCKET_NAME = 'prodhotmessuswest'
 
@@ -48,5 +48,11 @@ class Photo < ApplicationRecord
     self.cdn_url = "https://cdn.hotmess.social/#{hash_url_safe}"
 
     save
+
+    client = Aws::S3::Client.new region: 'us-west-2', credentials: AWS_CREDENTIALS
+
+    object_handle = Aws::S3::Object.new bucket_name: S3_BUCKET_NAME, key: hash_url_safe, client: client
+
+    Rails.logger.error "Object #{id} with hash #{hash_url_safe} does not exist." unless object_handle.exists?
   end
 end
