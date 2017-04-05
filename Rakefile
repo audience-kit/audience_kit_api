@@ -52,6 +52,6 @@ namespace :update do
 
   desc 'Update photos'
   task :photos => :environment do
-    Photo.each(&:update)
+    Photo.all.each(&:update)
   end
 end
