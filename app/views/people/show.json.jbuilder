@@ -5,6 +5,8 @@ json.person do
   json.name @person.display_name
   json.facebook_id @person.facebook_id
   json.is_liked @is_liked
+  json.image_url @person.page.photo&.cdn_url
+  json.cover_url @person.page.cover_photo&.cdn_url
 
   json.social_links do
     json.array! @person.social_links do |link|

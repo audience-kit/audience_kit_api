@@ -4,7 +4,6 @@ class Person < ApplicationRecord
   validates_presence_of :page
   belongs_to :page
 
-  belongs_to :photo
   has_many :event_people
   has_many :events, -> { where('start_at > ? OR end_at > ?', DateTime.now, DateTime.now).order(start_at: :asc) }, through: :event_people
 

@@ -24,8 +24,8 @@ class UpdatePagesJob < ApplicationJob
         page.update_graph object_graph, client: graph_client
         page.save
 
-        if page.venues.any? and page.venues.any? { |p| not p.hidden }
-          events = []
+        if page.venue && !page.venue.hidden
+          events = nil
         else
           events = graph_client.get_connection page.facebook_id, :events
           puts "Object #{page.name} has #{events.count} events"
@@ -44,9 +44,7 @@ class UpdatePagesJob < ApplicationJob
           events = events.next_page
         end
 
-        page.venues.each do |venue|
-          venue.update_data
-        end
+        page.venue&.update_data
       rescue => ex
         puts "Error updating page #{page.name} (#{page.facebook_id}) => #{ex}"
       end
@@ -65,28 +63,9 @@ class UpdatePagesJob < ApplicationJob
       if event_graph['place']
         venue_id = event_graph['place']['id']
 
-        venue_page = Page.find_by(facebook_id: venue_id)
-        if venue_page
-          venue_page_link = VenuePage.find_by(page: venue_page)
+        venue_page = Page.page_for_facebook_id(venue_id, true)
 
-          if venue_page_link
-            event_model.venue = venue_page_link.venue
-          else
-            venue_page_link = VenuePage.new(page: venue_page)
-            venue_page_link.venue = Venue.new(hidden: true)
-            venue_page_link.save
-          end
-        else
-          venue_page = Page.new(facebook_id: event_graph['place']['id'])
-          venue_page.facebook_graph = graph_client.get_object venue_page.facebook_id
-          venue_page.name = event_graph['place']['name']
-
-          venue_page_link = VenuePage.new(page: venue_page)
-          venue_page_link.venue = Venue.new(hidden: true)
-          venue_page_link.save
-
-          event_model.venue = venue_page_link.venue
-        end
+        event_model.venue = venue_page.venue || Venue.new(hidden: true, page: venue_page) if venue_page
       else
         puts "No venue for #{event_graph['name']} (#{event_graph['id']})"
       end

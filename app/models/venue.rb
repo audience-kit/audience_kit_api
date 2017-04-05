@@ -32,7 +32,7 @@ class Venue < ApplicationRecord
   end
 
   def update_data
-    if self.google_place_id
+    if self.location&.google_place_id
       location.update_location location.google_location['lng'], location.google_location['lat']
 
       self.save

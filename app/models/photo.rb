@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Photo < ApplicationRecord
-  validates_presence_of :content_hash, :mime, :source_url
+  validates_presence_of :content_hash, :mime, :source_url, :cdn_url
 
   S3_BUCKET_NAME = 'prodhotmessuswest'
 
@@ -12,6 +12,7 @@ class Photo < ApplicationRecord
       response = Net::HTTP.get_response(URI(url))
       data = response.body
       hash = Digest::SHA1.new.digest data
+      mime = response['Content-Type']
 
       client = Aws::S3::Client.new region: 'us-west-2', credentials: AWS_CREDENTIALS
 
@@ -23,19 +24,19 @@ class Photo < ApplicationRecord
                         content_type: mime,
                         acl: 'public-read',
                         metadata: {
-                          original_url: self.source_url,
+                          original_url: url,
                         })
 
       photo = Photo.find_or_create_by(content_hash: hash) do |p|
         p.content_hash = hash
-        p.mime = response['Content-Type']
+        p.mime = mime
         p.source_url = url
         p.cdn_url = "https://cdn.hotmess.social/#{hash_url_safe}"
       end
 
       photo.mime = response['Content-Type']
       photo.source_url = url
-      photo.cdn_url = stored_url
+      photo.cdn_url = "https://cdn.hotmess.social/#{hash_url_safe}"
 
       photo.save
     end

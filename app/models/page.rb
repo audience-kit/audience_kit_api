@@ -37,4 +37,21 @@ class Page < ApplicationRecord
 
     self.photo = Photo.for_url image_url
   end
+
+  def self.page_for_facebook_id(facebook_id, hidden = false)
+    page = find_by(facebook_id: facebook_id)
+
+    return page if page
+
+    client = Koala::Facebook::API.new Concerns::Facebook.oauth.get_app_access_token
+
+    graph = client.get_object facebook_id
+    page = Page.new(facebook_id: facebook_id, hidden: hidden)
+    page.facebook_graph = graph
+    page.name = graph['name']
+
+    page.save
+
+    page
+  end
 end

@@ -9,14 +9,6 @@ RSpec.describe 'people', type: :request do
     expect(response).to have_http_status(401)
   end
 
-  it 'lists at /people' do
-    get locale_people_path(Locale.find_by(label: 'nyc')), headers: default_headers
-    expect(response).to have_http_status(200)
-    data = JSON.parse(response.body)
-
-    expect(data['people']).not_to be nil
-  end
-
   it 'returns people for locale at /locales/{id}/people' do
     nyc = Locale.find_by(label: 'nyc')
 
@@ -37,5 +29,49 @@ RSpec.describe 'people', type: :request do
     data = JSON.parse(response.body)
 
     expect(data['person']).not_to be nil
+  end
+
+  it 'returns tracks for a person who is a DJ' do
+    model = Person.joins(:page).find_by(pages: { name: 'DUGAN' })
+
+    get "/people/#{model.id}", params: default_params, headers: default_headers
+
+    expect(response).to have_http_status(200)
+    data = JSON.parse(response.body)
+
+    expect(data['person']['tracks'].count).not_to be 0
+  end
+
+  it 'returns social media links' do
+    model = Person.joins(:page).find_by(pages: { name: 'Drew G' })
+
+    get "/people/#{model.id}", params: default_params, headers: default_headers
+
+    expect(response).to have_http_status(200)
+    data = JSON.parse(response.body)
+
+    expect(data['person']['social_links'].count).not_to eq 0
+  end
+
+  it 'should have a picture' do
+    model = Person.joins(:page).find_by(pages: { name: 'Drew G' })
+
+    get "/people/#{model.id}", params: default_params, headers: default_headers
+
+    expect(response).to have_http_status(200)
+    data = JSON.parse(response.body)
+
+    expect(data['person']['image_url']).to eq 'https://cdn.hotmess.social/bYqVDHFKrFvDRdzvgkLSTzw1MGo'
+  end
+
+  it 'should have a cover' do
+    model = Person.joins(:page).find_by(pages: { name: 'Drew G' })
+
+    get "/people/#{model.id}", params: default_params, headers: default_headers
+
+    expect(response).to have_http_status(200)
+    data = JSON.parse(response.body)
+
+    expect(data['person']['cover_url']).to eq 'https://cdn.hotmess.social/RHJOedzQEIi3Gt6yo6tR8r3YpfA'
   end
 end

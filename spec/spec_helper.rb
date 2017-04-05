@@ -101,7 +101,7 @@ RSpec.configure do |config|
 end
 
 def default_params
-  { longitude: '-73.99', latitude: '40.760' }
+  { longitude: '-73.9866373', latitude: '40.7671813' }
 end
 
 def default_headers

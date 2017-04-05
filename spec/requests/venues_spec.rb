@@ -57,7 +57,7 @@ RSpec.describe 'venues', type: :request do
     expect(response).to have_http_status(401)
   end
 
-  it 'lists at /venues' do
+  it 'lists at /locale/{id}/venues' do
     get locale_venues_path(Locale.find_by(label: 'nyc')), headers: default_headers
     expect(response).to have_http_status(200)
   end
@@ -71,13 +71,28 @@ RSpec.describe 'venues', type: :request do
     expect(data['venue']).not_to be nil
   end
 
-  it 'returns a venue at /now when in venue' do
-    get '/now', params: { longitude: '-117.1605916', latitude: '32.743582' }, headers: default_headers
+
+  it 'returns a image for venue at /venues/closest' do
+    get '/venues/closest', params: default_params, headers: default_headers
 
     expect(response).to have_http_status(200)
     data = JSON.parse(response.body)
 
-    expect(data['venue']).not_to be nil
+    puts "Closest venue to #{default_params} is #{data['venue']['name']} (#{data['venue']['id']})"
+
+    expect(data['venue']).not_to be_nil
+    expect(data['venue']['photo_url']).to eq 'https://cdn.hotmess.social/rtbPkNmxkajtdn-l1vKvpRbHGoA'
+  end
+
+
+  it 'returns a image for venue at /venues/{id}' do
+    get '/venues/f38046f1-2d6b-4881-9864-8cd182585710', params: default_params, headers: default_headers
+
+    expect(response).to have_http_status(200)
+    data = JSON.parse(response.body)
+
+    expect(data['venue']).not_to be_nil
+    expect(data['venue']['photo_url']).to eq 'https://cdn.hotmess.social/ssOvk8wyBZleT4qBvY5U3B0BY60'
   end
 
   it 'returns venues for locale at /locales/{id}/venues' do
