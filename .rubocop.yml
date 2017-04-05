@@ -1,0 +1,12 @@
+AllCops:
+  TargetRubyVersion: 2.4
+  Exclude:
+    - 'db/schema.rb'
+    - 'bin/**'
+
+Metrics/LineLength:
+  Max: 120
+
+Documentation:
+  Exclude:
+    - 'db/migrate/**'

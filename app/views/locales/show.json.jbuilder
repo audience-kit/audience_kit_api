@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.id @locale.id
 json.name @locale.name
 json.label @locale.label

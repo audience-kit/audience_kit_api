@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class UsersController < ApplicationController
-  skip_before_action :authenticate, only: [ :picture ]
+  skip_before_action :authenticate, only: [:picture]
 
   def me
     @user = current_user
@@ -11,13 +13,14 @@ class UsersController < ApplicationController
 
     @point = RGeo::Geographic.simple_mercator_factory.point @longitude, @latitude
 
-    user_location = UserLocation.new session: Session.find_by(token_id: request.env['token_id']), point: @point
+    session = Session.find_by(token_id: request.env['token_id'])
+    user_location = UserLocation.new session: session, point: @point
 
     user_location.venue = Venue.closest @point, within: true
     Rails.logger.info "Location #{@point} registered venue as #{user_location.venue.id}" if user_location.venue
 
-    # Override with becaons if available
-    if params[:beacon] and params[:beacon][:major] != 0
+    # Override with beacons if available
+    if params[:beacon] && params[:beacon][:major] != 0
       user_location.locale = Locale.find_by(beacon_major: params[:beacon][:major])
 
       if params[:beacon][:minor] != 0

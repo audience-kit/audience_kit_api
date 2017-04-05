@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 class PeopleController < ApplicationController
   include Concerns::PageController
 
-  skip_before_action :authenticate, only: [ :picture, :cover ]
+  skip_before_action :authenticate, only: %i[picture cover]
 
   def index
     @people  = Person.includes(:page).where(global: true)
-    @people += PersonLocale.includes(person: :page).where(locale_id: params[:locale_id]).map { |pl| pl.person }
-    @people  = @people.uniq.sort_by { |p| p.order }
+    @people += PersonLocale.includes(person: :page).where(locale_id: params[:locale_id]).map(&:person)
+    @people  = @people.uniq.sort_by(&:order)
 
     @user_likes = current_user.user_likes.to_a.map { |ul| [ ul.page, ul ] }.to_h
 

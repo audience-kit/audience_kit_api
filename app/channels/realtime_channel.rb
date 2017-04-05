@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RealtimeChannel < ApplicationCable::Channel
   def subscribed
     stream_from "chat_#{params[:venue_id]}"

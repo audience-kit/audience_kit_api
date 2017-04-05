@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Location < ApplicationRecord
   belongs_to :photo
   has_one :venue
@@ -8,7 +10,7 @@ class Location < ApplicationRecord
   end
 
   def update_location(longitude, latitude)
-    puts "Location => #{self.to_s}"
+    puts "Location => #{self}"
     self.point = RGeo::Geographic.simple_mercator_factory.point longitude, latitude
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AudienceUser < ApplicationRecord
   belongs_to :audience
   belongs_to :user

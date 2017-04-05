@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TracksController < ApplicationController
   skip_before_action :authenticate, only: [ :waveform, :artwork ]
 

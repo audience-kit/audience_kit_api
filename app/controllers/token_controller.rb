@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TokenController < ApplicationController
   skip_before_action :authenticate
 
@@ -30,10 +32,10 @@ class TokenController < ApplicationController
       logger.error "Hell Frozen Over #{@device.model} -> #{params['device']['model']}" if @device.model != params['device']['model']
 
       @session = @device.sessions.build device: @device,
-                                          user: @user,
-                                     origin_ip: request.remote_ip,
-                                       version: params['device']['version'],
-                                         build: params['device']['build']
+                                        user: @user,
+                                        origin_ip: request.remote_ip,
+                                        version: params['device']['version'],
+                                        build: params['device']['build']
 
       @session.save
 

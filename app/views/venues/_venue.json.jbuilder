@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 json.id @venue.id
 json.name @venue.display_name

@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 class VenuesController < ApplicationController
   include Concerns::LocationParameters
   include Concerns::PageController
 
-  skip_before_action :authenticate, only: [ :photo, :picture, :cover ]
+  skip_before_action :authenticate, only: %i[photo picture cover]
 
   def index
-    @venues =  Venue.joins(:location).includes(:page)
+    @venues = Venue.joins(:location).includes(:page)
 
     if params[:locale_id]
       @venues = @venues.where(locale_id: params[:locale_id], hidden: false)
@@ -60,7 +62,6 @@ class VenuesController < ApplicationController
     end
 
     kinesis :user_location_update, current_user.id, user_id: current_user.id, longatude: @longitude, latitude: @latitude, venue_id: @venue&.id
-
 
     render :now
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LocalesController < ApplicationController
   skip_before_action :authenticate, only: [ :photo ]
 

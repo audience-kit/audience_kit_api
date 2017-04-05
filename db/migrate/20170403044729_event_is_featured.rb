@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventIsFeatured < ActiveRecord::Migration[5.0]
   def change
     add_column :events, :is_featured, :boolean, default: false, null: false

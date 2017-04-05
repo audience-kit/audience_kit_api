@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.envelope @envelope
 
 if @locale
@@ -21,7 +23,7 @@ json.venues do
     json.hero_banner_url venue.hero_banner_url
 
     if venue.location&.google_location
-      json.address (venue.street || '').gsub!(/,.+/, '')
+      json.address((venue.street || '').gsub!(/,.+/, ''))
       json.phone venue.phone_number
     end
 

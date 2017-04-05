@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Person < ApplicationRecord
   validates_presence_of :page
   belongs_to :page
@@ -9,10 +11,10 @@ class Person < ApplicationRecord
   delegate :facebook_id, :display_name, :name, :name=, to: :page, allow_nil: true
 
   def social_links
-    SocialLink.where(object_id: self.id).includes(:tracks)
+    SocialLink.where(object_id: id).includes(:tracks)
   end
 
   def tracks
-    social_links.flat_map { |sl| sl.tracks }
+    social_links.flat_map(&:tracks)
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserLocation < ApplicationRecord
   validates_presence_of :session, :point
 

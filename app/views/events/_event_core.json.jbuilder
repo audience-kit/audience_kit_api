@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.id event.id
 json.name event.display_name
 json.start_at event.start_at

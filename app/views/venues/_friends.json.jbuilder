@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.friends do
   json.array! @friends do |friend|
     json.id friend.id

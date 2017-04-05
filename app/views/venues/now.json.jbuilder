@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.title @title
 json.image_url @image_url
 
@@ -43,13 +45,7 @@ else
   end
 end
 
-json.friends do
-  json.array! @friends do |friend|
-    json.id friend.id
-    json.name friend.name
-    json.facebook_id friend.facebook_id
-  end
-end
+json.partial! 'venues/friends'
 
 json.events do
   json.array! @events do |event|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.person do
   json.id @person.id
   json.name @person.display_name

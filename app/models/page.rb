@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Page < ApplicationRecord
   validates_presence_of :name, :facebook_id, :facebook_graph
   validates_presence_of :name_override, allow_nil: true
@@ -28,12 +30,11 @@ class Page < ApplicationRecord
       self.cover_photo = Photo.for_url cover_url
     end
 
+    return unless options[:client]
 
-    if options[:client]
-      image_data = options[:client].get_picture_data(graph['id'], type: :large)['data']
-      image_url = image_data['url']
+    image_data = options[:client].get_picture_data(graph['id'], type: :large)['data']
+    image_url = image_data['url']
 
-      self.photo = Photo.for_url image_url
-    end
+    self.photo = Photo.for_url image_url
   end
 end

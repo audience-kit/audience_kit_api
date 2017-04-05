@@ -1,11 +1,15 @@
+# frozen_string_literal: true
+
 class Photo < ApplicationRecord
   validates_presence_of :content_hash, :content, :mime, :source_url
+
+  S3_BUCKET_NAME = 'prodhotmessuswest'
 
   def self.for_url(url)
     photo = Photo.find_by(source_url: url)
 
     unless photo
-      response =  Net::HTTP.get_response(URI(url))
+      response = Net::HTTP.get_response(URI(url))
       data = response.body
       hash = Digest::SHA1.new.digest data
 
@@ -13,13 +17,13 @@ class Photo < ApplicationRecord
 
       hash_url_safe = Base64.urlsafe_encode64 hash, padding: false
 
-      client.put_object(bucket: 'prodhotmessuswest',
+      client.put_object(bucket: S3_BUCKET_NAME,
                         key: "public/#{hash_url_safe}",
                         body: data,
                         content_type: mime,
                         acl: 'public-read',
                         metadata: {
-                            original_url: self.source_url,
+                          original_url: self.source_url,
                         })
 
       photo = Photo.find_or_create_by(content_hash: hash) do |p|

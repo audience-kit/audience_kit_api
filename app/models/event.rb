@@ -17,11 +17,11 @@ class Event < ApplicationRecord
     self.end_at    = self.facebook_graph['end_time']
     self.name      = self.facebook_graph['name']
 
-    self.save
+    save
   end
 
   def display_name
-    self.name_override || self.name
+    name_override || name
   end
 
   def person

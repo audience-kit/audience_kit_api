@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CallbacksController < ApplicationController
   skip_before_action :authenticate
 
@@ -10,7 +12,9 @@ class CallbacksController < ApplicationController
   end
 
   def facebook_verify
-    if params['hub.mode'] == 'subscribe' and params['hub.verify_token'] == Rails.application.secrets[:facebook_callback_secret]
+    if params['hub.mode'] == 'subscribe' &&
+       params['hub.verify_token'] == Rails.application.secrets[:facebook_callback_secret]
+
       render text: params['hub.challenge']
     else
       render status: :bad_request

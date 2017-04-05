@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Yelp.client.configure do |config|
   yelp_secrets = Rails.application.secrets['yelp']
 

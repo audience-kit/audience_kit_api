@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventsController < ApplicationController
   def index
     params.permit :venue_id
@@ -28,15 +30,15 @@ class EventsController < ApplicationController
     graph_client = Koala::Facebook::API.new current_user.facebook_token
 
     case params[:state]
-      when 'attending'
-        graph_client.put_object @event.facebook_id, :attending
-      when 'unsure'
-      when 'maybe'
-        graph_client.put_object @event.facebook_id, :maybe
-      when 'declined'
-        graph_client.put_object @event.facebook_id, :declined
-      else
-        return render status: :bad_request
+    when 'attending'
+      graph_client.put_object @event.facebook_id, :attending
+    when 'unsure'
+    when 'maybe'
+      graph_client.put_object @event.facebook_id, :maybe
+    when 'declined'
+      graph_client.put_object @event.facebook_id, :declined
+    else
+      return render status: :bad_request
     end
 
     @rsvp.save
