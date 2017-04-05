@@ -49,4 +49,9 @@ namespace :update do
   task :users => :environment do
     UpdateUsersJob.perform_now
   end
+
+  desc 'Update photos'
+  task :photos => :environment do
+    Photo.each(&:update)
+  end
 end

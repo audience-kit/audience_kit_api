@@ -43,4 +43,10 @@ class Photo < ApplicationRecord
     photo
   end
 
+  def update
+    hash_url_safe = Base64.urlsafe_encode64 content_hash, padding: false
+    self.cdn_url = "https://cdn.hotmess.social/#{hash_url_safe}"
+
+    save
+  end
 end
