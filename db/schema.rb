@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 20170403044729) do
     t.jsonb    "facebook_graph"
     t.bigint   "facebook_id"
     t.string   "name_override"
-    t.integer  "order",          default: 1000
+    t.integer  "order",          default: 1000,  null: false
     t.uuid     "cover_photo_id"
     t.boolean  "is_featured",    default: false, null: false
     t.index ["cover_photo_id"], name: "index_events_on_cover_photo_id", using: :btree
@@ -89,7 +89,7 @@ ActiveRecord::Schema.define(version: 20170403044729) do
     t.datetime  "updated_at",                                                                 null: false
     t.string    "google_place_id",                                                            null: false
     t.jsonb     "google_location",                                                            null: false
-    t.geography "point",           limit: {:srid=>4326, :type=>"point", :geographic=>true},   null: false
+    t.geography "point",           limit: {:srid=>4326, :type=>"point", :geographic=>true}
     t.uuid      "photo_id"
     t.geography "envelope",        limit: {:srid=>4326, :type=>"polygon", :geographic=>true}
     t.index ["google_place_id"], name: "index_locations_on_google_place_id", unique: true, using: :btree
@@ -196,16 +196,6 @@ ActiveRecord::Schema.define(version: 20170403044729) do
     t.index ["social_link_id"], name: "index_tracks_on_social_link_id", using: :btree
   end
 
-  create_table "user_event_rsvp", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.uuid     "event_id",   null: false
-    t.uuid     "user_id",    null: false
-    t.string   "state",      null: false
-    t.index ["event_id"], name: "index_user_event_rsvp_on_event_id", using: :btree
-    t.index ["user_id"], name: "index_user_event_rsvp_on_user_id", using: :btree
-  end
-
   create_table "user_likes", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -228,14 +218,15 @@ ActiveRecord::Schema.define(version: 20170403044729) do
     t.index ["venue_id"], name: "index_user_locations_on_venues_id", using: :btree
   end
 
-  create_table "user_rsvps", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.uuid     "user_id",    null: false
-    t.uuid     "event_id",   null: false
-    t.string   "state",      null: false
-    t.index ["event_id"], name: "index_user_rsvps_on_event_id", using: :btree
-    t.index ["user_id"], name: "index_user_rsvps_on_user_id", using: :btree
+  create_table "user_rsvps", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
+    t.uuid     "user_id",                             null: false
+    t.uuid     "event_id",                            null: false
+    t.string   "state",                               null: false
+    t.index ["event_id"], name: "user_rsvps_event_id_index", using: :btree
+    t.index ["user_id", "event_id"], name: "user_rsvps_user_id_event_id_uindex", unique: true, using: :btree
+    t.index ["user_id"], name: "user_rsvps_user_id_index", using: :btree
   end
 
   create_table "users", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -291,14 +282,13 @@ ActiveRecord::Schema.define(version: 20170403044729) do
   add_foreign_key "tracks", "photos", column: "waveform_photo_id", name: "tracks_photos_waveform_id_fk"
   add_foreign_key "tracks", "photos", name: "tracks_photos_id_fk"
   add_foreign_key "tracks", "social_links", name: "tracks_social_links_id_fk"
-  add_foreign_key "user_event_rsvp", "events"
   add_foreign_key "user_likes", "pages"
   add_foreign_key "user_likes", "users"
   add_foreign_key "user_locations", "locations", name: "user_locations_locations_id_fk"
   add_foreign_key "user_locations", "sessions", name: "user_locations_sessions_id_fk"
   add_foreign_key "user_locations", "venues", name: "user_locations_venues_id_fk"
-  add_foreign_key "user_rsvps", "events"
-  add_foreign_key "user_rsvps", "users"
+  add_foreign_key "user_rsvps", "events", name: "user_rsvps_events_id_fk"
+  add_foreign_key "user_rsvps", "users", name: "user_rsvps_users_id_fk"
   add_foreign_key "users", "photos", name: "users_photos_id_fk"
   add_foreign_key "venue_messages", "users"
   add_foreign_key "venue_messages", "venues"

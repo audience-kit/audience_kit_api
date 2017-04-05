@@ -24,7 +24,7 @@ class VenuesController < ApplicationController
   def show
     @venue = Venue.includes(:page).find(params[:id])
 
-    @is_liked = UserLike.find_by(user: user, page: @venue.page) ? true : false
+    @is_liked = UserLike.find_by(user: current_user, page: @venue.page) ? true : false
 
     kinesis :venue_view, @venue.id, id: @venue.id, user_id: current_user.id, is_liked: @is_liked
   end

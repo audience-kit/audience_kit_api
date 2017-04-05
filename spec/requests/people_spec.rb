@@ -10,7 +10,7 @@ RSpec.describe 'people', type: :request do
   end
 
   it 'lists at /people' do
-    get people_path, headers: default_headers
+    get locale_people_path(Locale.find_by(label: 'nyc')), headers: default_headers
     expect(response).to have_http_status(200)
     data = JSON.parse(response.body)
 
