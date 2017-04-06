@@ -20,7 +20,7 @@ json.venues do
     json.description "You're the first to arrive."
 
     json.photo_url venue.photo&.cdn_url
-    json.hero_banner_url venue.hero_banner_url
+    json.hero_banner_url venue.location&.photo.cdn_url || 'https://api.hotmess.social/homepage_background.jpg'
 
     if venue.location&.google_location
       json.address((venue.street || '').gsub!(/,.+/, ''))
