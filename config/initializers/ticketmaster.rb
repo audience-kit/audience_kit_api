@@ -1,0 +1,1 @@
+TICKETMASTER_CLIENT = Ticketmaster.client(apikey: Rails.application.secrets[:ticketmaster_key])

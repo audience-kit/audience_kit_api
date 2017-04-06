@@ -79,6 +79,8 @@ class UpdatePagesJob < ApplicationJob
 
     event_model.update_details_from_facebook if event_model.venue
 
+    event_model.update_tickets
+
     EventPerson.find_or_create_by(person: page.person, event: event_model, role: 'host') if page.person
   rescue => ex
     puts "Error updating object #{page.name}'s event #{ex.to_s}\n#{ex.backtrace}"

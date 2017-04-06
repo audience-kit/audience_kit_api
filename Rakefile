@@ -10,48 +10,48 @@ require 'resque/tasks'
 task 'resque:setup' => :environment
 
 desc 'Update data models'
-task :update => :environment do
+task update: :environment do
   UpdateJob.perform_now(true)
 end
 
 namespace :update do
   desc 'Update all Facebook page objects'
-  task :pages => :environment do
+  task pages: :environment do
     UpdatePagesJob.perform_now
   end
 
   desc 'Update google place data'
-  task :locations => :environment do
+  task locations: :environment do
     UpdateGooglePlaceJob.perform_now
   end
 
   desc 'Update events'
-  task :events => :environment do
-    Event.all.each &:update_details_from_facebook
+  task events: :environment do
+    Event.all.each(&:update_details_from_facebook)
   end
 
   desc 'Update users'
-  task :users => :environment do
+  task users: :environment do
     UpdateUsersJob.perform_now
   end
 
   desc 'Update envelopes'
-  task :envelopes => :environment do
+  task envelopes: :environment do
     UpdateEnvelopeJob.perform_now
   end
 
   desc 'Update social links'
-  task :social => :environment do
+  task social: :environment do
     UpdateSocialLinksJob.perform_now
   end
 
   desc 'Update users'
-  task :users => :environment do
+  task users: :environment do
     UpdateUsersJob.perform_now
   end
 
-  desc 'Update photos'
-  task :photos => :environment do
-    Photo.all.each(&:update)
+  desc 'Update ticket types'
+  task tickets: :environment do
+    Event.all.each(&:update_tickets)
   end
 end

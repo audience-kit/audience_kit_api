@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 json.title @title
-json.photo_url @image_url
+json.image_url @image_url
 
 json.locale do
   json.id @locale.id
@@ -29,7 +29,7 @@ else
       json.name venue.display_name
       json.facebook_id venue.facebook_id.to_s
       json.is_open true
-      json.photo_url venue.photo&.cdn_url || 'https://api.hotmess.social./homepage_background.jpg'
+      json.photo_url venue.photo&.cdn_url
       json.description "You're the first to arrive."
       json.distance venue['distance']
 
@@ -37,7 +37,7 @@ else
       json.friend_count 0
 
       if venue.location&.google_location
-        json.address (venue.street || "").gsub!(/,.+/, "")
+        json.address((venue.street || '').gsub!(/,.+/, ''))
         json.phone venue.phone_number
       end
 
