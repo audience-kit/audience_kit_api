@@ -29,7 +29,7 @@ else
       json.name venue.display_name
       json.facebook_id venue.facebook_id.to_s
       json.is_open true
-      json.photo_url venue.location.photo&.cdn_url || 'https://api.hotmess.social/homepage_background.jpg'
+      json.photo_url venue.photo&.cdn_url || 'https://api.hotmess.social/homepage_background.jpg'
       json.description "You're the first to arrive."
       json.distance venue['distance']
 
@@ -57,7 +57,7 @@ json.events do
     json.venue do
       json.id event.venue.id
       json.name event.venue.display_name
-      json.photo_url event.venue.location&.photo.cdn_url || 'https://api.hotmess.social/homepage_background.jpg'
+      json.photo_url event.venue.photo.cdn_url || 'https://api.hotmess.social/homepage_background.jpg'
     end
   end
 end
