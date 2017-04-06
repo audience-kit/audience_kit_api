@@ -57,6 +57,7 @@ json.events do
     json.venue do
       json.id event.venue.id
       json.name event.venue.display_name
+      json.photo_url event.venue.location&.photo.cdn_url || 'https://api.hotmess.social/homepage_background.jpg'
     end
   end
 end
