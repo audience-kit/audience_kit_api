@@ -29,7 +29,7 @@ else
       json.name venue.display_name
       json.facebook_id venue.facebook_id.to_s
       json.is_open true
-      json.photo_url venue.photo&.cdn_url
+      json.photo_url venue.location.photo&.cdn_url
       json.description "You're the first to arrive."
       json.distance venue['distance']
 
