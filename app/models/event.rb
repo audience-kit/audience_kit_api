@@ -66,4 +66,8 @@ class Event < ApplicationRecord
 
     ticket_types.find_or_create_by(provider: 'ticketmaster', provider_id: event_id)
   end
+
+  def to_english
+    "at #{start_at.hour}, #{name} hosted by #{venue.name}"
+  end
 end
