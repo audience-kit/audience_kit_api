@@ -81,5 +81,7 @@ Rails.application.routes.draw do
     end
   end
 
+  get :alexa, to: 'alexa#index'
+
   root to: 'status#index'
 end
