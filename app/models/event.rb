@@ -68,6 +68,6 @@ class Event < ApplicationRecord
   end
 
   def to_english
-    "starting at <say-as interpret-as='time'>#{start_at.time}</say-as>, #{name} hosted by #{venue.name}"
+    "starting at <say-as interpret-as='time'>#{start_at.strftime('%H:%M')}</say-as>, #{name} hosted by #{venue.name}"
   end
 end
