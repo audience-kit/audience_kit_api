@@ -6,7 +6,7 @@ json.venue do
   json.id event.venue.id
   json.name event.venue.display_name
   json.facebook_id event.venue.facebook_id
-  json.photo_url event.venue.photo.cdn_url
+  json.photo_url event.venue.photo&.cdn_url
 end
 
 if event.person

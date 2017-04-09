@@ -5,6 +5,7 @@ class UserLocation < ApplicationRecord
 
   belongs_to :session
   belongs_to :venue
+  belongs_to :location
 
   scope :recent, -> { where('created_at > ?', 2.hours.ago) }
 
