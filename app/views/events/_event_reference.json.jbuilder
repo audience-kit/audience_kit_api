@@ -14,5 +14,6 @@ if event.person
     json.id event.person.id
     json.name event.person.display_name
     json.facebook_id event.person.facebook_id
+    json.photo_url event.person.page.photo.cdn_url
   end
 end
