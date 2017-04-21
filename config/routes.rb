@@ -2,74 +2,47 @@
 
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  post :token, to: 'token#create'
-  post '/token/device', to: 'token#device'
-
   mount ActionCable.server => '/connection'
 
-  get :me, to: 'users#me'
-  get :now, to: 'venues#now'
+  scope '/v1' do
+    post :token, to: 'token#create'
+    post '/token/device', to: 'token#device'
 
-  get '/locales/closest' => 'locales#closest'
-  get '/venues/closest' => 'venues#closest'
+    get :me, to: 'users#me'
+    get :now, to: 'venues#now'
 
-  post '/me/location', to: 'users#coordinates'
+    get '/locales/closest' => 'locales#closest'
+    get '/venues/closest' => 'venues#closest'
 
-  resources :locales, only: %i[index show], shallow: true do
+    post '/me/location', to: 'users#coordinates'
 
-    resources :venues, only: %i[index show], shallow: true do
-      collection do
-        get :here
-        get :closest
-      end
+    resources :locales, only: %i[index show], shallow: true do
 
-      member do
-        get :photo
-        get :picture
-        get :cover
-        get :friends
-        get :events
-      end
-
-    end
-
-    resources :events, only: %i[index show], shallow: true do
-      member do
-        post :rsvp
-      end
-    end
-
-    resources :people, only: %i[index show], shallow: true do
-      member do
-        get :picture
-        get :cover
-        get :events
-      end
-
-      resources :tracks, only: [:show], shallow: true do
-        member do
-          get :artwork
-          get :waveform
+      resources :venues, only: %i[index show], shallow: true do
+        collection do
+          get :here
+          get :closest
         end
+
+        get :events, on: :member
+      end
+
+      resources :events, only: %i[index show], shallow: true do
+        post :rsvp, on: :member
+      end
+
+      resources :people, only: %i[index show], shallow: true do
+        get :events, on: :member
+
+        resources :tracks, only: [:show], shallow: true
       end
     end
 
-    member do
-      get :photo
-    end
+    resources :users, only: [:show]
+    resources :photos, only: [:show]
+    resources :tracks, only: [:show]
+    resources :events, only: [:index]
   end
-
-  resources :users, only: [:show] do
-    member do
-      get :picture
-    end
-  end
-
-  resources :photos, only: [:show]
-
-  resources :tracks, only: [:show]
-
-  resources :events, only: [:index]
 
   namespace :callbacks do
     namespace :facebook do
