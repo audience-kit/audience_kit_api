@@ -18,7 +18,7 @@ RSpec.describe 'locales', type: :request do
   end
 
   it 'returns a locale at /locales/closest' do
-    get '/locales/closest', params: default_params, headers: default_headers
+    get '/v1/locales/closest', params: default_params, headers: default_headers
 
     expect(response).to have_http_status(200)
     data = JSON.parse(response.body)
@@ -29,7 +29,7 @@ RSpec.describe 'locales', type: :request do
   it 'returns locale for locale at /locale/{id}' do
     nyc = Locale.find_by(label: 'nyc')
 
-    get '/locales', params: default_params, headers: default_headers
+    get '/v1/locales', params: default_params, headers: default_headers
 
     expect(response).to have_http_status(200)
     data = JSON.parse(response.body)
@@ -37,7 +37,7 @@ RSpec.describe 'locales', type: :request do
     expect(data['locales']).not_to be nil
     venue = data['locales'].first
 
-    get "/locales/#{venue['id']}", params: default_params, headers: default_headers
+    get "/v1/locales/#{venue['id']}", params: default_params, headers: default_headers
 
     expect(response).to have_http_status(200)
     data = JSON.parse(response.body)

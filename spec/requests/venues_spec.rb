@@ -8,7 +8,7 @@ RSpec.describe 'venues', type: :request do
       SPOKANE_POINT = { longitude: '-117', latitude: '47' }.freeze
 
       before :each do
-        get '/now', params: SPOKANE_POINT.dup, headers: default_headers
+        get '/v1/now', params: SPOKANE_POINT.dup, headers: default_headers
         expect(response).to have_http_status(200)
 
         @data = JSON.parse(response.body)
@@ -30,7 +30,7 @@ RSpec.describe 'venues', type: :request do
       SPOKANE_NYNE_POINT = { longitude: '-117.414777', latitude: '47.6575451' }.freeze
 
       before :each do
-        get '/now', params: SPOKANE_NYNE_POINT.dup, headers: default_headers
+        get '/v1/now', params: SPOKANE_NYNE_POINT.dup, headers: default_headers
         expect(response).to have_http_status(200)
 
         @data = JSON.parse(response.body)
@@ -62,31 +62,8 @@ RSpec.describe 'venues', type: :request do
     expect(response).to have_http_status(200)
   end
 
-  it 'returns a venue at /venues/closest' do
-    get '/venues/closest', params: default_params, headers: default_headers
-
-    expect(response).to have_http_status(200)
-    data = JSON.parse(response.body)
-
-    expect(data['venue']).not_to be nil
-  end
-
-
-  it 'returns a image for venue at /venues/closest' do
-    get '/venues/closest', params: default_params, headers: default_headers
-
-    expect(response).to have_http_status(200)
-    data = JSON.parse(response.body)
-
-    puts "Closest venue to #{default_params} is #{data['venue']['name']} (#{data['venue']['id']})"
-
-    expect(data['venue']).not_to be_nil
-    expect(data['venue']['photo_url']).to eq 'https://cdn.hotmess.social/rtbPkNmxkajtdn-l1vKvpRbHGoA'
-  end
-
-
   it 'returns a image for venue at /venues/{id}' do
-    get '/venues/f38046f1-2d6b-4881-9864-8cd182585710', params: default_params, headers: default_headers
+    get '/v1/venues/f38046f1-2d6b-4881-9864-8cd182585710', params: default_params, headers: default_headers
 
     expect(response).to have_http_status(200)
     data = JSON.parse(response.body)
@@ -98,7 +75,7 @@ RSpec.describe 'venues', type: :request do
   it 'returns venues for locale at /locales/{id}/venues' do
     nyc = Locale.find_by(label: 'nyc')
 
-    get "/locales/#{nyc.id}/venues", params: default_params, headers: default_headers
+    get "/v1/locales/#{nyc.id}/venues", params: default_params, headers: default_headers
 
     expect(response).to have_http_status(200)
     data = JSON.parse(response.body)
@@ -109,7 +86,7 @@ RSpec.describe 'venues', type: :request do
   it 'returns venue for locale at /venues/{id}' do
     nyc = Locale.find_by(label: 'nyc')
 
-    get "/locales/#{nyc.id}/venues", params: default_params, headers: default_headers
+    get "/v1/locales/#{nyc.id}/venues", params: default_params, headers: default_headers
 
     expect(response).to have_http_status(200)
     data = JSON.parse(response.body)
@@ -117,7 +94,7 @@ RSpec.describe 'venues', type: :request do
     expect(data['venues']).not_to be nil
     venue = data['venues'].first
 
-    get "/venues/#{venue['id']}", params: default_params, headers: default_headers
+    get "/v1/venues/#{venue['id']}", params: default_params, headers: default_headers
 
     expect(response).to have_http_status(200)
     data = JSON.parse(response.body)
@@ -128,7 +105,7 @@ RSpec.describe 'venues', type: :request do
   it 'returns events for locale at /venues/{id}/events' do
     nyc = Locale.find_by(label: 'nyc')
 
-    get "/locales/#{nyc.id}/venues", params: default_params, headers: default_headers
+    get "/v1/locales/#{nyc.id}/venues", params: default_params, headers: default_headers
 
     expect(response).to have_http_status(200)
     data = JSON.parse(response.body)
@@ -136,7 +113,7 @@ RSpec.describe 'venues', type: :request do
     expect(data['venues']).not_to be nil
     venue = data['venues'].first
 
-    get "/venues/#{venue['id']}/events", params: default_params, headers: default_headers
+    get "/v1/venues/#{venue['id']}/events", params: default_params, headers: default_headers
 
     expect(response).to have_http_status(200)
     data = JSON.parse(response.body)

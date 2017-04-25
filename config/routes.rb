@@ -11,19 +11,12 @@ Rails.application.routes.draw do
     get :me, to: 'users#me'
     get :now, to: 'venues#now'
 
-    get '/locales/closest' => 'locales#closest'
-    get '/venues/closest' => 'venues#closest'
-
     post '/me/location', to: 'users#coordinates'
 
     resources :locales, only: %i[index show], shallow: true do
+      get :closest, on: :collection
 
       resources :venues, only: %i[index show], shallow: true do
-        collection do
-          get :here
-          get :closest
-        end
-
         get :events, on: :member
       end
 
@@ -46,11 +39,11 @@ Rails.application.routes.draw do
 
   namespace :callbacks do
     namespace :facebook do
-      post :user, to: '/callbacks#facebook_user'
-      post :page, to: '/callbacks#facebook_page'
-      get :user, to: '/callbacks#facebook_verify'
-      get :page, to: '/callbacks#facebook_verify'
-      post :revoke, to: '/callbacks#facebook_deauthorize'
+      post :user
+      post :page
+      get :user, action: :verify
+      get :page, action: :verify
+      post :revoke
     end
   end
 

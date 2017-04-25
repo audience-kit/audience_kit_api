@@ -17,7 +17,7 @@ RSpec.describe 'events', type: :request do
   it 'returns events for locale at /locale/{id}/events' do
     nyc = Locale.find_by(label: 'nyc')
 
-    get "/locales/#{nyc.id}/events", params: default_params, headers: default_headers
+    get "/v1/locales/#{nyc.id}/events", params: default_params, headers: default_headers
 
     expect(response).to have_http_status(200)
     data = JSON.parse(response.body)

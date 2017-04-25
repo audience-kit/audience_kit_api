@@ -12,7 +12,7 @@ RSpec.describe 'people', type: :request do
   it 'returns people for locale at /locales/{id}/people' do
     nyc = Locale.find_by(label: 'nyc')
 
-    get "/locales/#{nyc.id}/people", params: default_params, headers: default_headers
+    get "/v1/locales/#{nyc.id}/people", params: default_params, headers: default_headers
 
     expect(response).to have_http_status(200)
     data = JSON.parse(response.body)
@@ -23,7 +23,7 @@ RSpec.describe 'people', type: :request do
   it 'returns person for locale at /people/{id}' do
     model = Person.first
 
-    get "/people/#{model.id}", params: default_params, headers: default_headers
+    get "/v1/people/#{model.id}", params: default_params, headers: default_headers
 
     expect(response).to have_http_status(200)
     data = JSON.parse(response.body)
@@ -34,7 +34,7 @@ RSpec.describe 'people', type: :request do
   it 'returns tracks for a person who is a DJ' do
     model = Person.joins(:page).find_by(pages: { name: 'DUGAN' })
 
-    get "/people/#{model.id}", params: default_params, headers: default_headers
+    get "/v1/people/#{model.id}", params: default_params, headers: default_headers
 
     expect(response).to have_http_status(200)
     data = JSON.parse(response.body)
@@ -45,7 +45,7 @@ RSpec.describe 'people', type: :request do
   it 'returns social media links' do
     model = Person.joins(:page).find_by(pages: { name: 'Drew G' })
 
-    get "/people/#{model.id}", params: default_params, headers: default_headers
+    get "/v1/people/#{model.id}", params: default_params, headers: default_headers
 
     expect(response).to have_http_status(200)
     data = JSON.parse(response.body)
@@ -56,7 +56,7 @@ RSpec.describe 'people', type: :request do
   it 'should have a picture' do
     model = Person.joins(:page).find_by(pages: { name: 'Drew G' })
 
-    get "/people/#{model.id}", params: default_params, headers: default_headers
+    get "/v1/people/#{model.id}", params: default_params, headers: default_headers
 
     expect(response).to have_http_status(200)
     data = JSON.parse(response.body)
@@ -67,7 +67,7 @@ RSpec.describe 'people', type: :request do
   it 'should have a cover' do
     model = Person.joins(:page).find_by(pages: { name: 'Drew G' })
 
-    get "/people/#{model.id}", params: default_params, headers: default_headers
+    get "/v1/people/#{model.id}", params: default_params, headers: default_headers
 
     expect(response).to have_http_status(200)
     data = JSON.parse(response.body)

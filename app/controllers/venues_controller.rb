@@ -29,14 +29,6 @@ class VenuesController < ApplicationController
     kinesis :venue_view, @venue.id, id: @venue.id, user_id: current_user.id, is_liked: @is_liked
   end
 
-  def closest
-    @venue = Venue.closest location_param
-
-    kinesis :user_location_update, current_user.id, user_id: current_user.id, id: @venue.id, longatude: @longitude, latitude: @latitude
-
-    render :show
-  end
-
   def now
     @locale = Locale.closest location_param
     @venue = Venue.closest location_param, within: true
