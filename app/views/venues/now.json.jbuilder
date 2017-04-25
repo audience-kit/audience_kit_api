@@ -24,12 +24,8 @@ if @venue
 else
   json.venues do
     json.array! @venues do |venue|
+      json.partial! 'venues/venue_reference', venue: venue
 
-      json.id venue.id
-      json.name venue.display_name
-      json.facebook_id venue.facebook_id.to_s
-      json.is_open true
-      json.photo_url venue.photo&.cdn_url || 'https://api.hotmess.social/homepage_background.jpg'
       json.description "You're the first to arrive."
       json.distance venue['distance']
 

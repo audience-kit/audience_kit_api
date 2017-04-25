@@ -1,11 +1,7 @@
 # frozen_string_literal: true
 
 json.person do
-  json.id @person.id
-  json.name @person.display_name
-  json.facebook_id @person.facebook_id
-  json.is_liked @is_liked
-  json.photo_url @person.page.photo&.cdn_url
+  json.partial! 'people/person_reference', person: @person
   json.cover_url @person.page.cover_photo&.cdn_url
 
   json.social_links do
@@ -19,15 +15,7 @@ json.person do
 
   json.tracks do
     json.array! @person.tracks.sort_by(&:created_at).take(5) do |track|
-      json.id track.id
-      json.released_at track.created_at
-      json.title track.title
-      json.provider track.social_link.provider
-      json.provider_url track.provider_url
-      json.stream_url track.stream_url
-      json.download_url track.download_url
-      json.artwork_url artwork_track_url(track)
-      json.waveform_url waveform_track_url(track)
+      json.partial! 'tracks/track', track: track
     end
   end
 
@@ -39,8 +27,7 @@ json.person do
       json.end_at event.end_at
       json.facebook_id event.facebook_id
       json.venue do
-        json.id event.venue.id
-        json.name event.venue.display_name
+        json.partial! 'venues/venue_reference', venue: event.venue
       end
     end
   end

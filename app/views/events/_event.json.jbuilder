@@ -17,21 +17,9 @@ json.venue do
 
 end
 
-if event.person
-  json.person do
-    json.id event.person.id
-    json.name event.person.display_name
-    json.facebook_id event.person.facebook_id
-    json.photo_url event.person.page.photo.cdn_url
-  end
-end
-
 json.people do
-  if event.person
-    json.id event.person.id
-    json.name event.person.display_name
-    json.facebook_id event.person.facebook_id
-    json.photo_url event.person.page.photo.cdn_url
+  json.array! event.people do |person|
+    json.partial! 'people/person_reference', person: person
     json.role 'host'
   end
 end
