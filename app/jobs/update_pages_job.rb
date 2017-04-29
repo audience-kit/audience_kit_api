@@ -16,12 +16,12 @@ class UpdatePagesJob < ApplicationJob
         object_photo = nil
 
         begin
-          object_graph = graph_client.get_object page.facebook_id, fields: ['cover']
+          object_graph = graph_client.get_object page.facebook_id, fields: ['name', 'cover']
           object_photo = graph_client.get_picture_data(page.facebook_id, type: :large)['data']
         rescue => ex
           puts "Fallback to user token => #{ex}"
           graph_client = Koala::Facebook::API.new user_token
-          object_graph = graph_client.get_object page.facebook_id, fields: ['cover']
+          object_graph = graph_client.get_object page.facebook_id, fields: ['name', 'cover']
           object_photo = graph_client.get_picture_data(page.facebook_id, type: :large)['data']
           page.requires_user_token = true
         end
