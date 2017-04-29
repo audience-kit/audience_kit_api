@@ -30,12 +30,11 @@ class Page < ApplicationRecord
       self.cover_photo = Photo.for_url cover_url
     end
 
-    return unless options[:client]
+    if options[:photo]
+      image_url = options[:photo]['url']
 
-    image_data = options[:client].get_picture_data(graph['id'], type: :large)['data']
-    image_url = image_data['url']
-
-    self.photo = Photo.for_url image_url
+      self.photo = Photo.for_url image_url
+    end
   end
 
   def self.page_for_facebook_id(facebook_id, hidden = false)

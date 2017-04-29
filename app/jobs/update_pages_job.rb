@@ -5,7 +5,7 @@ class UpdatePagesJob < ApplicationJob
     puts 'Performing page update'
     app_token = Concerns::Facebook.oauth.get_app_access_token
 
-    Page.where('updated_at < ? and hidden IS FALSE', 12.hour.ago).order(updated_at: :desc).each do |page|
+    Page.where('updated_at < ?', 12.hour.ago).order(updated_at: :desc).each do |page|
       puts "Updating page #{page.name}"
       begin
         user_token = User.where('facebook_token IS NOT NULL').order('RANDOM()').first.facebook_token
@@ -13,18 +13,23 @@ class UpdatePagesJob < ApplicationJob
         graph_client = Koala::Facebook::API.new app_token
         page.requires_user_token = false
         object_graph = nil
+        object_photo = nil
 
         begin
-          object_graph = graph_client.get_object page.facebook_id
+          object_graph = graph_client.get_object page.facebook_id, fields: ['cover']
+          object_photo = graph_client.get_picture_data(page.facebook_id, type: :large)['data']
         rescue => ex
           puts "Fallback to user token => #{ex}"
           graph_client = Koala::Facebook::API.new user_token
-          object_graph = graph_client.get_object page.facebook_id
+          object_graph = graph_client.get_object page.facebook_id, fields: ['cover']
+          object_photo = graph_client.get_picture_data(page.facebook_id, type: :large)['data']
           page.requires_user_token = true
         end
 
-        page.update_graph object_graph, client: graph_client
+        page.update_graph object_graph, photo: object_photo
         page.save
+
+        next if page.hidden
 
         if page.venue && !page.venue.hidden
           events = nil
