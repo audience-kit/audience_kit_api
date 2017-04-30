@@ -8,10 +8,11 @@ class EventsController < ApplicationController
 
     @sections = []
 
+    @featured_events = @events.where('cover_photo_id IS NOT NULL').take(2)
     @sections << { name: :recommended,
-                   events: @events.where('cover_photo_id IS NOT NULL').take(2),
+                   events: @featured_events,
                    title: 'Featured',
-                   featured: true }
+                   featured: true } if @featured_events.any?
 
     @sections << { name: :upcoming,
                    events: @events,
