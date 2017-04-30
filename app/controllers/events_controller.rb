@@ -4,12 +4,12 @@ class EventsController < ApplicationController
   def index
     params.permit :venue_id
 
-    @events = Event.future.includes([ { event_people: { person: :page } }, { venue: :page } ]).take(30)
+    @events = Locale.find(params[:locale_id]).events.future.includes(venue: :page).where('venues.hidden IS FALSE')
 
     @sections = []
 
     @sections << { name: :recommended,
-                   events: Event.future.where('cover_photo_id IS NOT NULL').take(2),
+                   events: @events.where('cover_photo_id IS NOT NULL').take(2),
                    title: 'Featured',
                    featured: true }
 

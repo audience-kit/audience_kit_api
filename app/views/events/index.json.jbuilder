@@ -6,7 +6,7 @@ json.sections do
       json.title section[:title]
       json.events do
         json.array! section[:events] do |event|
-          json.partial! 'events/event_reference', as: :event
+          json.partial! 'events/event_reference', event: event
           json.is_featured section[:featured]
         end
       end
