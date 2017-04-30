@@ -4,7 +4,7 @@ class EventsController < ApplicationController
   def index
     params.permit :venue_id
 
-    @events = Locale.find(params[:locale_id]).events.future.includes(venue: :page).where('venues.hidden IS FALSE')
+    @events = Locale.find(params[:locale_id]).events.future.includes(venue: :page)
 
     @sections = []
 
