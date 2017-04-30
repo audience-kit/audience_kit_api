@@ -8,7 +8,15 @@ class EventsController < ApplicationController
 
     @sections = []
 
-    @sections << { name: :recommended, events: Event.future.take(1), title: 'Recomended for you' }
+    @sections << { name: :recommended,
+                   events: Event.future.where('cover_photo_id IS NOT NULL').take(2),
+                   title: 'Featured',
+                   featured: true }
+
+    @sections << { name: :upcoming,
+                   events: @events,
+                   title: 'Upcoming',
+                   featured: false }
   end
 
   def show

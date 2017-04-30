@@ -81,6 +81,6 @@ class VenuesController < ApplicationController
 
     @events = @venue.events.includes(event_people: { person: :page })
 
-    render 'events/index'
+    render 'events'
   end
 end
