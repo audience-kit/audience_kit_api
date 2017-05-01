@@ -2,7 +2,7 @@ class AlexaController < ApplicationController
   skip_before_action :authenticate
 
   def index
-    location = Geocoder.search(zip).first
+    location = Geocoder.search(params[:zip]).first
 
     point = RGeo::Geographic.simple_mercator_factory.point location.longitude, location.latitude
 
