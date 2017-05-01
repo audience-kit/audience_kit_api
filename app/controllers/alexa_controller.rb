@@ -2,8 +2,12 @@ class AlexaController < ApplicationController
   skip_before_action :authenticate
 
   def index
-    @events = Event.future.take(3)
+    location = Geocoder.search(params[:zip])
+    render text: location.inspect
 
-    render text: "The next few events are #{@events.map(&:to_english).to_sentence}"
-  end
+    #point = RGeo::Geographic.simple_mercator_factory.point @longitude, @latitude
+
+    #@events = Locale.closest()
+
+    #render json: @events.map { |event| { title: event.name, venue: event.venue.name, start_at: event.start_at } }
 end
