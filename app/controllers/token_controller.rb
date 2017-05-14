@@ -17,7 +17,7 @@ class TokenController < ApplicationController
       @graph = Koala::Facebook::API.new extended_token
 
       # Refresh profile data including email address
-      @me = @graph.get_object 'me'
+      @me = @graph.get_object 'me', fields: %w(email name locale first_name last_name gender)
 
       raise 'Facebook token invalid' unless @me
 

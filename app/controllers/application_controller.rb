@@ -5,13 +5,13 @@ class ApplicationController < ActionController::API
 
   def authenticate
     begin
-      token = /Bearer (.+)/.match(request.authorization)
+      token = /(Bearer|JWT) (.+)/.match(request.authorization)
 
       if token
         decoded_token = JWT.decode token[1], Rails.application.secrets[:secret_key_base], true, algorithm: 'HS256'
 
-        if decoded_token && decoded_token[0]
-          @user_id = decoded_token[0]['id']
+        if decoded_token && decoded_token[1]
+          @user_id = decoded_token[1]['id']
 
           @token = request.env['decoded_token'] = decoded_token[0]
           request.env['role'] = @token['role']
