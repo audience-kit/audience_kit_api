@@ -8,7 +8,7 @@ class ApplicationController < ActionController::API
       token = /(Bearer|JWT) (.+)/.match(request.authorization)
 
       if token
-        decoded_token = JWT.decode token[1], Rails.application.secrets[:secret_key_base], true, algorithm: 'HS256'
+        decoded_token = JWT.decode token[2], Rails.application.secrets[:secret_key_base], true, algorithm: 'HS256'
 
         if decoded_token && decoded_token[0]
           @user_id = decoded_token[0]['id']
