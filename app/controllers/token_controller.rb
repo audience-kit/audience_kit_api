@@ -41,6 +41,8 @@ class TokenController < ApplicationController
 
       @token = @session.to_jwt(request).to_s
 
+      UpdateUserJob.perform_later @user
+
       kinesis :user_session_create,  @session.user.id, id: @session.id, user_id: @session.user.id
     rescue Koala::Facebook::APIError => ex
       logger.error ex
