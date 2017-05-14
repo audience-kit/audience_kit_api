@@ -27,6 +27,11 @@ class User < ApplicationRecord
       @user = User.find_or_create_by facebook_id: graph['id'].to_i do |u|
         u.facebook_token = token
         u.facebook_token_issued_at  = DateTime.now
+        u.email_address = graph['email']
+        u.culture = graph['locale']
+        u.first_name = graph['first_name']
+        u.last_name = graph['last_name']
+        u.gender = graph['gender']
       end
     end
 
