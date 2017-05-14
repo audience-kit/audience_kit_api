@@ -1,10 +1,12 @@
 class UpdateUsersJob < ApplicationJob
 
   def perform
-    users = User.where.not(facebook_token: nil).to_a
-
-    users.each do |user|
-      UpdateUserJob.perform_now user
+    User.where.not(facebook_token: nil).each do |user|
+      begin
+        UpdateUserJob.perform_now user
+      rescue => ex
+        puts "Error => #{ex}"
+      end
     end
   end
 end
