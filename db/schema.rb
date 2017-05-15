@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170403044729) do
+ActiveRecord::Schema.define(version: 20170515051052) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,13 +69,14 @@ ActiveRecord::Schema.define(version: 20170403044729) do
   end
 
   create_table "locales", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime  "created_at",                                                              null: false
-    t.datetime  "updated_at",                                                              null: false
+    t.datetime  "created_at",                                                                     null: false
+    t.datetime  "updated_at",                                                                     null: false
     t.string    "label"
     t.string    "name"
     t.integer   "beacon_major"
-    t.geography "envelope",     limit: {:srid=>4326, :type=>"polygon", :geographic=>true}
+    t.geography "envelope",            limit: {:srid=>4326, :type=>"polygon", :geographic=>true}
     t.uuid      "location_id"
+    t.integer   "timezone_zulu_delta"
   end
 
   create_table "location_beacons", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -106,7 +107,7 @@ ActiveRecord::Schema.define(version: 20170403044729) do
     t.string   "facets",                                             array: true
     t.boolean  "requires_user_token",   default: false, null: false
     t.boolean  "hidden",                default: false, null: false
-    t.uuid     "photo_id"
+    t.uuid     "photo_id",                              null: false
     t.uuid     "cover_photo_id"
     t.index ["facebook_id"], name: "index_pages_on_facebook_id", unique: true, using: :btree
   end

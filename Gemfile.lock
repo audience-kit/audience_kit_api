@@ -88,6 +88,7 @@ GEM
       retriable (>= 2.0, < 4.0)
     google_places (0.33.0)
       httparty (>= 0.13.1, < 0.14.1)
+    google_timezone (0.0.5)
     googleauth (0.5.1)
       faraday (~> 0.9)
       jwt (~> 1.4)
@@ -284,6 +285,7 @@ DEPENDENCIES
   geocoder
   google-api-client
   google_places
+  google_timezone
   jbuilder
   jwt
   koala
