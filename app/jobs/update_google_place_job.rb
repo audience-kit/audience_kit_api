@@ -1,6 +1,23 @@
 class UpdateGooglePlaceJob < ApplicationJob
   def perform
     begin
+      Locale.all.each do |locale|
+        next unless locale.location
+
+        latitude = locale.location.point.latitude
+        longitude = locale.location.point.longitude
+        puts "Updating #{locale.display_name} (#{latitude}, #{longitude})"
+
+        timezone = GoogleTimezone.fetch(latitude, longitude, key: Rails.application.secrets.google_api_key)
+
+        puts "Timezone => #{timezone.time_zone_name}"
+        locale.timezone_zulu_delta = timezone.raw_offset + timezone.dst_offset if timezone.time_zone_name
+
+        locale.save
+      end
+    end
+
+    begin
       client = ::GooglePlaces::Client.new(Rails.application.secrets.google_api_key)
 
       locations  = Location.all

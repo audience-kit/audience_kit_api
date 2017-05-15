@@ -47,7 +47,10 @@ Rails.application.routes.draw do
     end
   end
 
-  get :alexa, to: 'alexa#index'
+  namespace :alexa do
+    get :events
+    get :friends
+  end
 
   root to: 'status#index'
 end

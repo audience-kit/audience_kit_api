@@ -1,7 +1,9 @@
 class AlexaController < ApplicationController
   skip_before_action :authenticate
 
-  def index
+  #before_action :alexa_authenticate
+
+  def events
     location = Geocoder.search(params[:zip]).first
 
     point = RGeo::Geographic.simple_mercator_factory.point location.longitude, location.latitude
@@ -15,5 +17,14 @@ class AlexaController < ApplicationController
         venue: event.venue.name,
         start_at: event.start_at
     } } }
+  end
+
+  def friends
+
+  end
+
+  private
+  def alexa_authenticate
+
   end
 end
