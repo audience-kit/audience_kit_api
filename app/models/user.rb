@@ -32,6 +32,8 @@ class User < ApplicationRecord
         u.first_name = graph['first_name']
         u.last_name = graph['last_name']
         u.gender = graph['gender']
+
+        u.facebook_graph = graph
       end
     end
 
