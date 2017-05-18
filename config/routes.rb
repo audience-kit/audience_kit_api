@@ -52,5 +52,5 @@ Rails.application.routes.draw do
     get :friends
   end
 
-  root to: 'status#index'
+  root to: 'status#index', via: [ :get, :post ]
 end
