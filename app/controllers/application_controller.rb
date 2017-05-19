@@ -40,7 +40,11 @@ class ApplicationController < ActionController::API
 
   def current_user
     puts "UserID => #{@user_id}"
-    @current_user ||= User.find_by_id(@user_id)
+    if @application
+      @current_user ||= User.new
+    else
+      @current_user ||= User.find_by_id(@user_id)
+    end
   end
 
   def admin?
