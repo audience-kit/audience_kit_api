@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170515051052) do
+ActiveRecord::Schema.define(version: 20170519183136) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,255 +19,261 @@ ActiveRecord::Schema.define(version: 20170515051052) do
   enable_extension "postgis"
   enable_extension "uuid-ossp"
 
+  create_table "applications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "api_key", null: false
+  end
+
   create_table "devices", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
-    t.string   "device_type"
-    t.string   "vendor_identifier"
-    t.macaddr  "bluetooth_address"
-    t.macaddr  "wifi_address"
-    t.string   "model"
-    t.index ["device_type", "vendor_identifier"], name: "devices_by_vendor", unique: true, using: :btree
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "device_type"
+    t.string "vendor_identifier"
+    t.macaddr "bluetooth_address"
+    t.macaddr "wifi_address"
+    t.string "model"
+    t.index ["device_type", "vendor_identifier"], name: "devices_by_vendor", unique: true
   end
 
   create_table "event_people", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid     "person_id",  null: false
-    t.uuid     "event_id",   null: false
-    t.string   "role",       null: false
-    t.index ["event_id"], name: "index_event_people_on_event_id", using: :btree
-    t.index ["person_id"], name: "index_event_people_on_person_id", using: :btree
+    t.uuid "person_id", null: false
+    t.uuid "event_id", null: false
+    t.string "role", null: false
+    t.index ["event_id"], name: "index_event_people_on_event_id"
+    t.index ["person_id"], name: "index_event_people_on_person_id"
   end
 
   create_table "events", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
-    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
     t.datetime "start_at"
     t.datetime "end_at"
-    t.uuid     "venue_id",                       null: false
-    t.jsonb    "facebook_graph"
-    t.bigint   "facebook_id"
-    t.string   "name_override"
-    t.integer  "order",          default: 1000,  null: false
-    t.uuid     "cover_photo_id"
-    t.boolean  "is_featured",    default: false, null: false
-    t.index ["cover_photo_id"], name: "index_events_on_cover_photo_id", using: :btree
-    t.index ["facebook_id"], name: "index_events_on_facebook_id", using: :btree
-    t.index ["venue_id"], name: "index_events_on_venue_id", using: :btree
+    t.uuid "venue_id", null: false
+    t.jsonb "facebook_graph"
+    t.bigint "facebook_id"
+    t.string "name_override"
+    t.integer "order", default: 1000, null: false
+    t.uuid "cover_photo_id"
+    t.boolean "is_featured", default: false, null: false
+    t.index ["cover_photo_id"], name: "index_events_on_cover_photo_id"
+    t.index ["facebook_id"], name: "index_events_on_facebook_id"
+    t.index ["venue_id"], name: "index_events_on_venue_id"
   end
 
   create_table "friendships", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid    "friend_high_id"
-    t.uuid    "friend_low_id"
-    t.date    "friends_at"
-    t.string  "friend_hash"
+    t.uuid "friend_high_id"
+    t.uuid "friend_low_id"
+    t.date "friends_at"
+    t.string "friend_hash"
     t.integer "weight"
-    t.index ["friend_high_id"], name: "index_friendships_on_friend_high_id", using: :btree
-    t.index ["friend_low_id"], name: "index_friendships_on_friend_low_id", using: :btree
+    t.index ["friend_high_id"], name: "index_friendships_on_friend_high_id"
+    t.index ["friend_low_id"], name: "index_friendships_on_friend_low_id"
   end
 
   create_table "locales", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime  "created_at",                                                                     null: false
-    t.datetime  "updated_at",                                                                     null: false
-    t.string    "label"
-    t.string    "name"
-    t.integer   "beacon_major"
-    t.geography "envelope",            limit: {:srid=>4326, :type=>"polygon", :geographic=>true}
-    t.uuid      "location_id"
-    t.integer   "timezone_zulu_delta"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "label"
+    t.string "name"
+    t.integer "beacon_major"
+    t.geography "envelope", limit: {:srid=>4326, :type=>"st_polygon", :geographic=>true}
+    t.uuid "location_id"
+    t.integer "timezone_zulu_delta"
   end
 
   create_table "location_beacons", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid    "location_id",  null: false
+    t.uuid "location_id", null: false
     t.integer "beacon_minor", null: false
-    t.index ["location_id"], name: "index_location_beacons_on_location_id", using: :btree
+    t.index ["location_id"], name: "index_location_beacons_on_location_id"
   end
 
   create_table "locations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime  "created_at",                                                                 null: false
-    t.datetime  "updated_at",                                                                 null: false
-    t.string    "google_place_id",                                                            null: false
-    t.jsonb     "google_location",                                                            null: false
-    t.geography "point",           limit: {:srid=>4326, :type=>"point", :geographic=>true}
-    t.uuid      "photo_id"
-    t.geography "envelope",        limit: {:srid=>4326, :type=>"polygon", :geographic=>true}
-    t.index ["google_place_id"], name: "index_locations_on_google_place_id", unique: true, using: :btree
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "google_place_id", null: false
+    t.jsonb "google_location", null: false
+    t.geography "point", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
+    t.uuid "photo_id"
+    t.geography "envelope", limit: {:srid=>4326, :type=>"st_polygon", :geographic=>true}
+    t.index ["google_place_id"], name: "index_locations_on_google_place_id", unique: true
   end
 
   create_table "pages", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
-    t.string   "name",                                  null: false
-    t.string   "name_override"
-    t.bigint   "facebook_id",                           null: false
-    t.jsonb    "facebook_graph",                        null: false
-    t.string   "facebook_access_token"
-    t.string   "facets",                                             array: true
-    t.boolean  "requires_user_token",   default: false, null: false
-    t.boolean  "hidden",                default: false, null: false
-    t.uuid     "photo_id",                              null: false
-    t.uuid     "cover_photo_id"
-    t.index ["facebook_id"], name: "index_pages_on_facebook_id", unique: true, using: :btree
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name", null: false
+    t.string "name_override"
+    t.bigint "facebook_id", null: false
+    t.jsonb "facebook_graph", null: false
+    t.string "facebook_access_token"
+    t.string "facets", array: true
+    t.boolean "requires_user_token", default: false, null: false
+    t.boolean "hidden", default: false, null: false
+    t.uuid "photo_id", null: false
+    t.uuid "cover_photo_id"
+    t.index ["facebook_id"], name: "index_pages_on_facebook_id", unique: true
   end
 
   create_table "people", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid    "page_id",                       null: false
-    t.integer "order",         default: 1000,  null: false
-    t.boolean "global",        default: false, null: false
+    t.uuid "page_id", null: false
+    t.integer "order", default: 1000, null: false
+    t.boolean "global", default: false, null: false
     t.boolean "like_required", default: false, null: false
-    t.index ["page_id"], name: "index_people_on_page_id", unique: true, using: :btree
+    t.index ["page_id"], name: "index_people_on_page_id", unique: true
   end
 
   create_table "person_locales", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "person_id", null: false
     t.uuid "locale_id", null: false
-    t.index ["locale_id"], name: "index_person_locales_on_locale_id", using: :btree
-    t.index ["person_id", "locale_id"], name: "person_locale_unique_key", unique: true, using: :btree
-    t.index ["person_id"], name: "index_person_locales_on_person_id", using: :btree
+    t.index ["locale_id"], name: "index_person_locales_on_locale_id"
+    t.index ["person_id", "locale_id"], name: "person_locale_unique_key", unique: true
+    t.index ["person_id"], name: "index_person_locales_on_person_id"
   end
 
   create_table "photos", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-    t.string   "source_url",   null: false
-    t.binary   "content_hash", null: false
-    t.string   "mime",         null: false
-    t.string   "cdn_url",      null: false
-    t.index ["content_hash"], name: "photos_hash_uindex", unique: true, using: :btree
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "source_url", null: false
+    t.binary "content_hash", null: false
+    t.string "mime", null: false
+    t.string "cdn_url", null: false
+    t.index ["content_hash"], name: "photos_hash_uindex", unique: true
   end
 
   create_table "sessions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime  "created_at",                                                             null: false
-    t.datetime  "updated_at",                                                             null: false
-    t.uuid      "token_id"
-    t.string    "session_token"
-    t.uuid      "device_id"
-    t.uuid      "user_id"
-    t.inet      "origin_ip"
-    t.geography "location",      limit: {:srid=>4326, :type=>"point", :geographic=>true}
-    t.string    "version"
-    t.integer   "build"
-    t.index ["device_id"], name: "index_sessions_on_device_id", using: :btree
-    t.index ["token_id"], name: "index_sessions_on_token_id", using: :btree
-    t.index ["user_id"], name: "index_sessions_on_user_id", using: :btree
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "token_id"
+    t.string "session_token"
+    t.uuid "device_id"
+    t.uuid "user_id"
+    t.inet "origin_ip"
+    t.geography "location", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
+    t.string "version"
+    t.integer "build"
+    t.index ["device_id"], name: "index_sessions_on_device_id"
+    t.index ["token_id"], name: "index_sessions_on_token_id"
+    t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
   create_table "social_links", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.uuid     "object_id",                  null: false
-    t.string   "provider",                   null: false
-    t.string   "handle",                     null: false
-    t.boolean  "primary",    default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "object_id", null: false
+    t.string "provider", null: false
+    t.string "handle", null: false
+    t.boolean "primary", default: false, null: false
   end
 
   create_table "social_updates", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-    t.uuid     "social_link_id", null: false
-    t.string   "body",           null: false
-    t.index ["social_link_id"], name: "index_social_updates_on_social_link_id", using: :btree
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "social_link_id", null: false
+    t.string "body", null: false
+    t.index ["social_link_id"], name: "index_social_updates_on_social_link_id"
   end
 
   create_table "ticket_types", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.uuid     "event_id",                   null: false
-    t.decimal  "price"
-    t.boolean  "available",   default: true, null: false
-    t.string   "provider",                   null: false
-    t.string   "provider_id",                null: false
-    t.index ["event_id"], name: "index_ticket_types_on_event_id", using: :btree
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "event_id", null: false
+    t.decimal "price"
+    t.boolean "available", default: true, null: false
+    t.string "provider", null: false
+    t.string "provider_id", null: false
+    t.index ["event_id"], name: "index_ticket_types_on_event_id"
   end
 
   create_table "tracks", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at",          default: -> { "now()" }, null: false
-    t.datetime "updated_at",          default: -> { "now()" }, null: false
-    t.uuid     "social_link_id",                               null: false
-    t.string   "title",                                        null: false
-    t.string   "provider_url",                                 null: false
-    t.string   "provider_identifier",                          null: false
-    t.string   "download_url"
-    t.string   "stream_url"
-    t.jsonb    "metadata"
-    t.uuid     "photo_id"
-    t.uuid     "waveform_photo_id"
-    t.index ["social_link_id"], name: "index_tracks_on_social_link_id", using: :btree
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
+    t.uuid "social_link_id", null: false
+    t.string "title", null: false
+    t.string "provider_url", null: false
+    t.string "provider_identifier", null: false
+    t.string "download_url"
+    t.string "stream_url"
+    t.jsonb "metadata"
+    t.uuid "photo_id"
+    t.uuid "waveform_photo_id"
+    t.index ["social_link_id"], name: "index_tracks_on_social_link_id"
   end
 
   create_table "user_likes", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid     "user_id",    null: false
-    t.uuid     "page_id",    null: false
-    t.index ["page_id"], name: "index_user_likes_on_page_id", using: :btree
-    t.index ["user_id"], name: "index_user_likes_on_user_id", using: :btree
+    t.uuid "user_id", null: false
+    t.uuid "page_id", null: false
+    t.index ["page_id"], name: "index_user_likes_on_page_id"
+    t.index ["user_id"], name: "index_user_likes_on_user_id"
   end
 
   create_table "user_locations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime  "created_at",                                                           default: -> { "now()" }, null: false
-    t.datetime  "updated_at",                                                           default: -> { "now()" }, null: false
-    t.geography "point",       limit: {:srid=>4326, :type=>"point", :geographic=>true},                          null: false
-    t.uuid      "venue_id"
-    t.uuid      "session_id",                                                                                    null: false
-    t.uuid      "location_id",                                                                                   null: false
-    t.boolean   "beacon",                                                               default: false,          null: false
-    t.index ["location_id"], name: "index_user_locations_on_location_id", using: :btree
-    t.index ["session_id"], name: "index_user_locations_on_session_id", using: :btree
-    t.index ["venue_id"], name: "index_user_locations_on_venues_id", using: :btree
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
+    t.geography "point", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}, null: false
+    t.uuid "venue_id"
+    t.uuid "session_id", null: false
+    t.uuid "location_id", null: false
+    t.boolean "beacon", default: false, null: false
+    t.index ["location_id"], name: "index_user_locations_on_location_id"
+    t.index ["session_id"], name: "index_user_locations_on_session_id"
+    t.index ["venue_id"], name: "index_user_locations_on_venues_id"
   end
 
   create_table "user_rsvps", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.datetime "created_at", default: -> { "now()" }, null: false
     t.datetime "updated_at", default: -> { "now()" }, null: false
-    t.uuid     "user_id",                             null: false
-    t.uuid     "event_id",                            null: false
-    t.string   "state",                               null: false
-    t.index ["event_id"], name: "user_rsvps_event_id_index", using: :btree
-    t.index ["user_id", "event_id"], name: "user_rsvps_user_id_event_id_uindex", unique: true, using: :btree
-    t.index ["user_id"], name: "user_rsvps_user_id_index", using: :btree
+    t.uuid "user_id", null: false
+    t.uuid "event_id", null: false
+    t.string "state", null: false
+    t.index ["event_id"], name: "user_rsvps_event_id_index"
+    t.index ["user_id", "event_id"], name: "user_rsvps_user_id_event_id_uindex", unique: true
+    t.index ["user_id"], name: "user_rsvps_user_id_index"
   end
 
   create_table "users", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-    t.string   "name"
-    t.string   "email_address",            null: false
-    t.bigint   "facebook_id",              null: false
-    t.string   "facebook_token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
+    t.string "email_address", null: false
+    t.bigint "facebook_id", null: false
+    t.string "facebook_token"
     t.datetime "facebook_token_issued_at"
-    t.string   "gender"
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "culture"
-    t.jsonb    "facebook_graph"
-    t.string   "facebook_scopes",                       array: true
-    t.uuid     "photo_id"
-    t.index ["email_address"], name: "index_users_on_email_address", using: :btree
-    t.index ["facebook_id"], name: "users_facebook_id_uindex", unique: true, using: :btree
+    t.string "gender"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "culture"
+    t.jsonb "facebook_graph"
+    t.string "facebook_scopes", array: true
+    t.uuid "photo_id"
+    t.index ["email_address"], name: "index_users_on_email_address"
+    t.index ["facebook_id"], name: "users_facebook_id_uindex", unique: true
   end
 
   create_table "venue_messages", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid     "venue_id"
-    t.uuid     "user_id"
-    t.string   "message"
-    t.index ["user_id"], name: "index_venue_messages_on_user_id", using: :btree
-    t.index ["venue_id"], name: "index_venue_messages_on_venue_id", using: :btree
+    t.uuid "venue_id"
+    t.uuid "user_id"
+    t.string "message"
+    t.index ["user_id"], name: "index_venue_messages_on_user_id"
+    t.index ["venue_id"], name: "index_venue_messages_on_venue_id"
   end
 
   create_table "venues", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid    "locale_id"
-    t.boolean "hidden",             default: false, null: false
-    t.integer "order",              default: 1000,  null: false
-    t.integer "distance_tolerance", default: 250,   null: false
-    t.uuid    "location_id"
-    t.uuid    "page_id",                            null: false
-    t.index ["locale_id"], name: "index_venues_on_locale_id", using: :btree
-    t.index ["page_id"], name: "index_venues_on_page_id", using: :btree
+    t.uuid "locale_id"
+    t.boolean "hidden", default: false, null: false
+    t.integer "order", default: 1000, null: false
+    t.integer "distance_tolerance", default: 250, null: false
+    t.uuid "location_id"
+    t.uuid "page_id", null: false
+    t.index ["locale_id"], name: "index_venues_on_locale_id"
+    t.index ["page_id"], name: "index_venues_on_page_id"
   end
 
   add_foreign_key "events", "photos", column: "cover_photo_id"

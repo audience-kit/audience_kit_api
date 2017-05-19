@@ -7,7 +7,7 @@ class ApplicationController < ActionController::API
     begin
       token = /(Bearer|JWT) (.+)/.match(request.authorization)
 
-      if token
+      if token && token[1] == 'JWT'
         decoded_token = JWT.decode token[2], Rails.application.secrets[:secret_key_base], true, algorithm: 'HS256'
 
         if decoded_token && decoded_token[0]
@@ -19,6 +19,10 @@ class ApplicationController < ActionController::API
 
           return if @user_id
         end
+      elsif token && token[1] == 'Bearer'
+        @application = Application.find_by(api_key: token[2])
+
+        return if @application
       end
 
       render status: :unauthorized, json: {}

@@ -1,8 +1,4 @@
 class AlexaController < ApplicationController
-  skip_before_action :authenticate
-
-  before_action :alexa_authenticate
-
   def events
     location = Geocoder.search(params[:zip]).first
 
@@ -27,12 +23,5 @@ class AlexaController < ApplicationController
 
   def friends
 
-  end
-
-  private
-  def alexa_authenticate
-    key = /Bearer (.*)/.match(request.authorization)
-
-    render status: 401 unless key[0] == Rails.application.secrets.alexa_woker_key
   end
 end
