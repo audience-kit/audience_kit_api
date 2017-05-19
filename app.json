@@ -36,5 +36,12 @@
     {
       "url": "heroku/ruby"
     }
-  ]
+  ],
+  "environments": {
+    "test": {
+      "scripts": {
+        "test": "rake spec"
+      }
+    }
+  }
 }
