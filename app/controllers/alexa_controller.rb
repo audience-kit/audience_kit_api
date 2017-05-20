@@ -1,5 +1,7 @@
 class AlexaController < ApplicationController
   def events
+    @device = Device.from_identifier request.headers['X-Device-Id'], type: 'alexa'
+
     location = Geocoder.search(params[:zip]).first
 
     point = RGeo::Geographic.simple_mercator_factory.point location.longitude, location.latitude
