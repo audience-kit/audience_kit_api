@@ -35,17 +35,7 @@ class User < ApplicationRecord
 
         u.facebook_graph = graph
 
-        begin
-          client = Twilio::REST::Client.new 'AC5f75bb86a003e5cda83d9d7514de864b', Rails.application.secrets[:twilio_key]
-
-          client.messages.create(
-            from: '+14063154776',
-            to: '+12069133215',
-            body: "New User: #{u.first_name} #{u.last_name}"
-          )
-        rescue => ex
-          logger.error ex
-        end
+        send_test_message "New User: #{graph['first_name']} #{graph['last_name']}"
       end
     end
 
