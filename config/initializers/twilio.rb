@@ -1,8 +1,4 @@
-begin
-  TWILIO_CLIENT = Twilio::REST::Client.new 'SKd159d345d4c433bd4392c22a4f79b41c', Rails.application.secrets[:twilio_key]
-rescue => ex
-  Rails.logger.error ex
-end
+TWILIO_CLIENT = Twilio::REST::Client.new 'AC5f75bb86a003e5cda83d9d7514de864b', Rails.application.secrets[:twilio_key]
 
 def send_text_message(text)
   begin
