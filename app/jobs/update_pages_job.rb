@@ -61,7 +61,7 @@ class UpdatePagesJob < ApplicationJob
   end
 
   def update_events(page, event, graph_client)
-    event_model = Event.find_or_create_by facebook_id: event['id']
+    event_model = Event.find_or_initialize_by facebook_id: event['id']
 
     puts "Updating event => #{event_model['name']}"
 
