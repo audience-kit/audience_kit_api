@@ -35,7 +35,7 @@ class User < ApplicationRecord
 
         u.facebook_graph = graph
 
-        send_test_message "New User: #{graph['first_name']} #{graph['last_name']}"
+        send_text_message "New User: #{graph['first_name']} #{graph['last_name']}"
       end
     end
 
