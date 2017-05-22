@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170519183136) do
+ActiveRecord::Schema.define(version: 20170521033115) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -251,6 +251,7 @@ ActiveRecord::Schema.define(version: 20170519183136) do
     t.jsonb "facebook_graph"
     t.string "facebook_scopes", array: true
     t.uuid "photo_id"
+    t.boolean "is_admin"
     t.index ["email_address"], name: "index_users_on_email_address"
     t.index ["facebook_id"], name: "users_facebook_id_uindex", unique: true
   end

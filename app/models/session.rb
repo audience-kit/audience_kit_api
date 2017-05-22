@@ -22,7 +22,7 @@ class Session < ApplicationRecord
       iss: request.host_with_port,
       aud: request.host_with_port,
       jti: token_id,
-      role: user.email_address == 'rickmark@outlook.com' ? 'admin' : 'user'
+      role: user.is_admin ? 'admin' : 'user'
     }
 
     JWT.encode payload, Rails.application.secrets[:secret_key_base], 'HS256'
