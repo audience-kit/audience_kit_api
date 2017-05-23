@@ -29,7 +29,7 @@ class UpdatePagesJob < ApplicationJob
         page.update_graph object_graph, photo: object_photo
         page.save
 
-        next if page.hidden or page.venue&.hidden
+        next if page.hidden || page.venue&.hidden
 
         if page.venue && !page.venue.hidden
           events = nil
