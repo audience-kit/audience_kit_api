@@ -1,5 +1,5 @@
 class UpdatePagesJob < ApplicationJob
-  EVENT_FIELDS = %w[ticket_uri owner name cover start_time end_time place].freeze
+  EVENT_FIELDS = %w[ticket_uri owner name cover start_time end_time place is_canceled owner].freeze
 
   def perform
     puts 'Performing page update'
@@ -74,8 +74,12 @@ class UpdatePagesJob < ApplicationJob
       venue_page = Page.page_for_facebook_id(venue_id, true)
 
       event_model.venue = venue_page.venue || Venue.new(hidden: true, page: venue_page) if venue_page
+    elsif event_graph['owner']
+      page = Page.find_by(facebook_id: event_graph['owner']['id'])
+
+      event_model.venue = page.venue if page&.venue
     else
-      puts "No venue for #{event_graph['name']} (#{event_graph['id']})"
+      logger.warn "No venue for #{event_graph['name']} (#{event_graph['id']})"
     end
 
     if event_graph['cover']

@@ -21,3 +21,14 @@
     UPDATE users SET photo_id = (SELECT id FROM photos WHERE hash = digest(picture_image, 'sha1'));
     UPDATE pages SET photo_id = (SELECT id FROM photos WHERE hash = digest(picture_image, 'sha1'));
     UPDATE pages SET cover_photo_id = (SELECT id FROM photos WHERE hash = digest(cover_image, 'sha1'));
+
+
+## Force remove events
+    DELETE FROM user_rsvps WHERE id IN (SELECT user_rsvps.id FROM user_rsvps INNER JOIN events ON user_rsvps.event_id = events.id INNER JOIN venues ON events.venue_id = venues.id WHERE venues.hidden IS TRUE)
+    DELETE FROM ticket_types WHERE id IN (SELECT ticket_types.id FROM ticket_types INNER JOIN events ON ticket_types.event_id = events.id INNER JOIN venues ON events.venue_id = venues.id WHERE venues.hidden IS TRUE)
+    DELETE FROM events WHERE id IN (SELECT events.id FROM events INNER JOIN venues ON events.venue_id = venues.id WHERE venues.hidden IS TRUE)
+    
+    SELECT events.id FROM events INNER JOIN venues ON events.venue_id = venues.id WHERE venues.hidden IS TRUE
+
+## Force refresh pages
+    UPDATE pages SET updated_at = '2010-01-01'
