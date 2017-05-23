@@ -1,5 +1,5 @@
 class UpdatePagesJob < ApplicationJob
-  EVENT_FIELDS = %w[ticket_uri owner name cover start_time end_time place is_canceled owner].freeze
+  EVENT_FIELDS = %w[ticket_uri owner name cover start_time end_time place is_canceled].freeze
 
   def perform
     puts 'Performing page update'
