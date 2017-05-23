@@ -1,0 +1,3 @@
+class EventTemplate < ApplicationRecord
+
+end
