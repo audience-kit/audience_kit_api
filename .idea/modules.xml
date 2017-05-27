@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../hot_mess_admin/.idea/hot_mess_admin.iml" filepath="$PROJECT_DIR$/../hot_mess_admin/.idea/hot_mess_admin.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/hot_mess_api.iml" filepath="$PROJECT_DIR$/.idea/hot_mess_api.iml" />
     </modules>
   </component>

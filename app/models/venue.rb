@@ -59,4 +59,13 @@ class Venue < ApplicationRecord
     page.facebook_id
   end
 
+  def to_layout
+    venue = LayoutItem.new :venue
+    venue.id = self.id
+    venue.title = self.display_name
+    venue.photo_url = self.photo&.cdn_url
+    venue.description = "You're the first to arrive."
+    venue.link_url = "https://hotmess.social/venues/#{self.id}"
+    venue.distance = self['distance']
+  end
 end
