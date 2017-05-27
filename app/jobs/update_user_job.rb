@@ -16,6 +16,8 @@ class UpdateUserJob < ApplicationJob
       scopes = user_graph_client.get_connections :me, :permissions
       user.facebook_scopes = scopes.select{ |s| s['status'] == 'granted' }.map { |s| s['permission'] }
 
+      update_user_pages(user) if user.facebook_scopes.include? 'manage_pages'
+
       user.update_from user_graph
       user.save
 
@@ -25,6 +27,23 @@ class UpdateUserJob < ApplicationJob
 
     rescue => ex
       puts "Error updating #{user.name} => #{ex}"
+    end
+  end
+
+  def update_user_pages(user)
+    graph = Koala::Facebook::API.new user.facebook_token
+
+    accounts = graph.get_connections('me', 'accounts')
+
+    accounts.each do |account|
+      page = Page.find_by(facebook_id: account['id'].to_i)
+
+      if page
+        user_page = UserPage.find_or_initialize_by(user: user, page: page)
+
+        user_page.facebook_token = account['access_token']
+        user_page.save!
+      end
     end
   end
 

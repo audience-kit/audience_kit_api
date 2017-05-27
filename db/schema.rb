@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170523035351) do
+ActiveRecord::Schema.define(version: 20170527225955) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -239,6 +239,16 @@ ActiveRecord::Schema.define(version: 20170523035351) do
     t.index ["venue_id"], name: "index_user_locations_on_venues_id"
   end
 
+  create_table "user_pages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
+    t.uuid "page_id", null: false
+    t.string "facebook_token", null: false
+    t.index ["page_id"], name: "index_user_pages_on_page_id"
+    t.index ["user_id"], name: "index_user_pages_on_user_id"
+  end
+
   create_table "user_rsvps", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.datetime "created_at", default: -> { "now()" }, null: false
     t.datetime "updated_at", default: -> { "now()" }, null: false
@@ -254,7 +264,7 @@ ActiveRecord::Schema.define(version: 20170523035351) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
-    t.string "email_address", null: false
+    t.string "email_address"
     t.bigint "facebook_id", null: false
     t.string "facebook_token"
     t.datetime "facebook_token_issued_at"
@@ -265,7 +275,7 @@ ActiveRecord::Schema.define(version: 20170523035351) do
     t.jsonb "facebook_graph"
     t.string "facebook_scopes", array: true
     t.uuid "photo_id"
-    t.boolean "is_admin"
+    t.boolean "is_admin", default: false, null: false
     t.index ["email_address"], name: "index_users_on_email_address"
     t.index ["facebook_id"], name: "users_facebook_id_uindex", unique: true
   end
