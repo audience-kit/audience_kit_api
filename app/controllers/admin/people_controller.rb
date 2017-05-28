@@ -1,11 +1,11 @@
 module Admin
   class PeopleController < AdminController
     def index
-
+      render json: Locale.find(params[:locale_id]).people
     end
 
-    def get
-
+    def show
+      render json: People.find(params[:id])
     end
 
     def create

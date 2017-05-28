@@ -1,11 +1,11 @@
 module Admin
   class LocalesController < AdminController
     def index
-
+      render json: Locale.all
     end
 
-    def get
-
+    def show
+      render json: Locale.find(params[:id])
     end
 
     def create

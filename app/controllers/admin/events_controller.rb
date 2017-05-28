@@ -4,7 +4,7 @@ module Admin
 
     end
 
-    def get
+    def show
 
     end
 
