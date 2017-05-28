@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170527225955) do
+ActiveRecord::Schema.define(version: 20170528204609) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -76,6 +76,17 @@ ActiveRecord::Schema.define(version: 20170527225955) do
     t.index ["event_templates_id"], name: "index_events_on_event_templates_id"
     t.index ["facebook_id"], name: "index_events_on_facebook_id"
     t.index ["venue_id"], name: "index_events_on_venue_id"
+  end
+
+  create_table "friendship_link", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
+    t.uuid "friend_id", null: false
+    t.uuid "friendship_id", null: false
+    t.index ["friend_id"], name: "index_friendship_link_on_friend_id"
+    t.index ["friendship_id"], name: "index_friendship_link_on_friendship_id"
+    t.index ["user_id"], name: "index_friendship_link_on_user_id"
   end
 
   create_table "friendships", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -304,6 +315,7 @@ ActiveRecord::Schema.define(version: 20170527225955) do
   add_foreign_key "event_templates", "photos", column: "cover_photos_id"
   add_foreign_key "events", "photos", column: "cover_photo_id"
   add_foreign_key "events", "venues"
+  add_foreign_key "friendship_link", "users", column: "friend_id"
   add_foreign_key "friendships", "users", column: "friend_high_id"
   add_foreign_key "friendships", "users", column: "friend_low_id"
   add_foreign_key "locations", "photos", name: "locations_photos_id_fk"
