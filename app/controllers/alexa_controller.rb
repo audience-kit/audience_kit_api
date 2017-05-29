@@ -1,5 +1,5 @@
 class AlexaController < ApplicationController
-  skip_before_filter :authenticate, only: [ :token ]
+  skip_before_action :authenticate, only: [ :token ]
 
   CLIENT_SECRET = 'Z14rpM0Pqew/t44ysFOSD7XKqSnmCUSrie6Zwlt3NSc='
 
