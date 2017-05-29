@@ -1,7 +1,11 @@
 module Admin
   class LocalesController < AdminController
     def index
-      render json: Locale.all
+      locales = Locale.all.includes(:venues).map do |locale|
+        locale.attributes.merge venue_count: locale.venues.where(hidden: false).count,
+            hidden_venue_count: locale.venues.where(hidden: true).count
+      end
+      render json: locales
     end
 
     def show

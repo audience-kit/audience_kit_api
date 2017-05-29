@@ -26,4 +26,8 @@ class AlexaController < ApplicationController
   def friends
 
   end
+
+  def token
+    puts "Token => #{params.inspect}"
+  end
 end

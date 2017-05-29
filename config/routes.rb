@@ -62,6 +62,8 @@ Rails.application.routes.draw do
   namespace :alexa do
     get :events
     get :friends
+    post :token
+    post :ping
   end
 
   root to: 'status#index', via: [ :get, :post ]
