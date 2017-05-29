@@ -39,7 +39,7 @@ class AlexaController < ApplicationController
 
     begin
       # Validate and exchange for long token
-      token = Koala::Facebook.oauth.get_access_token params[:code]
+      token = Concerns::Facebook.oauth.get_access_token params[:code]
 
       extended_token  = Concerns::Facebook.oauth.exchange_access_token token
 
