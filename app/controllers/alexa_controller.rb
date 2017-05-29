@@ -39,7 +39,9 @@ class AlexaController < ApplicationController
 
     begin
       # Validate and exchange for long token
-      extended_token  = Concerns::Facebook.oauth.exchange_access_token params[:code]
+      token = Koala::Facebook.oauth.get_access_token params[:code]
+
+      extended_token  = Concerns::Facebook.oauth.exchange_access_token token
 
       render status: :unauthorized, json: {} and return unless extended_token
 
