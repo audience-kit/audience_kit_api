@@ -36,11 +36,13 @@ class AlexaController < ApplicationController
 
     # accept token from facebook
     params.require :code
+    params.require :redirect_uri
 
     begin
       # Validate and exchange for long token
       token = Concerns::Facebook.oauth.get_access_token params[:code], redirect_uri: params[:redirect_uri]
 
+      puts "Token => #{token}"
       extended_token  = Concerns::Facebook.oauth.exchange_access_token token
 
       render status: :unauthorized, json: {} and return unless extended_token
@@ -77,12 +79,8 @@ class AlexaController < ApplicationController
       kinesis :user_session_create,  @session.user.id, id: @session.id, user_id: @session.user.id
 
       render json: { access_token: @token, refresh_token: @token }
-    rescue Koala::Facebook::APIError => ex
-      logger.error ex
-      #UGLY - gracefully handle some facebook exceptions
-      return render template: 'shared/fault', status: 400
     rescue => ex
-      logger.error ex
+      logger.error ex.inspect
       return render template: 'shared/fault', status: 400
     end
   end
