@@ -57,13 +57,9 @@ class AlexaController < ApplicationController
       # Create or Update user by application scoped FacebookID
       @user = User.from_facebook_graph @me, extended_token
 
-      puts "Headers => #{headers.map { |key, value| "#{key}=#{value}" }.join(',') }"
+      puts "Headers => #{headers.inspect}"
 
-      @session = @device.sessions.build device: nil,
-                                        user: @user,
-                                        origin_ip: request.remote_ip,
-                                        version: params['device']['version'],
-                                        build: params['device']['build']
+      @session = @user.sessions.build origin_ip: request.remote_ip
 
       @session.save
 
