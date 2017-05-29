@@ -80,7 +80,7 @@ class AlexaController < ApplicationController
 
       render json: { access_token: @token, refresh_token: @token }
     rescue => ex
-      logger.error ex.inspect
+      logger.error "#{ex}\n#{ex.backtrace}"
       return render template: 'shared/fault', status: 400
     end
   end
