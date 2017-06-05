@@ -3,10 +3,13 @@ class AlexaController < ApplicationController
 
   CLIENT_SECRET = 'Z14rpM0Pqew/t44ysFOSD7XKqSnmCUSrie6Zwlt3NSc='
 
+  ZIP_EXPRESSION = /\d{5}/
+
   def events
     @device = Device.from_identifier request.headers['X-Device-Id'], type: 'alexa'
 
-    location = Geocoder.search(params[:zip]).first
+    location = Geocoder.search(params[:locale]).first if ZIP_EXPRESSION =~ params[:locale]
+    location = Locale.where('? = ANY(city_names)', params[:locale]).point unless location
 
     point = RGeo::Geographic.simple_mercator_factory.point location.longitude, location.latitude
 
