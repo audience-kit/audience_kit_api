@@ -34,6 +34,10 @@ class AlexaController < ApplicationController
 
   end
 
+  def ping
+
+  end
+
   def token
     render status: :unauthorized and return if params[:client_secret] != CLIENT_SECRET
 

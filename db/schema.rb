@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170605203936) do
+ActiveRecord::Schema.define(version: 20170605212137) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -170,6 +170,15 @@ ActiveRecord::Schema.define(version: 20170605203936) do
     t.index ["content_hash"], name: "photos_hash_uindex", unique: true
   end
 
+  create_table "pings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
+    t.uuid "locale_id", null: false
+    t.index ["locale_id"], name: "index_pings_on_locale_id"
+    t.index ["user_id"], name: "index_pings_on_user_id"
+  end
+
   create_table "sessions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -322,6 +331,7 @@ ActiveRecord::Schema.define(version: 20170605203936) do
   add_foreign_key "locations", "photos", name: "locations_photos_id_fk"
   add_foreign_key "pages", "photos", column: "cover_photo_id", name: "pages_photos_cover_id_fk"
   add_foreign_key "pages", "photos", name: "pages_photos_id_fk"
+  add_foreign_key "pings", "locales"
   add_foreign_key "sessions", "devices"
   add_foreign_key "sessions", "users"
   add_foreign_key "ticket_types", "events"
