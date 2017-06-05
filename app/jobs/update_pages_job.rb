@@ -1,5 +1,6 @@
 class UpdatePagesJob < ApplicationJob
   EVENT_FIELDS = %w[ticket_uri owner name cover start_time end_time place is_canceled].freeze
+  PAGE_FIELDS = %w[name cover category category_list claimed_urls instagram_accounts place_topics ratings screennames location]
 
   def perform
     puts 'Performing page update'
@@ -16,12 +17,12 @@ class UpdatePagesJob < ApplicationJob
         object_photo = nil
 
         begin
-          object_graph = graph_client.get_object page.facebook_id, fields: ['name', 'cover']
+          object_graph = graph_client.get_object page.facebook_id, fields: PAGE_FIELDS
           object_photo = graph_client.get_picture_data(page.facebook_id, type: :large)['data']
         rescue => ex
           puts "Fallback to user token => #{ex}"
           graph_client = Koala::Facebook::API.new user_token
-          object_graph = graph_client.get_object page.facebook_id, fields: ['name', 'cover']
+          object_graph = graph_client.get_object page.facebook_id, fields: PAGE_FIELDS
           object_photo = graph_client.get_picture_data(page.facebook_id, type: :large)['data']
           page.requires_user_token = true
         end

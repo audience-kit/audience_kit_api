@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170528204609) do
+ActiveRecord::Schema.define(version: 20170605203936) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,6 +108,7 @@ ActiveRecord::Schema.define(version: 20170528204609) do
     t.geography "envelope", limit: {:srid=>4326, :type=>"st_polygon", :geographic=>true}
     t.uuid "location_id"
     t.integer "timezone_zulu_delta"
+    t.string "city_names", array: true
   end
 
   create_table "location_beacons", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
