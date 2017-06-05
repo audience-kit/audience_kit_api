@@ -8,6 +8,8 @@ class Locale < ApplicationRecord
   has_many :events, through: :venues
   has_many :locations
 
+  belongs_to :location
+
   def update_envelope
     return unless venues.any?
 

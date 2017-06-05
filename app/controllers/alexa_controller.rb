@@ -9,7 +9,7 @@ class AlexaController < ApplicationController
     @device = Device.from_identifier request.headers['X-Device-Id'], type: 'alexa'
 
     location = Geocoder.search(params[:locale]).first if ZIP_EXPRESSION =~ params[:locale]
-    location = Locale.where('? = ANY(city_names)', params[:locale]).location.point unless location
+    location = Locale.where('? = ANY(city_names)', params[:locale]).first.location.point unless location
 
     point = RGeo::Geographic.simple_mercator_factory.point location.longitude, location.latitude
 
