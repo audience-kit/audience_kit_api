@@ -51,7 +51,7 @@ class Page < ApplicationRecord
     page = Page.new(facebook_id: facebook_id, hidden: hidden)
     page.facebook_graph = graph
     page.name = graph['name']
-    photo_data = client.get_picture_data(page.facebook_id, type: :large)['data']
+    photo_data = client.get_picture_data( graph['id'], type: :large)['data']
 
     page.update_graph graph, photo: photo_data
 

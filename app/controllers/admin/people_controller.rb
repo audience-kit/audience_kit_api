@@ -13,7 +13,13 @@ module Admin
     end
 
     def create
+      page = Page.page_for_facebook_id current_user.facebook_token, params[:facebook_id]
 
+      person = Person.new(page: page)
+
+      person.save
+
+      render json: person
     end
 
     def update
