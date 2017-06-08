@@ -1,4 +1,7 @@
 class Event < ApplicationRecord
+  EVENT_FIELDS = %w[ticket_uri owner name cover start_time end_time place is_canceled].freeze
+
+
   EVYY_URI = /ticketmaster\.evyy\.net/
   TICKETMASTER_URI = /.+ticketmaster\.com\/event\/([0-9A-F]+)(\?.+)?/.freeze
   EVENTBRITE_URI = /.+eventbrite\.com\/e\/.+\-(\d+)\??.*/.freeze
@@ -69,5 +72,17 @@ class Event < ApplicationRecord
 
   def to_english
     "starting at <say-as interpret-as='time'>#{start_at.strftime('%H:%M')}</say-as>, #{name} hosted by #{venue.name}"
+  end
+
+  def to_layout(featured = false)
+    event = LayoutItem.new featured ? :featured_event : :event
+    event.id = self.id
+    event.title = self.display_name
+    event.photo_url = self.cover_photo&.cdn_url
+    event.link_url = "https://hotmess.social/events/#{self.id}"
+    event.height = 60
+    event.start_at = self.start_at
+
+    event
   end
 end

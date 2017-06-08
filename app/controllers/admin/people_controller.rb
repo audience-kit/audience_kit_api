@@ -1,7 +1,11 @@
 module Admin
   class PeopleController < AdminController
     def index
-      render json: Locale.find(params[:locale_id]).people
+      people = Person.all.map do |person|
+        person.attributes.reverse_merge(person.page.attributes)
+      end
+
+      render json: people
     end
 
     def show
