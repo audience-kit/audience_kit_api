@@ -10,10 +10,10 @@ Rails.application.routes.draw do
         resources :venues, shallow: true do
           resources :events
         end
+      end
 
-        resources :people, shallow: true do
-          resources :events
-        end
+      resources :people, shallow: true do
+        resources :events
       end
     end
 

@@ -3,7 +3,7 @@ module Admin
     def index
       locales = Locale.all.includes(:venues).map do |locale|
         locale.attributes.merge venue_count: locale.venues.where(hidden: false).count,
-            hidden_venue_count: locale.venues.where(hidden: true).count
+            hidden_venue_count: locale.venues.where(hidden: true).count, event_count: locale.events.where('start_at > ?', DateTime.now).count
       end
       render json: locales
     end

@@ -1,4 +1,7 @@
 class Event < ApplicationRecord
+  EVENT_FIELDS = %w[ticket_uri owner name cover start_time end_time place is_canceled].freeze
+
+
   EVYY_URI = /ticketmaster\.evyy\.net/
   TICKETMASTER_URI = /.+ticketmaster\.com\/event\/([0-9A-F]+)(\?.+)?/.freeze
   EVENTBRITE_URI = /.+eventbrite\.com\/e\/.+\-(\d+)\??.*/.freeze

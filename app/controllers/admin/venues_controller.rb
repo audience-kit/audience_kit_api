@@ -18,7 +18,19 @@ module Admin
     end
 
     def create
+      locale = Locale.find(params[:locale_id])
 
+      page = Page.page_for_facebook_id current_user.facebook_token, params[:facebook_id]
+
+      venue = locale.venues.build page: page
+
+      place = Location.from_google_place_id params[:google_place_id]
+
+      venue.location = place
+
+      venue.save!
+
+      render json: venue
     end
 
     def update
