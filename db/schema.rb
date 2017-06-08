@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170523035351) do
+ActiveRecord::Schema.define(version: 20170605212137) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,6 +78,17 @@ ActiveRecord::Schema.define(version: 20170523035351) do
     t.index ["venue_id"], name: "index_events_on_venue_id"
   end
 
+  create_table "friendship_link", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
+    t.uuid "friend_id", null: false
+    t.uuid "friendship_id", null: false
+    t.index ["friend_id"], name: "index_friendship_link_on_friend_id"
+    t.index ["friendship_id"], name: "index_friendship_link_on_friendship_id"
+    t.index ["user_id"], name: "index_friendship_link_on_user_id"
+  end
+
   create_table "friendships", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "friend_high_id"
     t.uuid "friend_low_id"
@@ -97,6 +108,7 @@ ActiveRecord::Schema.define(version: 20170523035351) do
     t.geography "envelope", limit: {:srid=>4326, :type=>"st_polygon", :geographic=>true}
     t.uuid "location_id"
     t.integer "timezone_zulu_delta"
+    t.string "city_names", array: true
   end
 
   create_table "location_beacons", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -156,6 +168,15 @@ ActiveRecord::Schema.define(version: 20170523035351) do
     t.string "mime", null: false
     t.string "cdn_url", null: false
     t.index ["content_hash"], name: "photos_hash_uindex", unique: true
+  end
+
+  create_table "pings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
+    t.uuid "locale_id", null: false
+    t.index ["locale_id"], name: "index_pings_on_locale_id"
+    t.index ["user_id"], name: "index_pings_on_user_id"
   end
 
   create_table "sessions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -239,6 +260,16 @@ ActiveRecord::Schema.define(version: 20170523035351) do
     t.index ["venue_id"], name: "index_user_locations_on_venues_id"
   end
 
+  create_table "user_pages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
+    t.uuid "page_id", null: false
+    t.string "facebook_token", null: false
+    t.index ["page_id"], name: "index_user_pages_on_page_id"
+    t.index ["user_id"], name: "index_user_pages_on_user_id"
+  end
+
   create_table "user_rsvps", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.datetime "created_at", default: -> { "now()" }, null: false
     t.datetime "updated_at", default: -> { "now()" }, null: false
@@ -254,7 +285,7 @@ ActiveRecord::Schema.define(version: 20170523035351) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
-    t.string "email_address", null: false
+    t.string "email_address"
     t.bigint "facebook_id", null: false
     t.string "facebook_token"
     t.datetime "facebook_token_issued_at"
@@ -265,7 +296,7 @@ ActiveRecord::Schema.define(version: 20170523035351) do
     t.jsonb "facebook_graph"
     t.string "facebook_scopes", array: true
     t.uuid "photo_id"
-    t.boolean "is_admin"
+    t.boolean "is_admin", default: false, null: false
     t.index ["email_address"], name: "index_users_on_email_address"
     t.index ["facebook_id"], name: "users_facebook_id_uindex", unique: true
   end
@@ -294,11 +325,13 @@ ActiveRecord::Schema.define(version: 20170523035351) do
   add_foreign_key "event_templates", "photos", column: "cover_photos_id"
   add_foreign_key "events", "photos", column: "cover_photo_id"
   add_foreign_key "events", "venues"
+  add_foreign_key "friendship_link", "users", column: "friend_id"
   add_foreign_key "friendships", "users", column: "friend_high_id"
   add_foreign_key "friendships", "users", column: "friend_low_id"
   add_foreign_key "locations", "photos", name: "locations_photos_id_fk"
   add_foreign_key "pages", "photos", column: "cover_photo_id", name: "pages_photos_cover_id_fk"
   add_foreign_key "pages", "photos", name: "pages_photos_id_fk"
+  add_foreign_key "pings", "locales"
   add_foreign_key "sessions", "devices"
   add_foreign_key "sessions", "users"
   add_foreign_key "ticket_types", "events"

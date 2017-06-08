@@ -5,6 +5,18 @@ Rails.application.routes.draw do
   mount ActionCable.server => '/connection'
 
   scope '/v1' do
+    namespace :admin do
+      resources :locales, shallow: true do
+        resources :venues, shallow: true do
+          resources :events
+        end
+
+        resources :people, shallow: true do
+          resources :events
+        end
+      end
+    end
+
     post :token, to: 'token#create'
     post '/token/device', to: 'token#device'
 
@@ -50,6 +62,8 @@ Rails.application.routes.draw do
   namespace :alexa do
     get :events
     get :friends
+    post :token
+    post :ping
   end
 
   root to: 'status#index', via: [ :get, :post ]
