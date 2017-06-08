@@ -32,12 +32,9 @@ class UpdatePagesJob < ApplicationJob
 
         next if page.hidden || page.venue&.hidden
 
-        if page.venue && !page.venue.hidden
-          events = nil
-        else
-          events = graph_client.get_connection page.facebook_id, :events
-          puts "Object #{page.name} has #{events.count} events"
-        end
+        events = graph_client.get_connection page.facebook_id, :events
+        puts "Object #{page.name} has #{events.count} events"
+
 
         if page.person
           if object_graph['username']
