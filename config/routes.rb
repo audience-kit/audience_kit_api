@@ -64,7 +64,7 @@ Rails.application.routes.draw do
   namespace :alexa do
     get :events
     get :friends
-    post :token
+    post :token, :to => 'token#create'
     post :ping
   end
 

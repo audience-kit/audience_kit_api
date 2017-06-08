@@ -4,11 +4,14 @@ class TokenController < ApplicationController
   skip_before_action :authenticate
 
   def create
-    # accept token from facebook
-    params.require :facebook_token
-    params.require :device
-
     begin
+      if params[:code]
+        # Validate and exchange for long token
+        token = Concerns::Facebook.oauth.get_access_token params[:code], redirect_uri: params[:redirect_uri]
+      else
+        token = params[:facebook_token]
+      end
+
       # Validate and exchange for long token
       extended_token  = Concerns::Facebook.oauth.exchange_access_token params[:facebook_token]
 

@@ -1,19 +1,10 @@
 class AlexaController < ApplicationController
-  skip_before_action :authenticate, only: [ :token ]
+  before_filter :alexa_device
 
   CLIENT_SECRET = 'Z14rpM0Pqew/t44ysFOSD7XKqSnmCUSrie6Zwlt3NSc='
 
-  ZIP_EXPRESSION = /\d{5}/
-
   def events
-    @device = Device.from_identifier request.headers['X-Device-Id'], type: 'alexa'
-
-    location = Geocoder.search(params[:locale]).first if ZIP_EXPRESSION =~ params[:locale]
-    location = Locale.where('? = ANY(city_names)', params[:locale]).first.location.point unless location
-
-    point = RGeo::Geographic.simple_mercator_factory.point location.longitude, location.latitude
-
-    locale = Locale.closest(point)
+    locale = Locale.from_locale_name params[:locale]
 
     @events = locale.events.take(3)
 
@@ -38,48 +29,10 @@ class AlexaController < ApplicationController
 
   end
 
-  def token
-    render status: :unauthorized and return if params[:client_secret] != CLIENT_SECRET
+  private
+  def alexa_device
+    @device = Device.from_identifier request.headers['X-Device-Id'], type: 'alexa'
 
-    # accept token from facebook
-    params.require :code
-    params.require :redirect_uri
-
-    begin
-      # Validate and exchange for long token
-      token = Concerns::Facebook.oauth.get_access_token params[:code], redirect_uri: params[:redirect_uri]
-
-      puts "Token => #{token}"
-      extended_token  = Concerns::Facebook.oauth.exchange_access_token token
-
-      render status: :unauthorized, json: {} and return unless extended_token
-
-      @graph = Koala::Facebook::API.new extended_token
-
-      # Refresh profile data including email address
-      @me = @graph.get_object 'me', fields: %w(email name locale first_name last_name gender)
-
-      raise 'Facebook token invalid' unless @me
-
-      # Create or Update user by application scoped FacebookID
-      @user = User.from_facebook_graph @me, extended_token
-
-      puts "Headers => #{headers.inspect}"
-
-      @session = @user.sessions.build origin_ip: request.remote_ip
-
-      @session.save
-
-      @token = @session.to_jwt(request).to_s
-
-      UpdateUserJob.perform_later @user
-
-      kinesis :user_session_create,  @session.user.id, id: @session.id, user_id: @session.user.id
-
-      render json: { access_token: @token, refresh_token: @token }
-    rescue => ex
-      logger.error "#{ex}\n#{ex.backtrace}"
-      return render template: 'shared/fault', status: 400
-    end
+    @device_user_id = request.headers['X-User-Id']
   end
 end
