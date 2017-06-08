@@ -40,5 +40,13 @@ module Admin
     def destroy
 
     end
+
+    def missing_google
+      @venues = Venue.joins(:page).where('location_id IS NULL').map do |venue|
+        venue.attributes.reverse_merge venue.page.attributes
+      end
+
+      render json: @venues
+    end
   end
 end

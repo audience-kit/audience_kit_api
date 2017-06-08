@@ -6,6 +6,9 @@ Rails.application.routes.draw do
 
   scope '/v1' do
     namespace :admin do
+      get 'venues/missing_google', to: 'venues#missing_google'
+      post 'venues/missing_google', to: 'venues#missing_google_fill'
+
       resources :locales, shallow: true do
         resources :venues, shallow: true do
           resources :events
