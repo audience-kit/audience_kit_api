@@ -34,7 +34,11 @@ module Admin
     end
 
     def update
+      @venue = Venue.find(params[:id])
 
+      @venue.location = Location.from_google_place_id params[:google_place_id] if params[:google_place_id]
+
+      @venue.save!
     end
 
     def destroy
@@ -43,7 +47,10 @@ module Admin
 
     def missing_google
       @venues = Venue.joins(:page).where('location_id IS NULL').map do |venue|
-        venue.attributes.reverse_merge venue.page.attributes
+        venue_and_page = venue.attributes.reverse_merge venue.page.attributes
+        venue_and_page[:locale] = venue.locale&.attributes
+
+        venue_and_page
       end
 
       render json: @venues

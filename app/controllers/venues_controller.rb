@@ -50,7 +50,7 @@ class VenuesController < ApplicationController
       # TODO: Users who have issued recent pings
       @friends = []
       @events = @locale.events.take(5)
-      @venues = @locale.venues.joins(:location).select("venues.*, st_distance(locations.point, '#{@point.as_text}') as distance").order('distance').take(5)
+      @venues = @locale.venues.joins(:location).where('venues.hidden IS FALSE').select("venues.*, st_distance(locations.point, '#{@point.as_text}') as distance").order('distance').take(5)
     end
 
     kinesis :user_location_update, current_user.id, user_id: current_user.id, longatude: @longitude, latitude: @latitude, venue_id: @venue&.id
