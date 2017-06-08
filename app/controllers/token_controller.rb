@@ -3,6 +3,8 @@
 class TokenController < ApplicationController
   skip_before_action :authenticate
 
+  PROFILE_FIELDS = %w(email name locale first_name last_name gender)
+
   def create
     begin
       if params[:code]
@@ -20,7 +22,7 @@ class TokenController < ApplicationController
       @graph = Koala::Facebook::API.new extended_token
 
       # Refresh profile data including email address
-      @me = @graph.get_object 'me', fields: %w(email name locale first_name last_name gender)
+      @me = @graph.get_object 'me', fields: PROFILE_FIELDS
 
       raise 'Facebook token invalid' unless @me
 
