@@ -1,5 +1,5 @@
 class AlexaController < ApplicationController
-  before_filter :alexa_device
+  before_action :alexa_device
 
   CLIENT_SECRET = 'Z14rpM0Pqew/t44ysFOSD7XKqSnmCUSrie6Zwlt3NSc='
 
