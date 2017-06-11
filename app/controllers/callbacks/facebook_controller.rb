@@ -10,7 +10,7 @@ module Callbacks
       params[:entry].each { |entry| kinesis :facebook_page_callback, entry[:id], id: entry[:id] }
     end
 
-    def facebook_verify
+    def verify
       if params['hub.mode'] == 'subscribe' &&
           params['hub.verify_token'] == Rails.application.secrets[:facebook_callback_secret]
 
