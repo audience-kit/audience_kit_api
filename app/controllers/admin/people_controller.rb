@@ -1,7 +1,7 @@
 module Admin
   class PeopleController < AdminController
     def index
-      people = Person.all.map do |person|
+      people = Person.all.join(:page).map do |person|
         person.attributes.reverse_merge(person.page.attributes)
       end
 

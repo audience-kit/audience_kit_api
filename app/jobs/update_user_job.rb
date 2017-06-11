@@ -2,18 +2,17 @@ class UpdateUserJob < ApplicationJob
   def perform(user)
     puts "Updating user #{user.name}"
     begin
-      graph = Koala::Facebook::API.new Concerns::Facebook.oauth.get_app_access_token
-      user_graph_client = Koala::Facebook::API.new user.facebook_token
+      graph_client = Koala::Facebook::API.new user.facebook_token
 
-      user_graph = graph.get_object user.facebook_id
+      user_graph = graph_client.get_object user.facebook_id
 
-      image_data = graph.get_picture_data(user.facebook_id, type: :large)['data']
+      image_data = graph_client.get_picture_data(user.facebook_id, type: :large)['data']
 
       photo = Photo.for_url image_data['url']
 
       user.photo = photo
 
-      scopes = user_graph_client.get_connections :me, :permissions
+      scopes = graph_client.get_connections :me, :permissions
       user.facebook_scopes = scopes.select{ |s| s['status'] == 'granted' }.map { |s| s['permission'] }
 
       update_user_pages(user) if user.facebook_scopes.include? 'manage_pages'
@@ -21,9 +20,9 @@ class UpdateUserJob < ApplicationJob
       user.update_from user_graph
       user.save
 
-      self.update_likes user, user_graph_client
-      self.update_friends user, user_graph_client
-      self.update_events user, user_graph_client
+      self.update_likes user, graph_client
+      self.update_friends user, graph_client
+      self.update_events user, graph_client
 
     rescue => ex
       puts "Error updating #{user.name} => #{ex}"
