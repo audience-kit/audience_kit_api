@@ -7,7 +7,7 @@ class UpdatePagesJob < ApplicationJob
     app_token = Concerns::Facebook.oauth.get_app_access_token
 
     Page.where('updated_at < ? AND hidden IS FALSE', 36.hour.ago).order(updated_at: :desc).each do |page|
-      next unless page.person || page.venue
+      next unless (page.person || page.venue) && (page.venue&.hidden == false)
 
       puts "Updating page #{page.name}"
       begin
