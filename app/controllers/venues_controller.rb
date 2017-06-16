@@ -56,10 +56,10 @@ class VenuesController < ApplicationController
     kinesis :user_location_update, current_user.id, user_id: current_user.id, longatude: @longitude, latitude: @latitude, venue_id: @venue&.id
 
     venue_section = LayoutSection.new 'Venues'
-    venue_section.items = @venues.map { |venue| venue.to_layout }
+    venue_section.items = (@venues || []).map { |venue| venue.to_layout }
 
     events_section = LayoutSection.new 'Events'
-    events_section.items = @events.map { |event| event.to_layout(true) }
+    events_section.items = (@events || []).map { |event| event.to_layout(true) }
 
     @sections = [ venue_section, events_section ]
 
