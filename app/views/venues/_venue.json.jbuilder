@@ -9,7 +9,7 @@ json.hero_url @venue.location.photo&.cdn_url
 
 json.cover_photos do
   json.array! [ @venue.page.photo ] do |photo|
-    json.url photo.cdn_url
+    json.url photo&.cdn_url || 'https://api.hotmess.social/homepage_background.jpg'
   end
 end
 
