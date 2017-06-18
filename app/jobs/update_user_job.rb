@@ -131,6 +131,9 @@ class UpdateUserJob < ApplicationJob
       friendship.friend_low_id = User.find_by(facebook_id: pair[0]).id
       friendship.friend_high_id = User.find_by(facebook_id: pair[1]).id
       friendship.save
+
+      FriendshipLink.find_or_create_by(user: user, friend: friend_user, friendship: friendship)
+      FriendshipLink.find_or_create_by(user: friend_user, friend: user, friendship: friendship)
     end
   end
 end
