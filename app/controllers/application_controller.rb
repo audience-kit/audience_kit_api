@@ -12,11 +12,10 @@ class ApplicationController < ActionController::API
 
         if decoded_token && decoded_token[0]
           @user_id = decoded_token[0]['id']
-          @token_id = decoded_token[0]['jti']
+          @token_id = request.env['token_id'] = decoded_token[0]['jti']
 
           @token = request.env['decoded_token'] = decoded_token[0]
           request.env['role'] = @token['role']
-          request.env['token_id'] = @token['token_id']
 
           return if @user_id
         end
