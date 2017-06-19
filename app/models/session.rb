@@ -3,6 +3,7 @@
 class Session < ApplicationRecord
   belongs_to :device
   belongs_to :user
+  has_many :user_locations
 
   def initialize(*args)
     super

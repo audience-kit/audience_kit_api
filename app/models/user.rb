@@ -3,6 +3,7 @@
 class User < ApplicationRecord
   validates_presence_of :facebook_id
 
+  has_many :friendship_links
   has_many :sessions
   has_many :user_locations
   has_many :venue_messages
