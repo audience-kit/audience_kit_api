@@ -39,6 +39,8 @@ class VenuesController < ApplicationController
       @is_liked = UserLike.find_by(user: current_user, page: @venue.page) ? true : false
       @image_url = @venue.location.photo&.cdn_url
 
+      UserLocation.create!(session: current_session, venue: @venue, location: @venue.location, point: @point)
+
       @friends = current_user.friendship_links.joins(friend: { sessions: :user_locations }).where('user_locations.created_at < ? AND venue_id = ?', 2.hours.ago, @venue.id).order(:created_at).to_a
       @events = @venue.events
     else
