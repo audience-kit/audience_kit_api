@@ -12,6 +12,7 @@ class ApplicationController < ActionController::API
 
         if decoded_token && decoded_token[0]
           @user_id = decoded_token[0]['id']
+          @token_id = decoded_token[0]['jti']
 
           @token = request.env['decoded_token'] = decoded_token[0]
           request.env['role'] = @token['role']
@@ -45,6 +46,10 @@ class ApplicationController < ActionController::API
     else
       @current_user ||= User.find_by_id(@user_id)
     end
+  end
+
+  def current_session
+    Session.find_by(token_id: @token_id)
   end
 
   def admin?

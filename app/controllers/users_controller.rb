@@ -14,7 +14,7 @@ class UsersController < ApplicationController
     @point = RGeo::Geographic.simple_mercator_factory.point @longitude, @latitude
 
     session = Session.find_by(token_id: request.env['token_id'])
-    user_location = UserLocation.new session: session, point: @point
+    user_location = UserLocation.new session: current_session, point: @point
 
     user_location.venue = Venue.closest @point, within: true
     Rails.logger.info "Location #{@point} registered venue as #{user_location.venue.id}" if user_location.venue
@@ -33,7 +33,7 @@ class UsersController < ApplicationController
     user_location.location = user_location.venue.location if user_location.venue
     user_location.location = Locale.closest(@point).location unless user_location.location
 
-    user_location.save
+    user_location.save!
 
     kinesis :user_location_update, current_user.id, user_id: current_user.id, id: user_location.id, longatude: @longitude, latitude: @latitude
   end
