@@ -74,9 +74,11 @@ class PageUpdater
   end
 
   def update_event(event)
+    client = Koala::Facebook::API.new Concerns::Facebook.oauth.get_app_access_token
+
     model = Event.find_or_initialize_by facebook_id: event['id']
 
-    graph = @client.get_object event['id'], fields: EVENT_FIELDS
+    graph = client.get_object event['id'], fields: EVENT_FIELDS
     model.facebook_graph = graph
 
     if graph['place']
