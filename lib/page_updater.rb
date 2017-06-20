@@ -59,7 +59,7 @@ class PageUpdater
   end
 
   def update_events
-    events = @client.get_connection( @page.facebook_id, :events).each
+    events = @client.get_connection( @page.facebook_id, :events)
 
     while events
       events.select { |e| e['start_time'] && DateTime.parse(e['start_time']) > DateTime.now }.each do |event|
