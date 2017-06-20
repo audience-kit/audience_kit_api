@@ -20,7 +20,7 @@ class PageUpdater
   end
 
   def update
-    return if @page.updated_at > 12.hours.ago
+    return if @page.last_update_error.nil? and @page.updated_at > 12.hours.ago
 
     update_page do
       Rails.logger.info "Updating #{@page.name} (#{@page.facebook_id})"
