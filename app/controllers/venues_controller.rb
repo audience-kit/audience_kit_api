@@ -41,7 +41,7 @@ class VenuesController < ApplicationController
 
       UserLocation.create!(session: current_session, venue: @venue, location: @venue.location, point: @point)
 
-      friends_ids = current_user.friendship_links.joins(friend: { sessions: :user_locations }).where('user_locations.created_at < ? AND venue_id = ?', 2.hours.ago, @venue.id).order(:created_at).to_a.uniq
+      friends_ids = current_user.friendship_links.joins(friend: { sessions: :user_locations }).where('user_locations.created_at < ? AND user_locations.venue_id = ?', 2.hours.ago, @venue.id).order(:created_at).to_a.uniq
       @friends = User.find(friends_ids.map { |f| f['friend_id'] }.to_a)
       @events = @venue.events
     else

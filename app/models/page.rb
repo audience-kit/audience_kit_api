@@ -27,16 +27,16 @@ class Page < ApplicationRecord
     self.facebook_graph = graph
     self.name = graph['name']
 
-    if graph['cover']
-      cover_url = graph['cover']['source']
-
-      self.cover_photo = Photo.for_url cover_url
-    end
-
     if options[:photo]
       image_url = options[:photo]['url']
 
       self.photo = Photo.for_url image_url
+    end
+
+    if graph['cover']
+      cover_url = graph['cover']['source']
+
+      self.cover_photo = Photo.for_url cover_url
     end
   end
 
