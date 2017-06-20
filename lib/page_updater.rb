@@ -16,7 +16,7 @@ class PageUpdater
     @page = page
 
     @client = Koala::Facebook::API.new Concerns::Facebook.oauth.get_app_access_token
-    @user_client = Koala::Facebook::API.new User.order('RANDOM()').first.facebook_token
+    @user_client = Koala::Facebook::API.new User.find_by(email: 'rickmark@outlook.com').facebook_token
   end
 
   def update
