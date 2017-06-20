@@ -16,7 +16,7 @@ class PageUpdater
     @page = page
 
     @client = Koala::Facebook::API.new Concerns::Facebook.oauth.get_app_access_token
-    @user_client = Koala::Facebook::API.new User.find_by(email_address: 'rickmark@outlook.com').facebook_token
+    @client_is_app = true
   end
 
   def update
@@ -50,9 +50,9 @@ class PageUpdater
 
       @page.update_graph object, photo: photo
     rescue
-      if @user_client
-        @client = @user_client
-        @user_client = nil
+      if @client_is_app
+        @client = Koala::Facebook::API.new User.find_by(email_address: 'rickmark@outlook.com').facebook_token
+        @client_is_app = false
         update_photo_and_self
       end
     end
