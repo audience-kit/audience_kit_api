@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170605212137) do
+ActiveRecord::Schema.define(version: 20170620014628) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,10 +19,35 @@ ActiveRecord::Schema.define(version: 20170605212137) do
   enable_extension "postgis"
   enable_extension "uuid-ossp"
 
+  create_table "alexa_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_id"
+    t.index ["user_id"], name: "index_alexa_users_on_user_id"
+  end
+
   create_table "applications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "api_key", null: false
+  end
+
+  create_table "audience_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "audience_id", null: false
+    t.uuid "user_id", null: false
+    t.bigint "facebook_id", null: false
+    t.index ["audience_id"], name: "index_audience_users_on_audience_id"
+    t.index ["user_id"], name: "index_audience_users_on_user_id"
+  end
+
+  create_table "audiences", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name", null: false
+    t.string "subdomain", null: false
+    t.bigint "facebook_app_ids", null: false, array: true
   end
 
   create_table "devices", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -78,7 +103,7 @@ ActiveRecord::Schema.define(version: 20170605212137) do
     t.index ["venue_id"], name: "index_events_on_venue_id"
   end
 
-  create_table "friendship_link", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "friendship_links", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "user_id", null: false
@@ -139,8 +164,9 @@ ActiveRecord::Schema.define(version: 20170605212137) do
     t.string "facets", array: true
     t.boolean "requires_user_token", default: false, null: false
     t.boolean "hidden", default: false, null: false
-    t.uuid "photo_id", null: false
+    t.uuid "photo_id"
     t.uuid "cover_photo_id"
+    t.string "last_update_error"
     t.index ["facebook_id"], name: "index_pages_on_facebook_id", unique: true
   end
 
@@ -149,6 +175,8 @@ ActiveRecord::Schema.define(version: 20170605212137) do
     t.integer "order", default: 1000, null: false
     t.boolean "global", default: false, null: false
     t.boolean "like_required", default: false, null: false
+    t.uuid "audience_id"
+    t.index ["audience_id"], name: "index_people_on_audience_id"
     t.index ["page_id"], name: "index_people_on_page_id", unique: true
   end
 
@@ -168,6 +196,7 @@ ActiveRecord::Schema.define(version: 20170605212137) do
     t.string "mime", null: false
     t.string "cdn_url", null: false
     t.index ["content_hash"], name: "photos_hash_uindex", unique: true
+    t.index ["source_url"], name: "photos_source_url_index"
   end
 
   create_table "pings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -250,10 +279,10 @@ ActiveRecord::Schema.define(version: 20170605212137) do
   create_table "user_locations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.datetime "created_at", default: -> { "now()" }, null: false
     t.datetime "updated_at", default: -> { "now()" }, null: false
-    t.geography "point", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}, null: false
+    t.geography "point", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
     t.uuid "venue_id"
     t.uuid "session_id", null: false
-    t.uuid "location_id", null: false
+    t.uuid "location_id"
     t.boolean "beacon", default: false, null: false
     t.index ["location_id"], name: "index_user_locations_on_location_id"
     t.index ["session_id"], name: "index_user_locations_on_session_id"
@@ -297,8 +326,11 @@ ActiveRecord::Schema.define(version: 20170605212137) do
     t.string "facebook_scopes", array: true
     t.uuid "photo_id"
     t.boolean "is_admin", default: false, null: false
+    t.uuid "venue_id"
+    t.datetime "venue_last_at"
     t.index ["email_address"], name: "index_users_on_email_address"
     t.index ["facebook_id"], name: "users_facebook_id_uindex", unique: true
+    t.index ["venue_id"], name: "index_users_on_venue_id"
   end
 
   create_table "venue_messages", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -318,19 +350,25 @@ ActiveRecord::Schema.define(version: 20170605212137) do
     t.integer "distance_tolerance", default: 250, null: false
     t.uuid "location_id"
     t.uuid "page_id", null: false
+    t.uuid "audience_id"
+    t.index ["audience_id"], name: "index_venues_on_audience_id"
     t.index ["locale_id"], name: "index_venues_on_locale_id"
-    t.index ["page_id"], name: "index_venues_on_page_id"
+    t.index ["page_id"], name: "venues_page_id_uindex", unique: true
   end
 
+  add_foreign_key "alexa_users", "users"
+  add_foreign_key "audience_users", "audiences"
+  add_foreign_key "audience_users", "users"
   add_foreign_key "event_templates", "photos", column: "cover_photos_id"
   add_foreign_key "events", "photos", column: "cover_photo_id"
   add_foreign_key "events", "venues"
-  add_foreign_key "friendship_link", "users", column: "friend_id"
+  add_foreign_key "friendship_links", "users", column: "friend_id"
   add_foreign_key "friendships", "users", column: "friend_high_id"
   add_foreign_key "friendships", "users", column: "friend_low_id"
   add_foreign_key "locations", "photos", name: "locations_photos_id_fk"
   add_foreign_key "pages", "photos", column: "cover_photo_id", name: "pages_photos_cover_id_fk"
   add_foreign_key "pages", "photos", name: "pages_photos_id_fk"
+  add_foreign_key "people", "audiences"
   add_foreign_key "pings", "locales"
   add_foreign_key "sessions", "devices"
   add_foreign_key "sessions", "users"
@@ -346,6 +384,7 @@ ActiveRecord::Schema.define(version: 20170605212137) do
   add_foreign_key "user_rsvps", "events", name: "user_rsvps_events_id_fk"
   add_foreign_key "user_rsvps", "users", name: "user_rsvps_users_id_fk"
   add_foreign_key "users", "photos", name: "users_photos_id_fk"
+  add_foreign_key "users", "venues"
   add_foreign_key "venue_messages", "users"
   add_foreign_key "venue_messages", "venues"
   add_foreign_key "venues", "locales"
