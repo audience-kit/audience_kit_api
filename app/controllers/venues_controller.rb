@@ -41,7 +41,11 @@ class VenuesController < ApplicationController
 
       UserLocation.create!(session: current_session, venue: @venue, location: @venue.location, point: @point)
 
-      friends_ids = current_user.friendship_links.joins(friend: { sessions: :user_locations }).where('user_locations.created_at < ? AND user_locations.venue_id = ?', 2.hours.ago, @venue.id).order(:created_at).to_a.uniq
+      current_user.venue = @venue
+      current_user.venue_last_at = DateTime.now
+      current_user.save
+
+      friends_ids = current_user.friendship_links.joins(friend: :venue).where('user_locations.created_at < ? AND users.venue_id = ?', 2.hours.ago, @venue.id).order(:created_at).to_a.uniq
       @friends = User.find(friends_ids.map { |f| f['friend_id'] }.to_a)
       @events = @venue.events
     else
@@ -49,6 +53,8 @@ class VenuesController < ApplicationController
       @image_url = url_for(@locale.location&.photo)
 
       @image_url = @locale.location&.photo.cdn_url
+
+
 
       # TODO: Users who have issued recent pings
       @friends = []

@@ -10,6 +10,8 @@ class User < ApplicationRecord
   has_many :user_likes
   has_many :tribe_users
   belongs_to :photo
+
+  belongs_to :venue
   has_many :rsvps, class_name: 'UserRSVP'
 
   def update_from(graph)

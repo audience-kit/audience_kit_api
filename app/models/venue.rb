@@ -9,6 +9,7 @@ class Venue < ApplicationRecord
   has_many :events, -> { where('start_at > ? OR end_at > ?', DateTime.now, DateTime.now).order(start_at: :asc) }
   has_many :user_locations
   has_many :venue_messages
+  has_many :users
 
   belongs_to :locale
 

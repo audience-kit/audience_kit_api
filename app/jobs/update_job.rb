@@ -9,5 +9,10 @@ class UpdateJob < ApplicationJob
       UpdatePagesJob.perform_later
       UpdateEnvelopeJob.perform_later
     end
+
+    User.where('venue_last_at > ?', 2.hours.ago).each do |user|
+      user.venue = nil
+      user.save
+    end
   end
 end
