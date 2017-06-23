@@ -45,8 +45,7 @@ class VenuesController < ApplicationController
       current_user.venue_last_at = DateTime.now
       current_user.save
 
-      friends_ids = current_user.friendship_links.joins(friend: :venue).where('user_locations.created_at < ? AND venue_id = ?', 2.hours.ago, @venue.id).order(:created_at).to_a.uniq
-      @friends = User.find(friends_ids.map { |f| f['friend_id'] }.to_a)
+      @friends = []
       @events = @venue.events
     else
       @title = "Happening Now in #{@locale.name}"
