@@ -2,9 +2,14 @@ class UpdateUserJob < ApplicationJob
   def perform(user)
     puts "Updating user #{user.name}"
     begin
-      graph_client = Koala::Facebook::API.new user.facebook_token
+      begin
+        graph_client = Koala::Facebook::API.new user.facebook_token
 
-      user_graph = graph_client.get_object user.facebook_id
+        user_graph = graph_client.get_object user.facebook_id
+      rescue Koala::Facebook::OAuthTokenRequestError => ex
+        user.facebook_token = nil
+        user.save
+      end
 
       image_data = graph_client.get_picture_data(user.facebook_id, type: :large)['data']
 
