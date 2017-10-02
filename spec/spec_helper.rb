@@ -112,5 +112,5 @@ def default_headers
   allow(request_double).to receive(:ip_address).and_return('127.0.0.1')
   allow(request_double).to receive(:host_with_port).and_return('127.0.0.1:3000')
 
-  { accept: 'application/json', authorization: "Bearer #{@session.to_jwt(request_double)}" }
+  { accept: 'application/json', authorization: "JWT #{@session.to_jwt(request_double)}" }
 end

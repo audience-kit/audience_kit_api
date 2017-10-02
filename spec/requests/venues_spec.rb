@@ -69,7 +69,7 @@ RSpec.describe 'venues', type: :request do
     data = JSON.parse(response.body)
 
     expect(data['venue']).not_to be_nil
-    expect(data['venue']['photo_url']).to eq 'https://cdn.hotmess.social/ssOvk8wyBZleT4qBvY5U3B0BY60'
+    expect(data['venue']['photo_url']).to match /https:\/\/cdn.hotmess.social\/.*/
   end
 
   it 'returns venues for locale at /locales/{id}/venues' do
