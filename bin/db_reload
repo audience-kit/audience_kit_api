@@ -5,7 +5,7 @@ dropdb hotmess_test
 dropdb hotmess_production
 
 createdb hotmess_production
-echo "Restoring $0"
+echo "Restoring $1"
 pg_restore -d hotmess_production $1
 
 createdb -T hotmess_production hotmess_development

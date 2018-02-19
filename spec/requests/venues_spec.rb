@@ -3,6 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe 'venues', type: :request do
+  before :all do
+    Locale.find_or_create_by(label: 'nyc')
+  end
+
   describe 'now' do
     describe 'locale' do
       SPOKANE_POINT = { longitude: '-117', latitude: '47' }.freeze
@@ -69,7 +73,7 @@ RSpec.describe 'venues', type: :request do
     data = JSON.parse(response.body)
 
     expect(data['venue']).not_to be_nil
-    expect(data['venue']['photo_url']).to eq 'https://cdn.hotmess.social/ssOvk8wyBZleT4qBvY5U3B0BY60'
+    expect(data['venue']['photo_url']).to match /https:\/\/cdn.hotmess.social\/.*/
   end
 
   it 'returns venues for locale at /locales/{id}/venues' do

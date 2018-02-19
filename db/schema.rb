@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170620014628) do
+ActiveRecord::Schema.define(version: 20171023004727) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,24 @@ ActiveRecord::Schema.define(version: 20170620014628) do
     t.string "api_key", null: false
   end
 
+  create_table "audience_applications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "audiences_id", null: false
+    t.string "name", null: false
+    t.bigint "facebook_app_id", null: false
+    t.string "facebook_app_secret", null: false
+    t.index ["audiences_id"], name: "index_audience_applications_on_audiences_id"
+  end
+
+  create_table "audience_clients", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "audience_applications_id", null: false
+    t.string "token", null: false
+    t.index ["audience_applications_id"], name: "index_audience_clients_on_audience_applications_id"
+  end
+
   create_table "audience_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -47,7 +65,6 @@ ActiveRecord::Schema.define(version: 20170620014628) do
     t.datetime "updated_at", null: false
     t.string "name", null: false
     t.string "subdomain", null: false
-    t.bigint "facebook_app_ids", null: false, array: true
   end
 
   create_table "devices", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -120,6 +137,7 @@ ActiveRecord::Schema.define(version: 20170620014628) do
     t.date "friends_at"
     t.string "friend_hash"
     t.integer "weight"
+    t.boolean "is_circle", default: false, null: false
     t.index ["friend_high_id"], name: "index_friendships_on_friend_high_id"
     t.index ["friend_low_id"], name: "index_friendships_on_friend_low_id"
   end
@@ -204,8 +222,23 @@ ActiveRecord::Schema.define(version: 20170620014628) do
     t.datetime "updated_at", null: false
     t.uuid "user_id", null: false
     t.uuid "locale_id", null: false
+    t.boolean "is_safety", default: false, null: false
     t.index ["locale_id"], name: "index_pings_on_locale_id"
     t.index ["user_id"], name: "index_pings_on_user_id"
+  end
+
+  create_table "safety_report_identifiers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "safety_reports_id", null: false
+    t.string "type", null: false
+    t.string "value", null: false
+    t.index ["safety_reports_id"], name: "index_safety_report_identifiers_on_safety_reports_id"
+  end
+
+  create_table "safety_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "types", null: false, array: true
+    t.geography "point", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
   end
 
   create_table "sessions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

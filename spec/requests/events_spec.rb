@@ -3,15 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe 'events', type: :request do
+
   it 'fails without authentication' do
     get events_path
 
     expect(response).to have_http_status(401)
-  end
-
-  it 'lists events at /events' do
-    get events_path, headers: default_headers
-    expect(response).to have_http_status(200)
   end
 
   it 'returns events for locale at /locale/{id}/events' do

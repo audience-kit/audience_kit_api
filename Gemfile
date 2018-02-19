@@ -1,4 +1,4 @@
-ruby '2.4.1'
+ruby '2.5.0'
 
 source 'https://rubygems.org'
 
@@ -54,4 +54,3 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
-

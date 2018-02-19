@@ -55,3 +55,5 @@ namespace :update do
     Event.all.each(&:update_tickets)
   end
 end
+
+
