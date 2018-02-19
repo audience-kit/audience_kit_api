@@ -40,6 +40,7 @@ gem 'eventbrite'
 gem 'ticketmaster-sdk'
 gem 'mongoid'
 gem 'twilio-ruby'
+gem 'azure-storage-blob'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
