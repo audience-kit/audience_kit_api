@@ -3,6 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'events', type: :request do
+
   it 'fails without authentication' do
     get events_path
 

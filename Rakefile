@@ -55,3 +55,13 @@ namespace :update do
     Event.all.each(&:update_tickets)
   end
 end
+
+
+namespace :db do
+  namespace :test do
+    override_task :prepare do
+      `dropdb hotmess_test`
+      `createdb -T hotmess_development hotmess_test`
+    end
+  end
+end

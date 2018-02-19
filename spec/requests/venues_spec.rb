@@ -3,6 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe 'venues', type: :request do
+  before :all do
+    Locale.find_or_create_by(label: 'nyc')
+  end
+
   describe 'now' do
     describe 'locale' do
       SPOKANE_POINT = { longitude: '-117', latitude: '47' }.freeze
