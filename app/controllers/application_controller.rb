@@ -33,9 +33,9 @@ class ApplicationController < ActionController::API
   end
 
   def kinesis(event, partition, data = {})
-    @kinesis_client ||= Aws::Kinesis::Client.new(region: 'us-west-2', credentials: AWS_CREDENTIALS)
+    #@kinesis_client ||= Aws::Kinesis::Client.new(region: 'us-west-2', credentials: AWS_CREDENTIALS)
 
-    @kinesis_client.put_record stream_name: "hotmess-api", data: { environment: Rails.env, event: event, params: data, created_at: DateTime.now.utc }.to_json, partition_key: partition
+    #@kinesis_client.put_record stream_name: "hotmess-api", data: { environment: Rails.env, event: event, params: data, created_at: DateTime.now.utc }.to_json, partition_key: partition
   end
 
   def current_user
