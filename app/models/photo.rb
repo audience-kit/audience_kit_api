@@ -32,7 +32,7 @@ class Photo < ApplicationRecord
     client = Azure::Storage::Blob::BlobService.create(storage_account_name: AZURE_STORAGE_NAME,
                                                            storage_access_key: Rails.application.secrets[:cdn_storage_key])
 
-    client.create_block_blob('public', "public/#{name}", data)
+    client.create_block_blob('public', "public/#{name}", data, content_type: mime)
   end
 
   def store_s3(name, data)
