@@ -57,3 +57,27 @@ namespace :update do
 end
 
 
+namespace :repair do
+  namespace :images do
+    desc 'Repair image mime types'
+    task :mime => :environment do
+      client = Azure::Storage::Blob::BlobService.create(storage_account_name: 'audiencekitcdn',
+                                                        storage_access_key: Rails.application.secrets[:cdn_storage_key])
+
+      Photo.all.each do |photo|
+        hash_url_safe = Base64.urlsafe_encode64 photo.content_hash, padding: false
+
+        begin
+          blob = client.get_blob_properties 'photos', "#{hash_url_safe}"
+
+          if blob
+            client.set_blob_properties 'photos', "#{hash_url_safe}", content_type: photo.mime
+          end
+        rescue Azure::Core::Http::HTTPError
+          puts "Skipping for #{hash_url_safe} as the blob does not exit"
+          next
+        end
+      end
+    end
+  end
+end

@@ -18,7 +18,7 @@ class Photo < ApplicationRecord
       photo = Photo.find_or_create_by(content_hash: hash) do |p|
         p.mime = response['Content-Type']
         p.source_url = url
-        p.cdn_url = "https://audiencekitcdn.blob.core.windows.net/public/public/#{hash_url_safe}"
+        p.cdn_url = "https://noncesoft.azureedge.net/photos/#{hash_url_safe}"
       end
 
       photo.store(hash_url_safe, response.body)
@@ -28,24 +28,9 @@ class Photo < ApplicationRecord
   end
 
   def store(name, data)
-# Setup a specific instance of an Azure::Storage::Blob::BlobService
     client = Azure::Storage::Blob::BlobService.create(storage_account_name: AZURE_STORAGE_NAME,
                                                            storage_access_key: Rails.application.secrets[:cdn_storage_key])
 
-    client.create_block_blob('public', "public/#{name}", data, content_type: mime)
-  end
-
-  def store_s3(name, data)
-    client = Aws::S3::Client.new region: 'us-west-2', credentials: AWS_CREDENTIALS
-
-    client.put_object(bucket: S3_BUCKET_NAME,
-                      key: "public/#{name}",
-                      body: data,
-                      content_type: mime,
-                      acl: 'public-read',
-                      metadata: {
-                          original_url: source_url,
-                      })
-
+    client.create_block_blob('photos', name, data, content_type: mime)
   end
 end
