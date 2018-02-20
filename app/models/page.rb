@@ -23,15 +23,16 @@ class Page < ApplicationRecord
     name_override || name
   end
 
-  def update_graph(graph, options = {})
+  def update_photo(photo)
+    image_url = options[:photo]['url']
+
+    self.photo = Photo.for_url image_url
+    self.save
+  end
+
+  def update_graph(graph)
     self.facebook_graph = graph
     self.name = graph['name']
-
-    if options[:photo]
-      image_url = options[:photo]['url']
-
-      self.photo = Photo.for_url image_url
-    end
 
     if graph['cover']
       cover_url = graph['cover']['source']
