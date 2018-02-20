@@ -27,9 +27,6 @@ class UpdateSocialLinksJob < ApplicationJob
       track.download_url = track_data.download_url
       track.stream_url = track_data.stream_url
       track.metadata = track_data
-
-      track.waveform_image = Net::HTTP.get(URI(track_data.waveform_url))
-      track.artwork_image = Net::HTTP.get(URI(track_data.artwork_url.gsub(/large/, 't500x500')))
     end
 
     social_link.save
