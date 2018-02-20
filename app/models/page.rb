@@ -24,7 +24,7 @@ class Page < ApplicationRecord
   end
 
   def update_photo(photo)
-    image_url = options[:photo]['url']
+    image_url = photo['url']
 
     self.photo = Photo.for_url image_url
     self.save
