@@ -6,4 +6,4 @@ json.provider_url track.provider_url
 json.stream_url track.stream_url
 json.download_url track.download_url
 json.artwork_url track.photo.cdn_url
-json.waveform_url track.waveform_photo.cdn_url
+json.waveform_url track.waveform_photo&.cdn_url

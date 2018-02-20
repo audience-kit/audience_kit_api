@@ -85,6 +85,12 @@ class PageUpdater
     graph = @client.get_object event['id'], fields: EVENT_FIELDS
     model.facebook_graph = graph
 
+    if graph['cover']
+      model.cover_photo = Photo.for_url graph['cover']['source']
+    end
+
+    model.save
+
     if graph['place']
       venue_id = graph['place']['id']
 
@@ -99,9 +105,7 @@ class PageUpdater
       logger.warn "No venue for #{graph['name']} (#{event_graph['id']})"
     end
 
-    if graph['cover']
-      model.cover_photo = Photo.for_url graph['cover']['source']
-    end
+
 
     model.update_details_from_facebook if model.venue
 
