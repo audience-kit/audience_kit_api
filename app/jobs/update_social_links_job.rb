@@ -4,7 +4,12 @@ class UpdateSocialLinksJob < ApplicationJob
                                    client_secret: Rails.application.secrets[:soundcloud][:secret])
 
     SocialLink.all.each do |social_link|
-      self.send "update_#{social_link.provider}".to_sym, social_link
+      begin
+        self.send "update_#{social_link.provider}".to_sym, social_link
+      rescue => ex
+        puts ex
+        next
+      end
     end
   end
 

@@ -8,6 +8,8 @@ class Photo < ApplicationRecord
   AZURE_STORAGE_NAME = 'audiencekitcdn'
 
   def self.for_url(url)
+    return nil unless url
+    
     photo = Photo.find_by(source_url: url)
 
     unless photo
