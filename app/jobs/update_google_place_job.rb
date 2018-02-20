@@ -1,7 +1,7 @@
 class UpdateGooglePlaceJob < ApplicationJob
   def perform
-    begin
-      Locale.all.each do |locale|
+    Locale.all.each do |locale|
+      begin
         next unless locale.location
 
         latitude = locale.location.point.latitude
@@ -14,15 +14,19 @@ class UpdateGooglePlaceJob < ApplicationJob
         locale.timezone_zulu_delta = timezone.raw_offset + timezone.dst_offset if timezone.time_zone_name
 
         locale.save
+      rescue => ex
+        puts "Error => #{ex}"
+
+        next
       end
     end
 
-    begin
-      client = ::GooglePlaces::Client.new(Rails.application.secrets.google_api_key)
+    client = ::GooglePlaces::Client.new(Rails.application.secrets.google_api_key)
 
-      locations  = Location.all
+    locations  = Location.all
 
-      locations.where('updated_at < ?', 12.hour.ago).each do |place|
+    locations.where('updated_at < ?', 12.hour.ago).each do |place|
+      begin
         next unless place.google_place_id
 
         puts "Updating => #{place.name}"
@@ -41,9 +45,9 @@ class UpdateGooglePlaceJob < ApplicationJob
         end
 
         place.save
+      rescue => ex
+        puts "Error => #{ex}"
       end
-    rescue => ex
-      puts "Error => #{ex}"
     end
   end
 end
