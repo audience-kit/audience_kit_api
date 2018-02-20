@@ -22,8 +22,8 @@ class UpdateSocialLinksJob < ApplicationJob
       track.created_at = track_data.created_at
       track.title = track_data.title
       track.provider_url = track_data.permalink_url
-      track.artwork_url = track_data.artwork_url
-      track.waveform_url = track_data.waveform_url
+      track.photo = Photo.for_url track_data.artwork_url
+      track.waveform_photo = Photo.for_url track_data.waveform_url
       track.download_url = track_data.download_url
       track.stream_url = track_data.stream_url
       track.metadata = track_data
