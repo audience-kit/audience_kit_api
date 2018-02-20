@@ -20,7 +20,7 @@ class PageUpdater
   end
 
   def update
-    return if @page.last_update_error.nil? and @page.updated_at > 12.hours.ago
+    return if @page.last_update_error.nil? and  @page.updated_at > 12.hours.ago
 
     update_page do
       Rails.logger.info "Updating #{@page.name} (#{@page.facebook_id})"
@@ -51,7 +51,7 @@ class PageUpdater
       @page.update_graph object, photo: photo
     rescue
       if @client_is_app
-        @client = Koala::Facebook::API.new User.find_by(email_address: 'rickmark@outlook.com').facebook_token
+        @client = Koala::Facebook::API.new User.where('facebook_token IS NOT NULL').order('RANDOM()').first.facebook_token, Rails.application.secrets[:facebook_secret]
         @client_is_app = false
         update_photo_and_self
       end
