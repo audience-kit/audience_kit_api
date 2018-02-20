@@ -1,6 +1,7 @@
 class UpdateSocialLinksJob < ApplicationJob
   def perform
-    @sound_client = SoundCloud.new(client_id: Rails.application.secrets['soundcloud']['id'], client_secret: Rails.application.secrets['soundcloud']['secret'])
+    @sound_client = SoundCloud.new(client_id: Rails.application.secrets[:soundcloud][:id],
+                                   client_secret: Rails.application.secrets[:soundcloud][:secret])
 
     SocialLink.all.each do |social_link|
       self.send "update_#{social_link.provider}".to_sym, social_link
