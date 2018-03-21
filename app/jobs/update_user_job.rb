@@ -83,6 +83,7 @@ class UpdateUserJob < ApplicationJob
   end
 
   def update_likes(user, user_graph_client)
+    return
     # This will be additive only, should remove
     puts 'Inserting user likes'
     user_likes = user_graph_client.get_connections :me, :likes

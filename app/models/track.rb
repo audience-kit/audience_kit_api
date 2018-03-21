@@ -4,4 +4,7 @@ class Track < ApplicationRecord
   belongs_to :social_link
   belongs_to :photo
   belongs_to :waveform_photo, class_name: 'Photo'
+
+  validates_presence_of :waveform
+  validates_presence_of :artwork
 end

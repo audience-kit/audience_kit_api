@@ -9,7 +9,7 @@ class Photo < ApplicationRecord
 
   def self.for_url(url)
     return nil unless url
-    
+
     photo = Photo.find_by(source_url: url)
 
     unless photo

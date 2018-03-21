@@ -23,15 +23,19 @@ class UpdateSocialLinksJob < ApplicationJob
     tracks = @sound_client.get('/resolve', url: "https://soundcloud.com/#{social_link.handle}/tracks")
 
     tracks.each do |track_data|
-      track = social_link.tracks.find_or_initialize_by(provider_identifier: track_data.permalink)
-      track.created_at = track_data.created_at
-      track.title = track_data.title
-      track.provider_url = track_data.permalink_url
-      track.photo = Photo.for_url track_data.artwork_url
-      track.waveform_photo = Photo.for_url track_data.waveform_url
-      track.download_url = track_data.download_url
-      track.stream_url = track_data.stream_url
-      track.metadata = track_data
+      begin
+        track = social_link.tracks.find_or_initialize_by(provider_identifier: track_data.permalink)
+        track.created_at = track_data.created_at
+        track.title = track_data.title
+        track.provider_url = track_data.permalink_url
+        track.photo = Photo.for_url track_data.artwork_url
+        track.waveform_photo = Photo.for_url track_data.waveform_url
+        track.download_url = track_data.download_url
+        track.stream_url = track_data.stream_url
+        track.metadata = track_data
+      rescue
+        next
+      end
     end
 
     social_link.save
