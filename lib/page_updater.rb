@@ -104,7 +104,7 @@ class PageUpdater
 
       self.class.on_event if self.class.on_event
     rescue => ex
-      Rails.logger.warn "Failure in updating event #{model} => #{ex}"
+      Rails.logger.warn "Failure in updating event #{model} => #{ex}\n#{ex.backtrace}"
 
     end
     model.save
