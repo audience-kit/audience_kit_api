@@ -5,6 +5,7 @@ class VenuesController < ApplicationController
   include Concerns::PageController
 
   skip_before_action :authenticate, only: %i[photo picture cover]
+  before_filter :require_admin, only: [ :update, :destroy, :create ]
 
   def index
     @venues = Venue.joins(:location).includes(:page)
@@ -100,5 +101,45 @@ class VenuesController < ApplicationController
     @events = @venue.events.includes(event_people: { person: :page })
 
     render 'events'
+  end
+
+  def update
+    @venue = Venue.find(params[:id])
+
+    @venue.location = Location.from_google_place_id params[:google_place_id] if params[:google_place_id]
+
+    @venue.save!
+  end
+
+  def destroy
+
+  end
+
+  def missing_google
+    @venues = Venue.joins(:page).where('location_id IS NULL').map do |venue|
+      venue_and_page = venue.attributes.reverse_merge venue.page.attributes
+      venue_and_page[:locale] = venue.locale&.attributes
+
+      venue_and_page
+    end
+
+    render json: @venues
+
+  end
+
+  def create
+    locale = Locale.find(params[:locale_id])
+
+    page = Page.page_for_facebook_id current_user.facebook_token, params[:facebook_id]
+
+    venue = locale.venues.build page: page
+
+    place = Location.from_google_place_id params[:google_place_id]
+
+    venue.location = place
+
+    venue.save!
+
+    render json: venue
   end
 end

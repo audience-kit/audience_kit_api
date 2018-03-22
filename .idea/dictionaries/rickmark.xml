@@ -2,6 +2,7 @@
   <dictionary name="rickmark">
     <words>
       <w>kinesis</w>
+      <w>mongoid</w>
     </words>
   </dictionary>
 </component>

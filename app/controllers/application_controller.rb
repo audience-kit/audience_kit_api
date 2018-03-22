@@ -54,4 +54,8 @@ class ApplicationController < ActionController::API
   def admin?
     request.env['role'] == 'admin'
   end
+
+  def require_admin
+    render status: :unauthorized unless admin?
+  end
 end

@@ -5,19 +5,6 @@ Rails.application.routes.draw do
   mount ActionCable.server => '/connection'
 
   scope '/v1' do
-    namespace :admin do
-      get 'venues/missing_google', to: 'venues#missing_google'
-
-      resources :locales, shallow: true do
-        resources :venues, shallow: true do
-          resources :events
-        end
-      end
-
-      resources :people, shallow: true do
-        resources :events
-      end
-    end
 
     post :token, to: 'token#create'
     post '/token/device', to: 'token#device'
@@ -27,18 +14,18 @@ Rails.application.routes.draw do
 
     post '/me/location', to: 'users#coordinates'
 
-    resources :locales, only: %i[index show], shallow: true do
+    resources :locales, only: %i[index show create update delete], shallow: true do
       get :closest, on: :collection
 
-      resources :venues, only: %i[index show], shallow: true do
+      resources :venues, only: %i[index show create update delete], shallow: true do
         get :events, on: :member
       end
 
-      resources :events, only: %i[index show], shallow: true do
+      resources :events, only: %i[index show create update delete], shallow: true do
         post :rsvp, on: :member
       end
 
-      resources :people, only: %i[index show], shallow: true do
+      resources :people, only: %i[index show create update delete], shallow: true do
         get :events, on: :member
 
         resources :tracks, only: [:show], shallow: true

@@ -402,6 +402,7 @@ ActiveRecord::Schema.define(version: 20171023004727) do
   add_foreign_key "pages", "photos", column: "cover_photo_id", name: "pages_photos_cover_id_fk"
   add_foreign_key "pages", "photos", name: "pages_photos_id_fk"
   add_foreign_key "people", "audiences"
+  add_foreign_key "people", "pages", name: "people_pages_id_fk"
   add_foreign_key "pings", "locales"
   add_foreign_key "sessions", "devices"
   add_foreign_key "sessions", "users"

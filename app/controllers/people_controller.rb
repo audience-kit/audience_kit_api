@@ -4,6 +4,7 @@ class PeopleController < ApplicationController
   include Concerns::PageController
 
   skip_before_action :authenticate, only: %i[picture cover]
+  before_filter :require_admin, only: [ :update, :destroy, :create ]
 
   def index
     @people  = Person.includes(:page).where(global: true)
@@ -37,5 +38,17 @@ class PeopleController < ApplicationController
     @events = @person.events
 
     render 'events/index'
+  end
+
+  def create
+
+  end
+
+  def update
+
+  end
+
+  def destroy
+
   end
 end

@@ -2,6 +2,7 @@
 
 class LocalesController < ApplicationController
   skip_before_action :authenticate, only: [ :photo ]
+  before_filter :require_admin, only: [ :update, :destroy, :create ]
 
   include Concerns::LocationParameters
 
@@ -32,5 +33,17 @@ class LocalesController < ApplicationController
   def photo
     @locale = Locale.find params[:id]
     redirect_to "/photos/#{@locale.location.photo_id}"
+  end
+
+  def create
+
+  end
+
+  def update
+
+  end
+
+  def destroy
+
   end
 end
