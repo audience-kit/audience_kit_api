@@ -85,7 +85,7 @@ class PageUpdater
       if graph['place']
         venue_id = graph['place']['id']
 
-        venue_page = Page.page_for_facebook_id(venue_id, true)
+        venue_page = Page.page_for_facebook_id(@client, venue_id, true)
 
         model.venue = venue_page.venue || Venue.new(hidden: true, page: venue_page) if venue_page
       elsif graph['owner']

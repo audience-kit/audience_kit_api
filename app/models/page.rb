@@ -41,9 +41,7 @@ class Page < ApplicationRecord
     end
   end
 
-  def self.page_for_facebook_id(token, facebook_id, hidden = false)
-    client = Koala::Facebook::API.new token
-
+  def self.page_for_facebook_id(client, facebook_id, hidden = false)
     unless facebook_id =~ /\d+/
       page_object = client.get_object facebook_id
       
