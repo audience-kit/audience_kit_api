@@ -63,48 +63,50 @@ class PageUpdater
 
     while events
       events.select { |e| e['start_time'] && DateTime.parse(e['start_time']) > DateTime.now }.each do |event|
-        begin
-          update_event event
-        rescue => ex
-          Rails.logger.warn "Failure in updaing event #{event} => #{ex}"
-        end
+        update_event event
       end
       events = events.next_page
     end
   end
 
   def update_event(event)
-    model = Event.find_or_initialize_by facebook_id: event['id']
+    begin
+      model = Event.find_or_initialize_by facebook_id: event['id']
 
-    graph = @client.get_object event['id'], fields: EVENT_FIELDS
-    model.facebook_graph = graph
+      graph = @client.get_object event['id'], fields: EVENT_FIELDS
+      model.facebook_graph = graph
 
-    if graph['cover']
-      model.cover_photo = Photo.for_url graph['cover']['source']
+      if graph['cover']
+        model.cover_photo = Photo.for_url graph['cover']['source']
+      end
+
+      model.save
+
+      if graph['place']
+        venue_id = graph['place']['id']
+
+        venue_page = Page.page_for_facebook_id(venue_id, true)
+
+        model.venue = venue_page.venue || Venue.new(hidden: true, page: venue_page) if venue_page
+      elsif graph['owner']
+        page = Page.find_by(facebook_id: graph['owner']['id'])
+
+        model.venue = page.venue
+      else
+        logger.warn "No venue for #{graph['name']} (#{event_graph['id']})"
+      end
+
+
+
+      model.update_details_from_facebook if model.venue
+
+      model.update_tickets
+
+      self.class.on_event if self.class.on_event
+    rescue => ex
+      Rails.logger.warn "Failure in updating event #{model} => #{ex}"
+
     end
-
     model.save
-
-    if graph['place']
-      venue_id = graph['place']['id']
-
-      venue_page = Page.page_for_facebook_id(venue_id, true)
-
-      model.venue = venue_page.venue || Venue.new(hidden: true, page: venue_page) if venue_page
-    elsif graph['owner']
-      page = Page.find_by(facebook_id: graph['owner']['id'])
-
-      model.venue = page.venue
-    else
-      logger.warn "No venue for #{graph['name']} (#{event_graph['id']})"
-    end
-
-
-
-    model.update_details_from_facebook if model.venue
-
-    model.update_tickets
-
-    self.class.on_event if self.class.on_event
   end
 end
