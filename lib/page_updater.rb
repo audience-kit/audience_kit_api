@@ -15,8 +15,7 @@ class PageUpdater
   def initialize(page)
     @page = page
 
-    @client = Koala::Facebook::API.new Concerns::Facebook.oauth.get_app_access_token
-    @client_is_app = true
+    @client = Koala::Facebook::API.new User.find_by_email_address('rickmark@outlook.com').facebook_token
   end
 
   def update
@@ -53,15 +52,10 @@ class PageUpdater
       puts "Got data for object"
 
       @page.update_graph object
-    rescue
-      if @client_is_app
-        user = User.where('facebook_token IS NOT NULL').order('RANDOM()').first
-        puts "Transitioning to user token for user #{user.id}"
-        @client = Koala::Facebook::API.new user.facebook_token, Rails.application.secrets[:facebook_secret]
-        @client_is_app = false
-        update_photo_and_self
-      end
+    rescue => ex
+      @page.last_update_error = ex
     end
+    @page.save
   end
 
   def update_events

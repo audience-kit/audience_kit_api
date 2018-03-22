@@ -9,7 +9,7 @@ class PeopleController < ApplicationController
   def index
     @people  = Person.includes(:page).where(global: true)
     @people += PersonLocale.includes(person: :page).where(locale_id: params[:locale_id]).map(&:person)
-    @people  = @people.uniq
+    @people  = @people.uniq.sort_by(&:order)
 
     @user_likes = current_user.user_likes.to_a.map { |ul| [ ul.page, ul ] }.to_h
 
