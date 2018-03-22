@@ -2,7 +2,7 @@
 
 class LocalesController < ApplicationController
   skip_before_action :authenticate, only: [ :photo ]
-  before_filter :require_admin, only: [ :update, :destroy, :create ]
+  before_action :require_admin, only: [ :update, :destroy, :create ]
 
   include Concerns::LocationParameters
 

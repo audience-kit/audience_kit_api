@@ -5,7 +5,7 @@ class VenuesController < ApplicationController
   include Concerns::PageController
 
   skip_before_action :authenticate, only: %i[photo picture cover]
-  before_filter :require_admin, only: [ :update, :destroy, :create ]
+  before_action :require_admin, only: [ :update, :destroy, :create ]
 
   def index
     @venues = Venue.joins(:location).includes(:page)
