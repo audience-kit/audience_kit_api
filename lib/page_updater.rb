@@ -27,7 +27,7 @@ class PageUpdater
       update_photo_and_self
 
       self.class.updater if self.class.updater
-      
+
       update_events
     end
   end
@@ -58,6 +58,7 @@ class PageUpdater
 
     rescue => ex
       @page.last_update_error = ex
+      Rails.logger.error ex
     end
     @page.save
   end
