@@ -44,14 +44,15 @@ class PageUpdater
   private
   def update_photo_and_self
     begin
+      object = @client.get_object @page.facebook_id, fields: PAGE_FIELDS
+      Rails.logger.info "Got data for object"
+      @page.update_graph object
+      @page.save
+
       photo = @client.get_picture_data(@page.facebook_id, type: :large)['data']
       Rails.logger.info "Got photo for object"
       @page.update_photo photo
 
-      object = @client.get_object @page.facebook_id, fields: PAGE_FIELDS
-      Rails.logger.info "Got data for object"
-
-      @page.update_graph object
     rescue => ex
       @page.last_update_error = ex
     end
