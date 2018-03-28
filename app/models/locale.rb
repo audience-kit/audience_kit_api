@@ -17,7 +17,7 @@ class Locale < ApplicationRecord
 
     factory = RGeo::Geographic.simple_mercator_factory
 
-    venue_points = venues.where(hidden: false).map(&:location).reject(&:nil?).to_a
+    venue_points = venues.where(hidden: false).map(&:location).map(&:point).reject(&:nil?).to_a
     all_points = factory.collection venue_points
     envelope = all_points.envelope
     self.envelope = envelope
