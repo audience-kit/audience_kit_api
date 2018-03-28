@@ -1,6 +1,6 @@
 class PageUpdater
   EVENT_FIELDS = %w[ticket_uri owner name cover start_time end_time place is_canceled].freeze
-  PAGE_FIELDS = %w[name cover category category_list instagram_accounts place_topics ratings screennames location]
+  PAGE_FIELDS = %w[name cover picture category category_list place_topics overall_star_rating screennames location]
 
   cattr_reader :updater, :on_event
 
@@ -50,11 +50,10 @@ class PageUpdater
       object = @client.get_object @page.facebook_id, fields: PAGE_FIELDS
       Rails.logger.info "Got data for object"
       @page.update_graph object
-      @page.save
 
-      photo = @client.get_picture_data(@page.facebook_id, type: :large)['data']
-      Rails.logger.info "Got photo for object => #{photo}"
-      @page.update_photo photo
+      if object['picture']
+        @page.photo = Photo.for_url object['picture']['data']['url']
+      end
 
       if object['cover']
         @page.cover = Photo.for_url object['cover']['source']
