@@ -23,8 +23,11 @@ class PageUpdater
 
     update_page do
       Rails.logger.info "Updating #{@page.name} (#{@page.facebook_id})"
-      self.class.updater if self.class.updater
+
       update_photo_and_self
+
+      self.class.updater if self.class.updater
+      
       update_events
     end
   end
@@ -50,7 +53,7 @@ class PageUpdater
       @page.save
 
       photo = @client.get_picture_data(@page.facebook_id, type: :large)['data']
-      Rails.logger.info "Got photo for object"
+      Rails.logger.info "Got photo for object => #{photo}"
       @page.update_photo photo
 
     rescue => ex
