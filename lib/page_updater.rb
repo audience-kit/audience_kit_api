@@ -56,6 +56,11 @@ class PageUpdater
       Rails.logger.info "Got photo for object => #{photo}"
       @page.update_photo photo
 
+      if object['cover']
+        @page.cover = Photo.for_url object['cover']['source']
+      end
+
+      @page.save
     rescue => ex
       @page.last_update_error = ex
       Rails.logger.error ex
