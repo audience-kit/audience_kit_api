@@ -30,9 +30,13 @@ class Page < ApplicationRecord
     self.save
   end
 
-  def update_graph(graph)
+  def update_graph(graph, options = {})
     self.facebook_graph = graph
     self.name = graph['name']
+
+    if options[:photo_data]
+      self.photo = Photo.for_url(options[:photo_data]['url'])
+    end
 
     if graph['cover']
       cover_url = graph['cover']['source']
