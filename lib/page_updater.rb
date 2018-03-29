@@ -56,7 +56,7 @@ class PageUpdater
       end
 
       if object['cover']
-        @page.cover = Photo.for_url object['cover']['source']
+        @page.cover_photo = Photo.for_url object['cover']['source']
       end
 
       @page.save
