@@ -54,12 +54,6 @@ class PageUpdater
       if object['picture']
         @page.photo = Photo.for_url object['picture']['data']['url']
       end
-
-      if object['cover']
-        @page.cover_photo = Photo.for_url object['cover']['source']
-      end
-
-      @page.save
     rescue => ex
       @page.last_update_error = ex
       Rails.logger.error ex

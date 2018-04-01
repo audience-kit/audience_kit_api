@@ -10,6 +10,10 @@ class PersonUpdater < PageUpdater
     if username
       @page.person.social_links.find_or_create_by(provider: 'facebook', handle: username)
     end
+
+    if object['cover']
+      @page.cover_photo = Photo.for_url object['cover']['source']
+    end
   end
 
   on_event do |event|
