@@ -11,8 +11,8 @@ class PersonUpdater < PageUpdater
       @page.person.social_links.find_or_create_by(provider: 'facebook', handle: username)
     end
 
-    if object['cover']
-      @page.cover_photo = Photo.for_url object['cover']['source']
+    if @page.facebook_graph['cover']
+      @page.cover_photo = Photo.for_url @page.facebook_graph['cover']['source']
     end
   end
 
